@@ -23,8 +23,8 @@ Working with this document
 The built site can be viewed by opening ``_build/html/index.html`` in
 your web browser.
 
-Whenever you push to ``master``, readthedocs.org will build and host the
-document at http://ldm-148lsst.io
+Whenever you push to ``master``, LSST-the-Docs will build and host the
+document at http://ldm-148.lsst.io
 
 Editing metadata
 ----------------
