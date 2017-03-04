@@ -21,16 +21,16 @@ Still to be done:
 The LSST Data Management System (DMS) is a set of services employing a variety of software components running on computational and networking infrastructure that combine to deliver science data products to the observatory's users and support observatory operations.
 The DMS is constructed by the DM subsystem in the NSF MREFC project; in the Operations era, it is operated by a combination of the Data Processing and Products (DPP), Science Operations, and Observatory Operations departments.
 
-The DMS has components that execute in five main physical locations: the Summit observatory building (and the Auxiliary Telescope building) on Cerro Pachon, Chile; the Base data center facility in La Serena, Chile; the Archive data center facility at the National Center for Supercomputing Applications (NCSA) in Urbana, Illinois, USA; and the Satellite computing facility at CC-IN2P3 in Lyon, France.
-The Base and Archive facilities include both production computational environments and also LSST Data Access Centers (DACs).
+The DMS has components that execute in five main physical locations: the Summit Site including the main observatory and the Auxiliary Telescope buildings on Cerro Pachon, Chile; the Base Facility data center located at the Base Site in La Serena, Chile; the Archive Facility data center at the National Center for Supercomputing Applications (NCSA) in Urbana, Illinois, USA; and the Satellite Computing Facility at CC-IN2P3 in Lyon, France.
+The Base and Archive Facilities include both production computational environments (the Base Center and Archive Center, respectively) and also the US and Chilean Data Access Centers (DACs).
 The DACs are composed of modest but significant computational, storage, networking, and other resources intended for use as a flexible, multi-tenant environment for professional astronomers with LSST data rights to retrieve, manipulate, and annotate LSST data products in order to perform scientific discovery and inquiry.
 
 The data products are defined and described in the Data Products Definition Document (LSE-163).
 These are divided into three major categories or "Levels": Level 1 data products are generated on a nightly or daily cadence, Level 2 data products are generated on an (approximately) annual cadence, and Level 3 data products are generated, created, or imported by users operating on LSST Data Access Center systems.
-Calibration products for the Level 1 data products are generated on a variety of cadences ranging from daily to annual; calibration products for the Level 2 data products are generated on an annual cadence.  
+Calibration products for the Level 1 data products are generated on a variety of cadences ranging from daily to annual; calibration products for the Level 2 data products are generated on an annual cadence as a prerequisite for the annual Data Release Production.
 
-Similarly, the DMS can be broken down into four main domains: a Level 1, near-realtime domain closely linked to the rest of the Observatory; a Level 2 domain organized around the annual data release production; a Data Access Center domain with associated user support components; and an analysis and developer support domain encompassing environments for analysts, developers, and integration and test.
-In addition, an infrastructure domain hosts services common to all of the other domains.  
+Similarly, the DMS can be broken down into four main functional domains: a Level 1, near-realtime domain (L1) closely linked to the rest of the Observatory; a Level 2 domain (L2) organized around the annual Data Release Production; a Data Access Center domain (DAC) with associated science user support components; and an analysis and developer support domain (ADS) encompassing environments for observatory operations staff use for science verification, software development, system integration, and system testing.
+In addition, an infrastructure domain (Infra) hosts services supporting all of the other domains.
 
 The services that make up the DMS include (with the domains they are in noted):
  - Archiving services for the Camera and Auxiliary Telescope (L1)
@@ -43,12 +43,13 @@ The services that make up the DMS include (with the domains they are in noted):
  - Alert Broker Feed service (L1)
  - Alert Mini-Broker service (L1)
  - Level 1 Quality Control (QC) service (L1)
- - Data Backbone service (Infrastructure)
- - Batch Processing service (Infrastructure)
- - Flexibly-Provisioned Compute Resources (Infrastructure)
+ - Data Backbone service (Infra)
+ - Batch Processing service (Infra)
+ - Flexibly-Provisioned Compute Resources (Infra)
+ - Other Infrastructure Services (Infra)
  - Calibration Products Production Execution service (L2)
  - Data Release Production Execution service (L2)
- - Level 2 Quality Control service (L2)
+ - Level 2 Quality Control (QC) service (L2)
  - Bulk Data Distribution service (DAC)
  - Data Access Web services (DAC)
  - Science Platform service (Science Verification, Commissioning, and DAC
@@ -56,18 +57,14 @@ The services that make up the DMS include (with the domains they are in noted):
  - Developer services (ADS)
  - Integration and testing services (ADS)
 
-The underlying software can be divided into four classes:
- - Science User Interface Toolkit ("SUIT")
- - Science applications software ("payloads")
- - Middleware for production control and portability
- - Infrastructure components such as databases, filesystems, batch systems,
-   provisioning systems, and system management
+The relationships between these services, their functional domains, and their science application "payloads" can be visualized in this diagram:
 
-Key middleware components include:
- - Data access client (``daf_persistence``)
- - Parallel distributed database (``qserv``)
- - Task framework (``pex_*``, ``pipe_base``, ``ctrl_pool``)
- - Workflow (``ctrl_*``)
+.. figure:: /_static/DMS_Architecture.png
+
+    Data Management System Architecture
+
+The science application software for the Alert Production, daytime processing, Data Release Production, and calibration processing is built out of a set of frameworks that accept plugins.
+In turn, those frameworks build on middleware that provides portability and scalability.
 
 Key applications software components include:
  - Astronomy framework (``afw``)
@@ -77,9 +74,28 @@ Key applications software components include:
  - Camera-specific customizations (``obs_*``)
  - Many science algorithms implemented using these components
 
-.. figure:: /_static/DMS_Architecture.png
+.. figure:: /_static/DM_Application_Software_Arch.png
 
-    Data Management System Architecture
+    Data Management Science Pipelines Software "Stack"
+
+
+Key middleware components include:
+ - Data access client (Data Butler) (``daf_persistence``)
+ - Task framework (``pex_*``, ``pipe_base``, ``ctrl_pool``)
+ - Workflow and orchestration for production control (``ctrl_*``)
+
+Infrastructure components include:
+ - Parallel distributed database (``qserv``)
+ - Other databases (typically relational)
+ - Filesystems
+ - Authentication and authorization
+ - Provisioning and resource management
+ - Monitoring
+
+.. figure:: /_static/DM_Middleware_and_Infrastructure.png
+
+    Data Management Middleware and Infrastructure
+
 
 
 .. _domains:
@@ -95,14 +111,15 @@ Level 1 Domain
 ==============
 
 This domain is responsible for all near-realtime operations closely tied with Observatory operations.
-It contains a large number of services because of the requirements for interaction with other Observatory systems and for output via non-DAC channels.
+It contains a large number of services because of the requirements for interaction with other Observatory systems and for output of Alerts directly to end users.
 
 The Archiving, Catch-up Archiving, and EFD Tranformation services capture raw data and metadata and convey them to the Data Backbone for permanent archiving.
 The Prompt Processing, OCS Driven Batch Processing, and Offline Processing services support execution of science payloads in three different modes, depending on control and latency requirements.
 The Level 1 Quality Control Service monitors the science data products.
 The Telemetry Gateway, Alert Broker Feed, and Alert Mini-Broker services provide selected outputs to the OCS, community alert brokers, and LSST data rights holders, respectively.
 
-[Say something about autonomous execution and (lack of) human input/intervention.]
+The services in this domain need to run rapidly and reliably at times and with latencies that are not amenable to a human-in-the-loop design.
+Instead, they are designed to execute autonomously, often under the control of the OCS, with human oversight, monitoring, and control only at the highest level.
 
 .. _level-1-domain-services:
 
@@ -117,8 +134,8 @@ Detailed concepts of operations for each service can be found in "Concept of Ope
 Archiving services for the Camera and Auxiliary Telescope
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-These capture raw images taken by the cameras on each telescope, including the wavefront sensors and the guide sensors when so configured, retrieving them from the two Camera Data Acquisition system instances.
-They also capture metadata associated with the image, including telemetry values and event timings, from the OCS and/or the EFD.
+These capture raw images taken by the main Camera, including the wavefront sensors and the guide sensors when so configured, and the auxiliary telescope spectrograph, retrieving them from their respective Camera Data Acquisition system instances.
+They also capture specific sets of metadata associated with the images, including telemetry values and event timings, from the OCS publish/subscribe middleware and/or from the EFD.
 The image pixels and metadata are then permanently archived in the Data Backbone.
 
 Requirements satisfied: DMS-REQ-0018, DMS-REQ-0068, DMS-REQ-0020, DMS-REQ-0265,
@@ -133,7 +150,7 @@ Catch-up Archiving service
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This archives into the Data Backbone any raw images that were missed by the primary archiving services due to network or other outage.
-It retrieves information from the EFD to generate metadata.
+It retrieves information -- the same sets as specified for the primary archiving services -- from the EFD to generate metadata.
 The image pixels and metadata are then permanently archived in the Data Backbone.
 
 Requirements partially satisfied: DMS-REQ-0004, DMS-REQ-0284, DMS-REQ-0318,
@@ -144,7 +161,7 @@ DMS-REQ-0165, DMS-REQ-0315
 Engineering and Facility Database Transformation service
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This extracts all information (including telemetry, events, configurations, and commands) from the EFD, transforms it into a form more suitable for querying by image timestamp, and loads it into a "Transformed EFD" database available in the Data Backbone.
+This extracts all information (including telemetry, events, configurations, and commands) from the EFD and its large file annex, transforms it into a form more suitable for querying by image timestamp, and loads it into a "Transformed EFD" database available in the Data Backbone.
 
 Requirements satisfied: DMS-REQ-0102
 
@@ -155,13 +172,15 @@ Requirements partially satisfied: DMS-REQ-0315
 Prompt Processing service
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This captures crosstalk-corrected images from the main Camera Data Acquisition system and metadata from the OCS and/or EFD and executes the Alert Production science payload on them, generating Level 1 data products that are stored in the Data Backbone.
+This captures crosstalk-corrected images from the main Camera Data Acquisition system and selected metadata from the OCS and/or EFD and executes the Alert Production science payload on them, generating Level 1 data products that are stored in the Data Backbone.
 The Alert Production payload then distributes Alerts to the Alert Broker Feed service and the Alert Mini-Broker service.
 
-This service has calibration (including Collimated Beam Projector images), science, and deep drilling modes.
+The Prompt Processing service has calibration (including Collimated Beam Projector images), science, and deep drilling modes.
 In calibration mode, it executes a Calibration QC payload that provides rapid feedback of raw calibration image quality.
 In normal science mode, two consecutive exposures are grouped and processed as a single visit; definitions of exposure groupings to be processed as visits in other modes are TBD.
 The service is required to deliver Alerts within 60 seconds of the final camera readout of a standard science visit with 98% reliability.
+
+There is no Prompt Processing service for the auxiliary telescope spectrograph.
 
 Requirements satisfied: DMS-REQ-0022, DMS-REQ-0069
 
@@ -170,9 +189,11 @@ Requirements satisfied: DMS-REQ-0022, DMS-REQ-0069
 OCS Driven Batch Processing service
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This executes science payloads under control of the Observatory Control System.
+This executes science payloads in response to commands from the Observatory Control System.
 It is used for modest-latency analysis of images during Commissioning and for processing daily calibration images in normal observing operations.
 Images and metadata are taken from the Data Backbone, and results are provided back to the Data Backbone; there is no direct connection from this service to the Camera Data Acquisition system.
+This obviously bounds the minimum latency by the latency of the Archiving Service.
+A summary status for the processing performed is returned to the OCS for each command, following the normal OCS commanding protocol.
 
 Requirements satisfied: DMS-REQ-0131
 
@@ -195,7 +216,7 @@ Requirements satisfied: [...]
 Level 1 Quality Control service
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This collects information on science payload execution, post-processes the science data products from the Data Backbone to generate additional measurements, and monitors the measurement values against defined thresholds, providing an automated quality control capability for potentially detecting issues with the environment, telescope, camera, data acquisition, or data processing.
+This collects information on Level 1 science and calibration payload execution, post-processes the science data products from the Data Backbone to generate additional measurements, and monitors the measurement values against defined thresholds, providing an automated quality control capability for potentially detecting issues with the environment, telescope, camera, data acquisition, or data processing.
 Alarms stemming from threshold crossings are delivered to Observatory operators and to DPP Production Scientists for verification, analysis, and resolution.
 
 Requirements satisfied: DMS-REQ-0097, DMS-REQ-0099, DMS-REQ-0101, DMS-REQ-0096,
@@ -207,6 +228,7 @@ Telemetry Gateway service
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This obtains information from Prompt and Offline Processing of images and the Level 1 Quality Control service, including quality metrics, and transmits them to the OCS as specified in the Data Management-OCS Software Communication Interface (LSE-72).
+Note that further information on the status and performance of DMS services will also be available to Observatory operators through remote displays originated from the DPP processing centers.
 
 Requirements satisfied: [...]
 
@@ -240,7 +262,7 @@ Camera DAQ to Archiver, Catch-Up Archiver, Prompt Processing: these interface th
 
 Prompt Processing and Offline Processing to Telemetry Gateway: these interface via an internal-to-DM messaging protocol.
 
-Prompt Processing (and Offline Processing?) to Alert Broker Feed and Alert Mini-Broker: these interface through a reliable transport system, currently expected to be Apache Kafka.
+Prompt Processing (and Offline Processing?) to Alert Broker Feed and Alert Mini-Broker: these interface through a reliable transport system.
 
 EFD to EFD Transformer: this interface is via connection (mechanism TBD) to the MySQL databases that make up the EFD as well as file transfer from the EFD's Large File Annex.
 
@@ -279,10 +301,12 @@ Calibration Products Production Execution service
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This executes various CPP science payloads at various intervals to generate Master Calibration Images and populate the Calibration Database with information derived from analysis of raw calibration images from the Data Backbone and information in the Transformed EFD.
+This includes the computation of crosstalk correction matrices.
 Although not a calibration product, the templates used by Alert Production are also generated by this service, based on raw science images from the Data Backbone.
 Additional information such as external catalogs may also be taken from the Data Backbone.
 Computations occur using the Flexibly-Provisioned Compute Resources.
 The intervals at which this service executes will depend on the stability of Observatory systems, but are expected to include at least monthly and annual executions.
+The annual execution is a prerequisite for the subsequent execution of the Data Release Production.
 The service involves human scientist/operator input to determine initial configurations of the payload, to monitor and analyze the results, and possibly to provide additional configuration information during execution.
 
 Requirements satisfied: [...]
@@ -474,6 +498,14 @@ Priority order:
 
 Requirements satisfied: [...]
 
+.. _infrastructure-other:
+
+Other Infrastructure Services
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+These services include databases (including the Qserv distributed database), filesystems, provisioning systems, authentication systems, resource management systems, monitoring systems, and system management.
+
+
 .. _infrastructure-interfaces:
 
 Interfaces
@@ -636,4 +668,6 @@ Change Record
 | **Version** | **Date**   | **Description**                  | **Owner**       |
 +=============+============+==================================+=================+
 | 0.1         | 2017-02-17 | Initial draft.                   | Kian-Tat Lim    |
++-------------+------------+----------------------------------+-----------------+
+| 0.2         | 2017-03-03 | Incorporated feedback.           | Kian-Tat Lim    |
 +-------------+------------+----------------------------------+-----------------+
