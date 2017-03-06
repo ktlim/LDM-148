@@ -616,7 +616,7 @@ Produces science data products in the Data Backbone.
 SUIT
 ====
 
-The Science User Interface Toolkit provides visualization, plotting, catalog rendering, browsing, and searching elements that can be assembled into predetermined "portals" but can also be used flexibly within dynamic "notebook" environments.
+The Science User Interface and Tools provide visualization, plotting, catalog rendering, browsing, and searching elements that can be assembled into predetermined "portals" but can also be used flexibly within dynamic "notebook" environments.
 
 
 .. _middleware:
