@@ -19,18 +19,35 @@ Still to be done:
 
 
 The LSST Data Management System (DMS) is a set of services employing a variety of software components running on computational and networking infrastructure that combine to deliver science data products to the observatory's users and support observatory operations.
-The DMS is constructed by the DM subsystem in the NSF MREFC project; in the Operations era, it is operated by a combination of the Data Processing and Products (DPP), Science Operations, and Observatory Operations departments.
+The DMS is constructed by the DM subsystem in the NSF MREFC project; in the Operations era, it is operated by a combination of the LSST Data Facility, Science Operations, and Observatory Operations departments.
 
-The DMS has components that execute in five main physical locations: the Summit Site including the main observatory and the Auxiliary Telescope buildings on Cerro Pachon, Chile; the Base Facility data center located at the Base Site in La Serena, Chile; the Archive Facility data center at the National Center for Supercomputing Applications (NCSA) in Urbana, Illinois, USA; and the Satellite Computing Facility at CC-IN2P3 in Lyon, France.
-The Base and Archive Facilities include both production computational environments (the Base Center and Archive Center, respectively) and also the US and Chilean Data Access Centers (DACs).
+The data products to be delivered are defined and described in the Data Products Definition Document (LSE-163).
+These are divided into three major categories or "Levels": Level 1 data products are generated on a nightly or daily cadence, Level 2 data products are generated on an (approximately) annual cadence, and Level 3 data products are generated, created, or imported by science users.
+Calibration products for the Level 1 data products are generated on a variety of cadences ranging from daily to annual; calibration products for the Level 2 data products are generated on an annual cadence as a prerequisite for the annual Data Release Production.
+Raw data acquired by Observatory systems (with the exception of some types of engineering data) is archived permanently by the DMS.
+
+Science data products are delivered through Data Access Centers (DACs), plus streams of near-realtime alerts and telescope pointing predictions.
 The DACs are composed of modest but significant computational, storage, networking, and other resources intended for use as a flexible, multi-tenant environment for professional astronomers with LSST data rights to retrieve, manipulate, and annotate LSST data products in order to perform scientific discovery and inquiry.
 
-The data products are defined and described in the Data Products Definition Document (LSE-163).
-These are divided into three major categories or "Levels": Level 1 data products are generated on a nightly or daily cadence, Level 2 data products are generated on an (approximately) annual cadence, and Level 3 data products are generated, created, or imported by users operating on LSST Data Access Center systems.
-Calibration products for the Level 1 data products are generated on a variety of cadences ranging from daily to annual; calibration products for the Level 2 data products are generated on an annual cadence as a prerequisite for the annual Data Release Production.
+The services that make up the DMS are in turn made up of software and underlying service components, instantiated in a particular configuration in a particular computing environment to perform a particular function.
+Some software components are specific to a service; others are general-purpose and reused across multiple services.
+Many services have only one instance in the production system; others have several, and all have additional instances in the development and integration environments for testing purposes.
 
-Similarly, the DMS can be broken down into four main functional domains: a Level 1, near-realtime domain (L1) closely linked to the rest of the Observatory; a Level 2 domain (L2) organized around the annual Data Release Production; a Data Access Center domain (DAC) with associated science user support components; and an analysis and developer support domain (ADS) encompassing environments for observatory operations staff use for science verification, software development, system integration, and system testing.
-In addition, an infrastructure domain (Infra) hosts services supporting all of the other domains.
+The DMS services can be considered to consist of three tiers of components.
+The top tier is science "applications" software that generates data products.
+This software is used to build "payloads" that perform particular data analysis and product generation tasks.
+It is also used by science users and staff to analyze the data products.
+The middle tier is "middleware" software components and services that execute the science application payloads and isolate them from their environment, including changes to underlying technologies.
+These components also provide data access for science users and staff.
+The bottom tier is "infrastructure": hardware, networking, and low-level software and services that provide a computing environment.
+
+The DMS computing environments reside in four main physical locations: the Summit Site including the main Observatory and Auxiliary Telescope buildings on Cerro Pachon, Chile; the Base Facility data center located at the Base Site in La Serena, Chile; the Archive Facility data center at the National Center for Supercomputing Applications (NCSA) in Urbana, Illinois, USA; and the Satellite Computing Facility at CC-IN2P3 in Lyon, France.
+These are linked by high-speed networks to allow rapid data movement.
+The Base and Archive Facilities include production computational environments (the Base Center and Archive Center, respectively) and also the US and Chilean Data Access Centers.
+
+The DMS service instances can be broken down into four main functional domains: a Level 1, near-realtime domain (L1) closely linked to the rest of the Observatory; a Level 2 domain (L2) organized around the annual Data Release Production; a Data Access Center domain (DAC) with associated science user support components; and an analysis and developer support domain (ADS) encompassing environments that operations staff use for science verification, software development, system integration, and system testing.
+In addition, an underlying infrastructure domain (Infra) hosts services supporting all of the other domains, including a common Data Backbone that provides data transport and archiving for all domains.
+These domains are distinguished by having different users, operations timescales, interfaces, and often components.
 
 The services that make up the DMS include (with the domains they are in noted):
  - Archiving services for the Camera and Auxiliary Telescope (L1)
@@ -88,7 +105,7 @@ Infrastructure components include:
  - Parallel distributed database (``qserv``)
  - Other databases (typically relational)
  - Filesystems
- - Authentication and authorization
+ - Authentication and authorization (identity management)
  - Provisioning and resource management
  - Monitoring
 
@@ -111,11 +128,12 @@ Level 1 Domain
 ==============
 
 This domain is responsible for all near-realtime operations closely tied with Observatory operations.
+Its primary goals are to archive data from the Observatory, process it into Level 1 science data products, and publish them to the DACs, alert subscribers, and back to the OCS.
 It contains a large number of services because of the requirements for interaction with other Observatory systems and for output of Alerts directly to end users.
 
 The Archiving, Catch-up Archiving, and EFD Tranformation services capture raw data and metadata and convey them to the Data Backbone for permanent archiving.
 The Prompt Processing, OCS Driven Batch Processing, and Offline Processing services support execution of science payloads in three different modes, depending on control and latency requirements.
-The Level 1 Quality Control Service monitors the science data products.
+The Level 1 Quality Control Service monitors the science data products, including alerts, notifying operators if any anomalies are found.
 The Telemetry Gateway, Alert Broker Feed, and Alert Mini-Broker services provide selected outputs to the OCS, community alert brokers, and LSST data rights holders, respectively.
 
 The services in this domain need to run rapidly and reliably at times and with latencies that are not amenable to a human-in-the-loop design.
@@ -287,8 +305,16 @@ If necessary, a workflow system might be interposed.
 Level 2 Domain
 ==============
 
-This domain is responsible for all longer-period data processing operations, including the annual Data Release Production and periodic Calibration Products Productions.
-Note that Calibration Products Productions will execute even while the annual DRP is executing, hence the need for a separate service.
+This domain is responsible for all longer-period data processing operations, including the largest and most complex payloads supported by the DMS: the annual Data Release Production (DRP) and periodic Calibration Products Productions (CPPs).
+Note that CPPs will execute even while the annual DRP is executing, hence the need for a separate service.
+The Level 2 Quality Control Service monitors the science data products, notifying operators if any anomalies are found.
+
+The services in this domain need to run efficiently and reliably over long periods of time, spanning weeks or months.
+They need to execute millions or billions of tasks when their input data is available while tracking the status of each and preserving its output.
+They are designed to execute autonomously with human oversight, monitoring, and control primarily at the highest level, although provisions are made for manual intervention if absolutely necessary.
+
+This domain does not have direct users (besides the operators of its services); the services within it obtain inputs from the Data Backbone and place their outputs into the Data Backbone.
+
 
 .. _level-2-services:
 
@@ -350,7 +376,15 @@ Calibration Products Production Execution and Data Release Production Execution 
 Data Access Center Domain
 =========================
 
-This domain is responsible for all science-user-facing services.
+This domain is responsible for all science-user-facing services, primarily the instances of the LSST Science Platform (LSP) in the US and Chilean DAC environments.
+The LSP is the preferred analytic interface to LSST data products in the DAC.
+It provides computation and data access on both interactive and asynchronous timescales.
+The domain also includes a service for distributing bulk data on daily and annual (Data Release) timescales to partner institutions, collaborations, and LSST Education and Public Outreach (EPO).
+
+The services in this domain must support multiple users simultaneously and securely.
+The LSP must be responsive to science user needs; updates are likely to occur at a different cadence from the other domains as a result.
+The LSP must operate reliably enough that scientific work is not impeded.
+
 
 .. _dac-services:
 
@@ -399,6 +433,8 @@ Analysis and Developer Support Domain
 =====================================
 
 This domain encompasses environments for analysts, developers, and integration and test.
+Its users are the Observatory staff as they analyze raw data and processed data products to characterize them, develop new algorithms and systems, and test new versions of components and services before deployment.
+
 
 .. _ads-services:
 
@@ -453,6 +489,10 @@ Interfaces
 
 Infrastructure Domain
 =====================
+
+This domain encompasses the underlying services and systems that form the computing environments in which the other domains are deployed and operate.
+It interfaces with the other domains but has no direct users.
+
 
 .. _infrastructure-services:
 
