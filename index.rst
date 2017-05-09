@@ -22,11 +22,13 @@ The LSST Data Management System (DMS) is a set of services employing a variety o
 The DMS is constructed by the DM subsystem in the NSF MREFC project; in the Operations era, it is operated by a combination of the LSST Data Facility, Science Operations, and Observatory Operations departments.
 
 The data products to be delivered are defined and described in the Data Products Definition Document (LSE-163).
-These are divided into three major categories or "Levels": Level 1 data products are generated on a nightly or daily cadence, Level 2 data products are generated on an (approximately) annual cadence, and Level 3 data products are generated, created, or imported by science users.
-Calibration products for the Level 1 data products are generated on a variety of cadences ranging from daily to annual; calibration products for the Level 2 data products are generated on an annual cadence as a prerequisite for the annual Data Release Production.
-Raw data acquired by Observatory systems (with the exception of some types of engineering data) is archived permanently by the DMS.
-
+These are divided into three major categories or "Levels".
+Level 1 data products are generated on a nightly or daily cadence and comprise raw, calibrated, and difference images as well as alerts of transient, moving, and variable objects detected from the images, published within 60 seconds, and recorded in searchable catalogs.
+Level 2 data products are generated on an annual cadence and represent a complete reprocessing of the set of images taken to date to generate astronomical catalogs containing measurements and characterization of tens of billions of stars and galaxies with high and uniform astrometric and photometric accuracy.
+Level 3 data products are generated, created, or imported by science users.
+They derive value from their close association with or derivation from other LSST data products.
 Science data products are delivered through Data Access Centers (DACs), plus streams of near-realtime alerts and telescope pointing predictions.
+Each LSST data product has associated metadata providing provenance and quality metricsand tracing it to relevant calibration information in the archive.
 The DACs are composed of modest but significant computational, storage, networking, and other resources intended for use as a flexible, multi-tenant environment for professional astronomers with LSST data rights to retrieve, manipulate, and annotate LSST data products in order to perform scientific discovery and inquiry.
 
 The services that make up the DMS are in turn made up of software and underlying service components, instantiated in a particular configuration in a particular computing environment to perform a particular function.
@@ -37,16 +39,19 @@ The DMS services can be considered to consist of three tiers of components.
 The top tier is science "applications" software that generates data products.
 This software is used to build "payloads" that perform particular data analysis and product generation tasks.
 It is also used by science users and staff to analyze the data products.
+The detailed design of the components in this tier is given in Data Management Science Pipelines Design, LDM-151.
 The middle tier is "middleware" software components and services that execute the science application payloads and isolate them from their environment, including changes to underlying technologies.
 These components also provide data access for science users and staff.
+The detailed design of the components in this tier is given in Data Management Middleware Design, LDM-152.
 The bottom tier is "infrastructure": hardware, networking, and low-level software and services that provide a computing environment.
+The detailed design of components in this tier is given in Data Management Infrastructure Design, LDM-129.
 
 The DMS computing environments reside in four main physical locations: the Summit Site including the main Observatory and Auxiliary Telescope buildings on Cerro Pachon, Chile; the Base Facility data center located at the Base Site in La Serena, Chile; the Archive Facility data center at the National Center for Supercomputing Applications (NCSA) in Urbana, Illinois, USA; and the Satellite Computing Facility at CC-IN2P3 in Lyon, France.
 These are linked by high-speed networks to allow rapid data movement.
 The Base and Archive Facilities include production computational environments (the Base Center and Archive Center, respectively) and also the US and Chilean Data Access Centers.
 
 The DMS service instances can be broken down into four main functional domains: a Level 1, near-realtime domain (L1) closely linked to the rest of the Observatory; a Level 2 domain (L2) organized around the annual Data Release Production; a Data Access Center domain (DAC) with associated science user support components; and an analysis and developer support domain (ADS) encompassing environments that operations staff use for science verification, software development, system integration, and system testing.
-In addition, an underlying infrastructure domain (Infra) hosts services supporting all of the other domains, including a common Data Backbone that provides data transport and archiving for all domains.
+In addition, an underlying infrastructure domain (Infra) hosts services supporting all of the other domains, including a common Data Backbone that provides data transport and archiving that is the primary connection between all of the domains.
 These domains are distinguished by having different users, operations timescales, interfaces, and often components.
 
 The services that make up the DMS include (with the domains they are in noted):
