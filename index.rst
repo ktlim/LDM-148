@@ -125,11 +125,11 @@ Key applications software components include:
 
 Key middleware components include:
  - Data access client (Data Butler) (``daf_persistence``)
- - Task framework (``pex_*``, ``pipe_base``, ``ctrl_pool``)
+ - Parallel distributed database (``qserv``)
+ - Task framework (``pex_*``, ``log``, ``pipe_base``, ``ctrl_pool``)
  - Workflow and orchestration for production control (``ctrl_*``)
 
 Infrastructure components include:
- - Parallel distributed database (``qserv``)
  - Other databases (typically relational)
  - Filesystems
  - Authentication and authorization (identity management)
@@ -752,7 +752,7 @@ Middleware
 
 .. _middleware-data-butler:
 
-Data Butler access client
+Data Butler Access Client
 -------------------------
 
 The Data Butler provides an access abstraction for all science payloads that enables their underlying data sources and destinations to be configured at runtime with a variety of back-ends ranging from local disk to network locations and a variety of serializations ranging from YAML and FITS files (extensible to HDF5 or ASDF) to database tables.
@@ -760,14 +760,14 @@ The Butler client is also available within the LSST Science Platform JupyterLab 
 
 .. _middleware-qserv:
 
-Parallel distributed database (Qserv)
+Parallel Distributed Database (Qserv)
 -------------------------------------
 
 Underlying the catalog data access web service is a parallel distributed database required to handle the petabyte-scale, tens-of-trillions-of-rows catalogs produced by LSST.
 
 .. _middleware-task-framework:
 
-Task framework
+Task Framework
 --------------
 
 The Task Framework is a Python class library that provides a structure (standardized class entry points and conventions) to organize low-level algorithms into potentially-reusable algorithmic components (Tasks; e.g. dark frame subtraction, object detection, object measurement), and to organize tasks into basic pipelines (SuperTasks; e.g., process a single visit, build a coadd, difference a visit).
