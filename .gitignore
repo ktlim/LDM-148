@@ -1,1 +1,6 @@
 _build
+*.aux
+*.fdb_latexmk
+*.log
+*.out
+LDM-148.pdf
