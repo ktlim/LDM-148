@@ -3,4 +3,4 @@
 	url = git@github.com:lsst/lsst-texmf
 [submodule "images"]
 	path = images
-	url = git@github.com:lsst-dm/images
+	url = https://github.com/lsst-dm/images
