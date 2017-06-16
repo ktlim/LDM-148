@@ -132,13 +132,13 @@ The DMS services can be considered to consist of four tiers of software
 components. The top tier is the LSST Science Platform, which is deployed
 in the DACs and other computational environments to provide a user
 interface and analysis environment for science users and LSST staff. The
-detailed design of this tier is given in SUIT Design, LDM-131. The next
+detailed design of this tier is given in SUIT Design, \citeds{LDM-131}. The next
 tier is composed of science ``applications'' software that generates
 data products. This software is used to build ``payloads'', sequences of
 pipelines, that perform particular data analysis and product generation
 tasks. It is also used by science users and staff to analyze the data
 products. The detailed design of the components in this tier is given in
-Data Management Science Pipelines Design, LDM-151. A lower tier is
+Data Management Science Pipelines Design, \citeds{LDM-151}. A lower tier is
 ``middleware'' software components and services that execute the science
 application payloads and isolate them from their environment, including
 changes to underlying technologies. These components also provide data
@@ -147,8 +147,9 @@ components in this tier is given in Data Management Middleware Design,
 LDM-152. The bottom tier is ``infrastructure'': hardware, networking,
 and low-level software and services that provide a computing
 environment. The detailed design of components in this tier is given in
-Data Management Services \& Infrastructure, LDM-129, and Network Design,
-LSE-78.
+Data Management Services \& Infrastructure, \citeds{LDM-129}, and Network Design,
+\citeds{LSE-78}.
+
 
 The DMS computing environments reside in four main physical locations:
 the Summit Site including the main Observatory and Auxiliary Telescope
@@ -346,6 +347,7 @@ monitoring, and control only at the highest level.
 
 Detailed concepts of operations for each service can be found in
 ``Concept of Operations for the LSST Production Services'' (LDM-230).
+
 
 \subsubsection{Image and EFD Archiving}\label{image-and-efd-archiving}
 
@@ -706,7 +708,7 @@ users can take advantage of, as illustrated in Figure \ref{fig:lsp}.
 
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{images/SciencePlatform.pdf}
+\includegraphics[width=0.5\textwidth]{images/SciencePlatform.pdf}
 \caption{LSST Science Platform}
 \label{fig:lsp}
 \end{figure}
@@ -862,7 +864,7 @@ in Figure \ref{fig:dbb}.
 
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{images/DataBackbone.pdf}
+\includegraphics[width=0.7\textwidth]{images/DataBackbone.pdf}
 \caption{Data Backbone}
 \label{fig:dbb}
 \end{figure}
@@ -951,7 +953,7 @@ the Commissioning Cluster and the two Data Access Centers.
 
 \subsection{Science Payloads}\label{science-payloads}
 
-Described in DM Applications Design Document (LDM-151). Payloads are
+Described in DM Applications Design Document (\citeds{LDM-151}). Payloads are
 built from application software components.
 
 \subsubsection{Alert Production Payload}\label{alert-production-payload}
@@ -1091,7 +1093,7 @@ optimally run the particular task (i.e., which level of intra-node
 parallelization is be desired).
 
 It also includes a configuration API and a logging API.
-
+\newpage
 \section{Appendix: Traceability}\label{appendix-traceability}
 
 \subsection{Requirement to Component
@@ -2011,4 +2013,5 @@ Science Primitives &
 \item DMS-REQ-0351 Provide Beam Projector Coordinate Calculation Software \end{itemize} \\ \hline
 \end{xtabular}
 
+\input{refs}
 \end{document}
