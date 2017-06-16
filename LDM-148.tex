@@ -1,4 +1,6 @@
 \documentclass[DM,lsstdraft,toc]{lsstdoc}
+\usepackage{xtab}
+\usepackage{enumitem}
 
 \title{Data Management System Design}
 \setDocRef{LDM-148}
@@ -12,6 +14,7 @@
   D.~Petravick,
   and
   the DM Leadership Team}
+\setDocCurator{Kian-Tat Lim}
 
 % Scale images if necessary, so that they will not overflow the page
 % margins by default, and it is still possible to overwrite the defaults
@@ -35,7 +38,6 @@
 
 
 \date{\today}
-\setDocCurator(K.-T.~Lim}
 \setDocAbstract{%
   The LSST Data Management System (DMS) is a set of services
   employing a variety of software components running on
@@ -58,10 +60,8 @@
 
 \section{Overview}\label{overview}
 
-\begin{description}
-\item[Still to be done:]
+Still to be done:
 \begin{itemize}
-\tightlist
 \item
   fill out more text
 \item
@@ -69,7 +69,6 @@
 \item
   synchronize with OpsCon documents
 \end{itemize}
-\end{description}
 
 The LSST Data Management System (DMS) is a set of services employing a
 variety of software components running on computational and networking
@@ -177,11 +176,9 @@ and archiving and that is the primary connection between all of the
 domains. These domains are distinguished by having different users,
 operations timescales, interfaces, and often components.
 
-\begin{description}
-\item[The service instances that make up the DMS include (with the
-computational environment or domains they are in noted):]
+The service instances that make up the DMS include (with the
+computational environment or domains they are in noted):
 \begin{itemize}
-\tightlist
 \item
   Image and EFD Archiving (Base)
 \item
@@ -236,24 +233,25 @@ computational environment or domains they are in noted):]
 \item
   Identity Management (Infra)
 \end{itemize}
-\end{description}
 
 The relationships between these services, their deployment environments,
 functional domains, and science application ``payloads'' can be
-visualized in this diagram:
+visualized in Figure \ref{fig:deployment}.
 
 \begin{figure}
 \centering
-\includegraphics{images/DMSDeployment.pdf}
+\includegraphics[height=\textheight]{images/DMSDeployment.pdf}
 \caption{Data Management System Deployment}
+\label{fig:deployment}
 \end{figure}
 
-The common infrastructure services are illustrated in this diagram:
+The common infrastructure services are illustrated in Figure \ref{fig:commonservices}.
 
 \begin{figure}
 \centering
-\includegraphics{images/DMSCommonServices.pdf}
+\includegraphics[height=\textheight]{images/DMSCommonServices.pdf}
 \caption{Data Management System Common Infrastructure Services}
+\label{fig:commonservices}
 \end{figure}
 
 The science application software for the Alert Production, daytime
@@ -262,10 +260,8 @@ out of a set of frameworks that accept plugins. In turn, those
 frameworks build on middleware that provides portability and
 scalability.
 
-\begin{description}
-\item[Key applications software components include:]
+Key applications software components include (see Figure \ref{fig:scipi}):
 \begin{itemize}
-\tightlist
 \item
   Low-level astronomical software primitives and data structures
   (\texttt{afw})
@@ -281,18 +277,16 @@ scalability.
 \item
   Camera-specific customizations (\texttt{obs\_*})
 \end{itemize}
-\end{description}
 
 \begin{figure}
 \centering
-\includegraphics{images/DM_Application_Software_Arch.png}
+\includegraphics[width=\textwidth]{images/DM_Application_Software_Arch.png}
 \caption{Data Management Science Pipelines Software ``Stack''}
+\label{fig:scipi}
 \end{figure}
 
-\begin{description}
-\item[Key middleware components include:]
+Key middleware components include:
 \begin{itemize}
-\tightlist
 \item
   Data access client (Data Butler) (\texttt{daf\_persistence})
 \item
@@ -303,9 +297,9 @@ scalability.
 \item
   Workflow and orchestration for production control (\texttt{ctrl\_*})
 \end{itemize}
-\item[Infrastructure components include:]
+
+Infrastructure components include:
 \begin{itemize}
-\tightlist
 \item
   Other databases (typically relational)
 \item
@@ -317,12 +311,14 @@ scalability.
 \item
   Monitoring
 \end{itemize}
-\end{description}
+
+See Figure \ref{fig:mwandinfra}.
 
 \begin{figure}
 \centering
-\includegraphics{DM_Middleware_and_Infrastructure.png}
+\includegraphics[width=\textwidth]{DM_Middleware_and_Infrastructure.png}
 \caption{Data Management Middleware and Infrastructure}
+\label{fig:mwandinfra}
 \end{figure}
 
 \section{Base Enclave}\label{base-enclave}
@@ -346,7 +342,7 @@ human-in-the-loop design. Instead, they are designed to execute
 autonomously, often under the control of the OCS, with human oversight,
 monitoring, and control only at the highest level.
 
-\subsection{Service Descriptions}\label{service-descriptions}
+\subsection{Service Descriptions}\label{base-service-descriptions}
 
 Detailed concepts of operations for each service can be found in
 ``Concept of Operations for the LSST Production Services'' (LDM-230).
@@ -408,7 +404,7 @@ operators through remote displays originated from the
 Management/Monitoring infrastructure services in all DMS computational
 environments.
 
-\subsection{Interfaces}\label{interfaces}
+\subsection{Interfaces}\label{base-interfaces}
 
 OCS to all Base Enclave services: these interface through the SAL
 library provided by the OCS subsystem.
@@ -472,7 +468,7 @@ found.
 Like the services in the Base Enclave, these services need to run
 rapidly and reliably and so are designed to execute autonomously.
 
-\subsection{Service Descriptions}\label{service-descriptions-1}
+\subsection{Service Descriptions}\label{ncsa-l1-service-descriptions}
 
 Detailed concepts of operations for each service can be found in
 ``Concept of Operations for the LSST Production Services'' (LDM-230).
@@ -549,7 +545,7 @@ and allows individual LSST data rights holders to execute limited
 filters against it, producing filtered feeds that are then distributed
 to the individuals.
 
-\subsection{Interfaces}\label{interfaces-1}
+\subsection{Interfaces}\label{ncsa-l1-interfaces}
 
 Prompt Processing to Alert Distribution and Alert Filtering: these
 interface through a reliable transport system.
@@ -588,7 +584,7 @@ This domain does not have direct users (besides the operators of its
 services); the services within it obtain inputs from the Data Backbone
 and place their outputs into the Data Backbone.
 
-\subsection{Service Descriptions}\label{service-descriptions-2}
+\subsection{Service Descriptions}\label{ncsa-l2-service-descriptions}
 
 \subsubsection{Template and Calibration Products Production
 Execution}\label{template-and-calibration-products-production-execution}
@@ -645,7 +641,7 @@ also the environment, telescope, camera, or data acquisition. Alarms
 stemming from threshold crossings are delivered to LSST Data Facility
 Production Scientists for verification, analysis, and resolution.
 
-\subsection{Interfaces}\label{interfaces-2}
+\subsection{Interfaces}\label{ncsa-l2-interfaces}
 
 Calibration Products Production Execution and Data Release Production
 Execution to Data Backbone: for large-scale productions, a workflow
@@ -656,7 +652,7 @@ and catalogs into the Data Backbone.
 
 \section{Satellite Computing Enclave}\label{satellite-computing-enclave}
 
-\subsection{Service Description}\label{service-description}
+\subsection{Service Description}\label{satellite-service-description}
 
 \subsubsection{Data Release Production Satellite
 Processing}\label{data-release-production-satellite-processing}
@@ -664,6 +660,13 @@ Processing}\label{data-release-production-satellite-processing}
 This service controls the processing of jobs on the CC-IN2P3 satellite
 computing facilities under the overall workload and workflow management
 of the Data Release Production Execution service at NCSA.
+
+\subsection{Interfaces}\label{satellite-interfaces}
+DRP Satellite Processing to DRP Execution: DRP Execution will stage data
+to the Satellite Processing facility.  All raw data, including images,
+metadata, and the Transformed EFD, will be transferred.  Intermediate
+data products will be transferred back to the NCSA Enclave Level 2 Domain.
+
 
 \section{Data Access Center Enclaves}\label{data-access-center-enclaves}
 
@@ -683,7 +686,7 @@ are likely to occur at a different cadence from the other domains as a
 result. The LSP must operate reliably enough that scientific work is not
 impeded.
 
-\subsection{Service Descriptions}\label{service-descriptions-3}
+\subsection{Service Descriptions}\label{dac-service-descriptions}
 
 \subsubsection{Bulk Data Distribution}\label{bulk-data-distribution}
 
@@ -699,12 +702,13 @@ instances}\label{lsst-science-platform-dac-instances}
 This service provides an exploratory analysis environment for science
 users. It can be further broken down into three ``Aspects'' that it
 presents to end users, along with underlying ``backend services'' that
-users can take advantage of, as illustrated here:
+users can take advantage of, as illustrated in Figure \ref{fig:lsp}.
 
 \begin{figure}
 \centering
-\includegraphics{images/SciencePlatform.pdf}
+\includegraphics[width=\textwidth]{images/SciencePlatform.pdf}
 \caption{LSST Science Platform}
+\label{fig:lsp}
 \end{figure}
 
 The ``Portal'' Aspect provides a pre-specified yet flexible discovery,
@@ -730,9 +734,18 @@ All usage of any LSST Science Platform instance requires authentication
 to ensure availability only to LSST data rights holders or LSST
 operations staff.
 
-\subsection{Interfaces}\label{interfaces-3}
+\subsection{Interfaces}\label{dac-interfaces}
 
-{[}\ldots{}{]}
+Bulk Data Distribution and LSST Science Platform to Data Backbone: Both
+DAC-resident services retrieve their data, including raw images, nightly and
+annual image and catalog data products, metadata, and provenance, from the Data
+Backbone.  The LSP Portal Aspect uses the LSP Web APIs to retrieve data.  The
+LSP JupyterLab Aspect can use the LSP Web APIs and also can use the Data Butler
+client library to access the Data Backbone.
+
+Bulk Data Distribution to partners: The exact delivery mechanism for
+large-scale data distribution is TBD.
+
 
 \section{NCSA Enclave Analysis and Developer Support
 Domain}\label{ncsa-enclave-analysis-and-developer-support-domain}
@@ -743,7 +756,7 @@ analyze raw data and processed data products to characterize them,
 develop new algorithms and systems, and test new versions of components
 and services before deployment.
 
-\subsection{Service Descriptions}\label{service-descriptions-4}
+\subsection{Service Descriptions}\label{ncsa-ads-service-descriptions}
 
 \subsubsection{LSST Science Platform Science Validation
 instance}\label{lsst-science-platform-science-validation-instance}
@@ -766,14 +779,33 @@ documentation services, etc.
 \subsubsection{Integration and Testing}\label{integration-and-testing}
 
 Integration environments representing various deployment environments,
-deployment services, test datasets, test execution services, metric
-measurement and tracking services, etc.
+deployment services, test datasets, test execution services, metric measurement
+and tracking services, etc.  This service includes the DM instance of the
+Camera DAQ Test Stand, used in a Base Enclave integration environment, as well
+as the Prototype Data Access Center (PDAC), which is a Data Access Center
+Enclave integration environment.
 
-\subsection{Interfaces}\label{interfaces-4}
+\subsection{Interfaces}\label{ncsa-ads-interfaces}
 
-{[}\ldots{}{]}
+LSP Science Validation instance and Integration and Testing to Data Backbone:
+All three services in this domain interface with the Data Backbone.  The LSP
+Science Validation instance is used to inspect, analyze, and validate the data
+products of the Data Release Production prior to their release and so has
+access to those products in the Data Backbone; since it may be used to annotate
+the data products, it can also write to the Data Backbone.  The Integration and
+Testing environment may use raw data, intermediate data products, and final
+data products to perform tests.
+
+Developer Services do not have direct interfaces with the rest of the
+operational system; they communicate via the distributed source version control
+system, the package management system, and the configuration system.  There is
+a separate Developer Services instance of the Data Backbone to manage and track
+datasets used during development.
+
 
 \section{Commissioning Cluster}\label{commissioning-cluster}
+
+\subsection{Service Description}\label{commcluster-service}
 
 \subsubsection{LSST Science Platform Commissioning
 instance}\label{lsst-science-platform-commissioning-instance}
@@ -790,13 +822,23 @@ access to the Camera Data System; it relies on the Archiver service to
 obtain data. The Commissioning Cluster will have direct access to the
 OCS's Base replica of the EFD (before transformation).
 
+\subsection{Interfaces}\label{commcluster-interfaces}
+
+Commissioning Cluster to Data Backbone: The Commissioning Cluster relies on the
+Data Backbone for its data, like the other instances of the LSST Science
+Platform.
+
+Commissioning Cluster to EFD: The Commissioning Cluster has direct read-only
+client access to the Base replica of the EFD (before transformation).
+
+
 \section{Infrastructure Domain}\label{infrastructure-domain}
 
 This domain encompasses the underlying services and systems that form
 the computing environments in which the other domains are deployed and
 operate. It interfaces with the other domains but has no direct users.
 
-\subsection{Service Descriptions}\label{service-descriptions-5}
+\subsection{Service Descriptions}\label{infrastructure-service-descriptions}
 
 \subsubsection{Data Backbone}\label{data-backbone}
 
@@ -816,12 +858,13 @@ instances within the Data Backbone in each DAC as well as in the NCSA
 Enclave.
 
 The relationships between the Data Backbone components are illustrated
-in this diagram:
+in Figure \ref{fig:dbb}.
 
 \begin{figure}
 \centering
-\includegraphics{images/DataBackbone.pdf}
+\includegraphics[width=\textwidth]{images/DataBackbone.pdf}
 \caption{Data Backbone}
+\label{fig:dbb}
 \end{figure}
 
 \subsubsection{Management/Monitoring}\label{managementmonitoring}
@@ -841,10 +884,8 @@ Some compute resources are reserved for particular uses, but others can
 be flexibly provisioned, up to a certain maximum quota, if needed to
 deal with surges in processing.
 
-\begin{description}
-\item[The priority order for processing is:]
+The priority order for processing is:
 \begin{itemize}
-\tightlist
 \item
   Prompt processing
 \item
@@ -862,7 +903,6 @@ deal with surges in processing.
 \item
   Data Release Production
 \end{itemize}
-\end{description}
 
 The Base Enclave's services are not highly dynamic or flexible, as they
 primarily provide interfacing to the OCS and Camera Data System. The
@@ -895,9 +935,17 @@ service.
 This service provides authentication and authorization for all users of
 any DMS component, especially the LSST Science Platform instances.
 
-\subsubsection{Interfaces}\label{interfaces-5}
+\subsection{Interfaces}\label{infrastructure-interfaces}
 
-{[}\ldots{}{]}
+The infrastructure services generally interact with all other deployed
+services.  In the Base Enclave, there is no workload/workflow management or
+batch processing; provisioning and deployment are also simplified.
+
+Idntity management instances are present in the Base and NCSA Enclaves.
+(Another replica will be maintained at the Summit.)  These are used to support
+authentication and authorization for the other physically co-located enclaves:
+the Commissioning Cluster and the two Data Access Centers.
+
 
 \section{Software Components}\label{software-components}
 
@@ -1050,781 +1098,917 @@ It also includes a configuration API and a logging API.
 Traceability}\label{requirement-to-component-traceability}
 
 Note that DMS-REQ-0006 has no components; this requirement is in the
-process of being dropped. DMS-REQ-0351 does not yet have a component
-assigned to it.
+process of being dropped.
 
-\begin{longtable}[]{@{}ll@{}}
-\toprule
-Requirement & Components\tabularnewline
-\midrule
-\endhead
+\tablefirsthead{\hline \multicolumn{1}{|c|}{\textbf{Requirement}} &
+                       \multicolumn{1}{c|}{\textbf{Components}} \\ \hline}
+\tablehead{\hline \multicolumn{1}{|c|}{\textbf{Requirement}} &
+                       \multicolumn{1}{c|}{\textbf{Components}} \\ \hline}
+\begin{xtabular}{|p{0.4\textwidth}|p{0.55\textwidth}|}
 DMS-REQ-0059 Bad Pixel Map & OCS Driven Batch, Calibration Products
 Production Execution, Annual Calibration, Daily Calibration Update,
-Periodic Calibration\tabularnewline
+Periodic Calibration\\ \hline
 DMS-REQ-0060 Bias Residual Image & OCS Driven Batch, Calibration
 Products Production Execution, Annual Calibration, Daily Calibration
-Update, Periodic Calibration\tabularnewline
+Update, Periodic Calibration\\ \hline
 DMS-REQ-0061 Crosstalk Correction Matrix & OCS Driven Batch, Calibration
 Products Production Execution, Annual Calibration, Daily Calibration
-Update, Periodic Calibration\tabularnewline
+Update, Periodic Calibration\\ \hline
 DMS-REQ-0062 Illumination Correction Frame & OCS Driven Batch,
 Calibration Products Production Execution, Annual Calibration, Daily
-Calibration Update, Periodic Calibration\tabularnewline
+Calibration Update, Periodic Calibration\\ \hline
 DMS-REQ-0063 Monochromatic Flatfield Data Cube & OCS Driven Batch,
 Calibration Products Production Execution, Annual Calibration, Daily
-Calibration Update, Periodic Calibration\tabularnewline
+Calibration Update, Periodic Calibration\\ \hline
 DMS-REQ-0130 Calibration Data Products & OCS Driven Batch, Calibration
 Products Production Execution, Annual Calibration, Daily Calibration
-Update, Periodic Calibration\tabularnewline
+Update, Periodic Calibration\\ \hline
 DMS-REQ-0132 Calibration Image Provenance & OCS Driven Batch,
 Calibration Products Production Execution, Annual Calibration, Daily
-Calibration Update, Periodic Calibration\tabularnewline
+Calibration Update, Periodic Calibration\\ \hline
 DMS-REQ-0282 Dark Current Correction Frame & OCS Driven Batch,
 Calibration Products Production Execution, Annual Calibration, Daily
-Calibration Update, Periodic Calibration\tabularnewline
+Calibration Update, Periodic Calibration\\ \hline
 DMS-REQ-0283 Fringe Correction Frame & OCS Driven Batch, Calibration
 Products Production Execution, Annual Calibration, Daily Calibration
-Update, Periodic Calibration\tabularnewline
+Update, Periodic Calibration\\ \hline
 DMS-REQ-0018 Raw Science Image Data Acquisition & Image and EFD
-Archiving\tabularnewline
+Archiving\\ \hline
 DMS-REQ-0020 Wavefront Sensor Data Acquisition & Image and EFD
-Archiving\tabularnewline
+Archiving\\ \hline
 DMS-REQ-0022 Crosstalk Corrected Science Image Data Acquisition & Prompt
-Processing\tabularnewline
-DMS-REQ-0024 Raw Image Assembly & Image and EFD Archiving\tabularnewline
+Processing\\ \hline
+DMS-REQ-0024 Raw Image Assembly & Image and EFD Archiving\\ \hline
 DMS-REQ-0068 Raw Science Image Metadata & Image and EFD
-Archiving\tabularnewline
+Archiving\\ \hline
 DMS-REQ-0265 Guider Calibration Data Acquisition & Image and EFD
 Archiving, OCS Driven Batch, Calibration Products Production Execution,
 Annual Calibration, Daily Calibration Update, Periodic
-Calibration\tabularnewline
+Calibration\\ \hline
 DMS-REQ-0326 Storing Approximations of Per-pixel Metadata & Data Release
-Production\tabularnewline
-DMS-REQ-0331 Computing Derived Quantities & DAX VO+ Services, Data
-Release Production\tabularnewline
-DMS-REQ-0332 Denormalizing Database Tables & DAX VO+
-Services\tabularnewline
+Production\\ \hline
+DMS-REQ-0331 Computing Derived Quantities & LSP Web APIs, Data
+Release Production\\ \hline
+DMS-REQ-0332 Denormalizing Database Tables & LSP Web APIs\\ \hline
 DMS-REQ-0333 Maximum Likelihood Values and Covariances & Data Access
-Client, Alert Production, Data Release Production\tabularnewline
+Client, Alert Production, Data Release Production\\ \hline
 DMS-REQ-0346 Data Availability & Image and EFD Archiving, OCS Driven
 Batch, Offline Processing, Prompt Processing, Calibration Products
-Production Execution, Data Release Production Execution\tabularnewline
-DMS-REQ-0347 Measurements in catalogs & Data Access Client, DAX VO+
-Services, Alert Production, Data Release Production\tabularnewline
+Production Execution, Data Release Production Execution\\ \hline
+DMS-REQ-0347 Measurements in catalogs & Data Access Client, LSP Web APIs,
+Alert Production, Data Release Production\\ \hline
 DMS-REQ-0004 Nightly Data Accessible Within 24 hrs & Alert Distribution,
 Alert Filtering, Offline Processing, Prompt Processing, Alert
-Production, MOPS and Forced Photometry\tabularnewline
-DMS-REQ-0010 Difference Exposures & Alert Production\tabularnewline
+Production, MOPS and Forced Photometry\\ \hline
+DMS-REQ-0010 Difference Exposures & Alert Production\\ \hline
 DMS-REQ-0074 Difference Exposure Attributes & Alert
-Production\tabularnewline
-DMS-REQ-0069 Processed Visit Images & Alert Production\tabularnewline
+Production\\ \hline
+DMS-REQ-0069 Processed Visit Images & Alert Production\\ \hline
 DMS-REQ-0029 Generate Photometric Zeropoint for Visit Image & Alert
-Production\tabularnewline
+Production\\ \hline
 DMS-REQ-0030 Generate WCS for Visit Images & Alert
-Production\tabularnewline
+Production\\ \hline
 DMS-REQ-0070 Generate PSF for Visit Images & Alert
-Production\tabularnewline
+Production\\ \hline
 DMS-REQ-0072 Processed Visit Image Content & Alert
-Production\tabularnewline
+Production\\ \hline
 DMS-REQ-0327 Background Model Calculation & Alert
-Production\tabularnewline
+Production\\ \hline
 DMS-REQ-0328 Documenting Image Characterization & Alert
-Production\tabularnewline
+Production\\ \hline
 DMS-REQ-0097 Level 1 Data Quality Report Definition & QC System, Alert
-Production\tabularnewline
+Production\\ \hline
 DMS-REQ-0099 Level 1 Performance Report Definition & Prompt Processing,
-QC System\tabularnewline
+QC System\\ \hline
 DMS-REQ-0101 Level 1 Calibration Report Definition & OCS Driven Batch,
-Daily Calibration Update, Raw Calibration\tabularnewline
-DMS-REQ-0266 Exposure Catalog & Alert Production\tabularnewline
-DMS-REQ-0269 DIASource Catalog & Alert Production\tabularnewline
+Daily Calibration Update, Raw Calibration\\ \hline
+DMS-REQ-0266 Exposure Catalog & Alert Production\\ \hline
+DMS-REQ-0269 DIASource Catalog & Alert Production\\ \hline
 DMS-REQ-0270 Faint DIASource Measurements & Alert
-Production\tabularnewline
-DMS-REQ-0271 DIAObject Catalog & Alert Production\tabularnewline
-DMS-REQ-0272 DIAObject Attributes & Alert Production\tabularnewline
+Production\\ \hline
+DMS-REQ-0271 DIAObject Catalog & Alert Production\\ \hline
+DMS-REQ-0272 DIAObject Attributes & Alert Production\\ \hline
 DMS-REQ-0273 SSObject Catalog & MOPS and Forced
-Photometry\tabularnewline
-DMS-REQ-0274 Alert Content & Alert Production\tabularnewline
+Photometry\\ \hline
+DMS-REQ-0274 Alert Content & Alert Production\\ \hline
 DMS-REQ-0317 DIAForcedSource Catalog & Alert Production, MOPS and Forced
-Photometry\tabularnewline
+Photometry\\ \hline
 DMS-REQ-0319 Characterizing Variability & Alert Production, MOPS and
-Forced Photometry\tabularnewline
-DMS-REQ-0323 Calculating SSObject Parameters & DAX VO+
-Services\tabularnewline
-DMS-REQ-0324 Matching DIASources to Objects & DAX VO+ Services, Alert
-Production\tabularnewline
+Forced Photometry\\ \hline
+DMS-REQ-0323 Calculating SSObject Parameters & LSP Web APIs\\ \hline
+DMS-REQ-0324 Matching DIASources to Objects & LSP Web APIs, Alert
+Production\\ \hline
 DMS-REQ-0325 Regenerating L1 Data Products During Data Release
-Processing & Data Release Production\tabularnewline
+Processing & Data Release Production\\ \hline
 DMS-REQ-0034 Associate Sources to Objects & Data Release
-Production\tabularnewline
+Production\\ \hline
 DMS-REQ-0047 Provide PSF for Coadded Images & Data Release
-Production\tabularnewline
+Production\\ \hline
 DMS-REQ-0103 Produce Images for EPO & Data Release
-Production\tabularnewline
+Production\\ \hline
 DMS-REQ-0106 Coadded Image Provenance & Data Release
-Production\tabularnewline
-DMS-REQ-0267 Source Catalog & Data Release Production\tabularnewline
+Production\\ \hline
+DMS-REQ-0267 Source Catalog & Data Release Production\\ \hline
 DMS-REQ-0268 Forced-Source Catalog & Data Release
-Production\tabularnewline
-DMS-REQ-0275 Object Catalog & Data Release Production\tabularnewline
+Production\\ \hline
+DMS-REQ-0275 Object Catalog & Data Release Production\\ \hline
 DMS-REQ-0046 Provide Photometric Redshifts of Galaxies & Data Release
-Production\tabularnewline
+Production\\ \hline
 DMS-REQ-0276 Object Characterization & Data Release
-Production\tabularnewline
+Production\\ \hline
 DMS-REQ-0277 Coadd Source Catalog & Data Release
-Production\tabularnewline
+Production\\ \hline
 DMS-REQ-0349 Detecting extended low surface brightness objects & Data
-Release Production\tabularnewline
+Release Production\\ \hline
 DMS-REQ-0278 Coadd Image Method Constraints & Data Release
-Production\tabularnewline
+Production\\ \hline
 DMS-REQ-0279 Deep Detection Coadds & Data Release
-Production\tabularnewline
+Production\\ \hline
 DMS-REQ-0280 Template Coadds & Data Release Production, Template
-Generation\tabularnewline
-DMS-REQ-0281 Multi-band Coadds & Data Release Production\tabularnewline
+Generation\\ \hline
+DMS-REQ-0281 Multi-band Coadds & Data Release Production\\ \hline
 DMS-REQ-0329 All-Sky Visualization of Data Releases & Data Release
-Production\tabularnewline
-DMS-REQ-0330 Best Seeing Coadds & Data Release Production\tabularnewline
-DMS-REQ-0334 Persisting Data Products & Data Backbone, DAX VO+
-Services\tabularnewline
-DMS-REQ-0335 PSF-Matched Coadds & Data Release Production\tabularnewline
+Production\\ \hline
+DMS-REQ-0330 Best Seeing Coadds & Data Release Production\\ \hline
+DMS-REQ-0334 Persisting Data Products & Data Backbone, LSP Web APIs\\ \hline
+DMS-REQ-0335 PSF-Matched Coadds & Data Release Production\\ \hline
 DMS-REQ-0336 Regenerating Data Products from Previous Data Releases &
-Data Backbone, DAX VO+ Services\tabularnewline
+Data Backbone, LSP Web APIs\\ \hline
 DMS-REQ-0337 Detecting faint variable objects & Data Release
-Production\tabularnewline
-DMS-REQ-0338 Targeted Coadds & Data Backbone, DAX VO+
-Services\tabularnewline
+Production\\ \hline
+DMS-REQ-0338 Targeted Coadds & Data Backbone, LSP Web APIs\\ \hline
 DMS-REQ-0339 Tracking Characterization Changes Between Data Releases &
-Data Backbone, DAX VO+ Services\tabularnewline
+Data Backbone, LSP Web APIs\\ \hline
 DMS-REQ-0320 Processing of Data From Special Programs & Task Execution
-Framework, Data Release Production\tabularnewline
+Framework, Data Release Production\\ \hline
 DMS-REQ-0321 Level 1 Processing of Special Programs Data & Offline
 Processing, Prompt Processing, Alert Production, MOPS and Forced
-Photometry\tabularnewline
-DMS-REQ-0322 Special Programs Database & Data Backbone, DAX VO+
-Services\tabularnewline
+Photometry\\ \hline
+DMS-REQ-0322 Special Programs Database & Data Backbone, LSP Web APIs\\ \hline
 DMS-REQ-0344 Constraints on Level 1 Special Program Products Generation
-& Offline Processing, Prompt Processing, Data Backbone, DAX VO+
-Services, Alert Production, MOPS and Forced Photometry\tabularnewline
+& Offline Processing, Prompt Processing, Data Backbone, LSP Web APIs,
+Alert Production, MOPS and Forced Photometry\\ \hline
 DMS-REQ-0185 Archive Center & Bulk Distribution, Data Backbone, ITC
-Environments\tabularnewline
+Environments\\ \hline
 DMS-REQ-0186 Archive Center Disaster Recovery & Bulk Distribution, Data
-Backbone, ITC Environments\tabularnewline
+Backbone, ITC Environments\\ \hline
 DMS-REQ-0187 Archive Center Co-Location with Existing Facility & ITC
-Environments\tabularnewline
+Environments\\ \hline
 DMS-REQ-0188 Archive to Data Access Center Network &
-Networks\tabularnewline
+Networks\\ \hline
 DMS-REQ-0189 Archive to Data Access Center Network Availability &
-Networks\tabularnewline
+Networks\\ \hline
 DMS-REQ-0190 Archive to Data Access Center Network Reliability &
-Networks\tabularnewline
+Networks\\ \hline
 DMS-REQ-0191 Archive to Data Access Center Network Secondary Link &
-Networks\tabularnewline
+Networks\\ \hline
 DMS-REQ-0176 Base Facility Infrastructure & Data Backbone, ITC
-Environments\tabularnewline
+Environments\\ \hline
 DMS-REQ-0177 Base Facility Temporary Storage & Data
-Backbone\tabularnewline
+Backbone\\ \hline
 DMS-REQ-0178 Base Facility Co-Location with Existing Facility & ITC
-Environments\tabularnewline
-DMS-REQ-0316 Commissioning Cluster & ITC Environments\tabularnewline
-DMS-REQ-0180 Base to Archive Network & Networks\tabularnewline
+Environments\\ \hline
+DMS-REQ-0316 Commissioning Cluster & ITC Environments\\ \hline
+DMS-REQ-0180 Base to Archive Network & Networks\\ \hline
 DMS-REQ-0181 Base to Archive Network Availability &
-Networks\tabularnewline
+Networks\\ \hline
 DMS-REQ-0182 Base to Archive Network Reliability &
-Networks\tabularnewline
+Networks\\ \hline
 DMS-REQ-0183 Base to Archive Network Secondary Link &
-Networks\tabularnewline
+Networks\\ \hline
 DMS-REQ-0008 Pipeline Availability & Alert Distribution, Alert
 Filtering, Image and EFD Archiving, OCS Driven Batch, Offline
 Processing, Prompt Processing, Telemetry Gateway, Calibration Products
 Production Execution, Data Release Production Execution, Data Backbone,
-ITC Environments, Networks\tabularnewline
+ITC Environments, Networks\\ \hline
 DMS-REQ-0161 Optimization of Cost, Reliability and Availability in Order
 & Alert Distribution, Alert Filtering, Data Backbone, ITC Environments,
-Networks, DAX VO+ Services, LSP JupyterLab, LSP Portal\tabularnewline
+Networks, LSP Web APIs, LSP JupyterLab, LSP Portal\\ \hline
 DMS-REQ-0162 Pipeline Throughput & Alert Distribution, Alert Filtering,
 Image and EFD Archiving, OCS Driven Batch, Offline Processing, Prompt
-Processing, Data Backbone, ITC Environments, Networks\tabularnewline
+Processing, Data Backbone, ITC Environments, Networks\\ \hline
 DMS-REQ-0163 Re-processing Capacity & Calibration Products Production
 Execution, Data Release Production Execution, Data Backbone, ITC
-Environments, Networks\tabularnewline
+Environments, Networks\\ \hline
 DMS-REQ-0164 Temporary Storage for Communications Links & Data
-Backbone\tabularnewline
+Backbone\\ \hline
 DMS-REQ-0165 Infrastructure Sizing for ``catching up'' & Image and EFD
 Archiving, Offline Processing, Data Backbone, ITC Environments,
-Networks\tabularnewline
-DMS-REQ-0166 Incorporate Fault-Tolerance & Data Backbone\tabularnewline
+Networks\\ \hline
+DMS-REQ-0166 Incorporate Fault-Tolerance & Data Backbone\\ \hline
 DMS-REQ-0167 Incorporate Autonomics & Alert Distribution, Alert
 Filtering, Image and EFD Archiving, OCS Driven Batch, Offline
 Processing, Prompt Processing, Calibration Products Production
 Execution, Data Release Production Execution, Data Backbone, ITC
-Environments, Networks\tabularnewline
+Environments, Networks\\ \hline
 DMS-REQ-0314 Compute Platform Heterogeneity & Alert Distribution, Alert
 Filtering, Image and EFD Archiving, OCS Driven Batch, Offline
 Processing, Prompt Processing, Telemetry Gateway, Calibration Products
 Production Execution, Data Release Production Execution, Bulk
 Distribution, Proposal Manager, Developer Services, Integration and
 Test, Data Backbone, Identity Manager, ITC Environments, Networks, Data
-Access Client, Task Execution Framework, DAX VO+ Services, LSP
-JupyterLab, LSP Portal, QC System\tabularnewline
+Access Client, Task Execution Framework, LSP Web APIs, LSP
+JupyterLab, LSP Portal, QC System\\ \hline
 DMS-REQ-0318 Data Management Unscheduled Downtime & Alert Distribution,
 Alert Filtering, Image and EFD Archiving, OCS Driven Batch, Offline
 Processing, Prompt Processing, Telemetry Gateway, Calibration Products
 Production Execution, Data Release Production Execution, Bulk
 Distribution, Proposal Manager, Data Backbone, Identity Manager, ITC
-Environments, Networks, DAX VO+ Services, LSP JupyterLab, LSP Portal, QC
-System\tabularnewline
+Environments, Networks, LSP Web APIs, LSP JupyterLab, LSP Portal, QC
+System\\ \hline
 DMS-REQ-0122 Access to catalogs for external Level 3 processing & Bulk
-Distribution, Data Backbone\tabularnewline
+Distribution, Data Backbone\\ \hline
 DMS-REQ-0123 Access to input catalogs for DAC-based Level 3 processing &
-Data Backbone, DAX VO+ Services, LSP JupyterLab, LSP
-Portal\tabularnewline
-DMS-REQ-0124 Federation with external catalogs & Data Backbone, DAX VO+
-Services, LSP JupyterLab, LSP Portal\tabularnewline
+Data Backbone, LSP Web APIs, LSP JupyterLab, LSP
+Portal\\ \hline
+DMS-REQ-0124 Federation with external catalogs & Data Backbone, LSP Web APIs,
+LSP JupyterLab, LSP Portal\\ \hline
 DMS-REQ-0126 Access to images for external Level 3 processing & Bulk
-Distribution, Data Backbone\tabularnewline
+Distribution, Data Backbone\\ \hline
 DMS-REQ-0127 Access to input images for DAC-based Level 3 processing &
-Data Backbone, DAX VO+ Services, LSP JupyterLab, LSP
-Portal\tabularnewline
+Data Backbone, LSP Web APIs, LSP JupyterLab, LSP
+Portal\\ \hline
 DMS-REQ-0193 Data Access Centers & Bulk Distribution, Data Backbone, ITC
-Environments, Networks, DAX VO+ Services, LSP JupyterLab, LSP
-Portal\tabularnewline
+Environments, Networks, LSP Web APIs, LSP JupyterLab, LSP
+Portal\\ \hline
 DMS-REQ-0194 Data Access Center Simultaneous Connections & Networks, LSP
-JupyterLab, LSP Portal\tabularnewline
+JupyterLab, LSP Portal\\ \hline
 DMS-REQ-0196 Data Access Center Geographical Distribution & ITC
-Environments\tabularnewline
+Environments\\ \hline
 DMS-REQ-0197 No Limit on Data Access Centers & Data Backbone, Identity
-Manager, ITC Environments, Networks, DAX VO+ Services, LSP JupyterLab,
-LSP Portal\tabularnewline
-DMS-REQ-0075 Catalog Queries & DAX VO+ Services\tabularnewline
+Manager, ITC Environments, Networks, LSP Web APIs, LSP JupyterLab,
+LSP Portal\\ \hline
+DMS-REQ-0075 Catalog Queries & LSP Web APIs\\ \hline
 DMS-REQ-0077 Maintain Archive Publicly Accessible & Data
-Backbone\tabularnewline
-DMS-REQ-0078 Catalog Export Formats & DAX VO+ Services\tabularnewline
+Backbone\\ \hline
+DMS-REQ-0078 Catalog Export Formats & LSP Web APIs\\ \hline
 DMS-REQ-0094 Keep Historical Alert Archive & Data
-Backbone\tabularnewline
+Backbone\\ \hline
 DMS-REQ-0102 Provide Engineering and Facility Database Archive & Image
-and EFD Archiving, Data Backbone\tabularnewline
+and EFD Archiving, Data Backbone\\ \hline
 DMS-REQ-0309 Raw Data Archiving Reliability & Image and EFD Archiving,
-Data Backbone\tabularnewline
+Data Backbone\\ \hline
 DMS-REQ-0310 Un-Archived Data Product Cache & Data
-Backbone\tabularnewline
-DMS-REQ-0311 Regenerate Un-archived Data Products & Data Backbone, DAX
-VO+ Services\tabularnewline
+Backbone\\ \hline
+DMS-REQ-0311 Regenerate Un-archived Data Products & Data Backbone, LSP Web APIs\\ \hline
 DMS-REQ-0312 Level 1 Data Product Access & Prompt Processing, Data
-Backbone, DAX VO+ Services, Alert Production\tabularnewline
-DMS-REQ-0313 Level 1 and 2 Catalog Access & Data Backbone, DAX VO+
-Services\tabularnewline
+Backbone, LSP Web APIs, Alert Production\\ \hline
+DMS-REQ-0313 Level 1 and 2 Catalog Access & Data Backbone, LSP Web APIs\\ \hline
 DMS-REQ-0341 Providing a Precovery Service & Offline Processing, LSP
-Portal, MOPS and Forced Photometry\tabularnewline
-DMS-REQ-0345 Logging of catalog queries & DAX VO+
-Services\tabularnewline
+Portal, MOPS and Forced Photometry\\ \hline
+DMS-REQ-0345 Logging of catalog queries & LSP Web APIs\\ \hline
 DMS-REQ-0168 Summit Facility Data Communications &
-Networks\tabularnewline
+Networks\\ \hline
 DMS-REQ-0170 Prefer Computing and Storage Down & ITC
-Environments\tabularnewline
+Environments\\ \hline
 DMS-REQ-0315 DMS Communication with OCS & Image and EFD Archiving, OCS
-Driven Batch, Prompt Processing, Telemetry Gateway\tabularnewline
-DMS-REQ-0171 Summit to Base Network & Networks\tabularnewline
+Driven Batch, Prompt Processing, Telemetry Gateway\\ \hline
+DMS-REQ-0171 Summit to Base Network & Networks\\ \hline
 DMS-REQ-0172 Summit to Base Network Availability &
-Networks\tabularnewline
+Networks\\ \hline
 DMS-REQ-0173 Summit to Base Network Reliability &
-Networks\tabularnewline
+Networks\\ \hline
 DMS-REQ-0174 Summit to Base Network Secondary Link &
-Networks\tabularnewline
+Networks\\ \hline
 DMS-REQ-0175 Summit to Base Network Ownership and Operation &
-Networks\tabularnewline
+Networks\\ \hline
 DMS-REQ-0002 Transient Alert Distribution & Alert Distribution, Alert
-Filtering, Prompt Processing, Alert Production\tabularnewline
+Filtering, Prompt Processing, Alert Production\\ \hline
 DMS-REQ-0089 Solar System Objects Available Within Specified Time &
-Offline Processing, Data Backbone, DAX VO+ Services, MOPS and Forced
-Photometry\tabularnewline
+Offline Processing, Data Backbone, LSP Web APIs, MOPS and Forced
+Photometry\\ \hline
 DMS-REQ-0096 Generate Data Quality Report Within Specified Time & QC
-System\tabularnewline
+System\\ \hline
 DMS-REQ-0098 Generate DMS Performance Report Within Specified Time & QC
-System\tabularnewline
+System\\ \hline
 DMS-REQ-0100 Generate Calibration Report Within Specified Time & QC
-System, Daily Calibration Update\tabularnewline
+System, Daily Calibration Update\\ \hline
 DMS-REQ-0131 Calibration Images Available Within Specified Time & OCS
 Driven Batch, Prompt Processing, Daily Calibration Update, Raw
-Calibration\tabularnewline
+Calibration\\ \hline
 DMS-REQ-0284 Level-1 Production Completeness & Image and EFD Archiving,
-Offline Processing, Prompt Processing\tabularnewline
+Offline Processing, Prompt Processing\\ \hline
 DMS-REQ-0285 Level 1 Source Association & Alert
-Production\tabularnewline
+Production\\ \hline
 DMS-REQ-0286 SSObject Precovery & MOPS and Forced
-Photometry\tabularnewline
-DMS-REQ-0287 DIASource Precovery & Data Backbone, DAX VO+ Services, MOPS
-and Forced Photometry\tabularnewline
+Photometry\\ \hline
+DMS-REQ-0287 DIASource Precovery & Data Backbone, LSP Web APIs, MOPS
+and Forced Photometry\\ \hline
 DMS-REQ-0288 Use of External Orbit Catalogs & Alert Production, MOPS and
-Forced Photometry\tabularnewline
-DMS-REQ-0342 Alert Filtering Service & Alert Filtering\tabularnewline
+Forced Photometry\\ \hline
+DMS-REQ-0342 Alert Filtering Service & Alert Filtering\\ \hline
 DMS-REQ-0343 Performance Requirements for LSST Alert Filtering Service &
-Alert Distribution, Alert Filtering\tabularnewline
-DMS-REQ-0348 Pre-defined alert filters & Alert Filtering\tabularnewline
+Alert Distribution, Alert Filtering\\ \hline
+DMS-REQ-0348 Pre-defined alert filters & Alert Filtering\\ \hline
 DMS-REQ-0289 Calibration Production Processing & OCS Driven Batch,
 Calibration Products Production Execution, Annual Calibration, Daily
-Calibration Update, Periodic Calibration\tabularnewline
+Calibration Update, Periodic Calibration\\ \hline
 DMS-REQ-0006 Timely Publication of Level 2 Data Releases
-&\tabularnewline
+&\\ \hline
 DMS-REQ-0350 Associating Objects across data releases & Data Backbone,
-Data Release Production\tabularnewline
-DMS-REQ-0291 Query Repeatibility & Data Backbone, DAX VO+
-Services\tabularnewline
-DMS-REQ-0292 Uniqueness of IDs Across Data Releases & Data Backbone, DAX
-VO+ Services\tabularnewline
-DMS-REQ-0293 Selection of Datasets & Data Backbone, DAX VO+
-Services\tabularnewline
+Data Release Production\\ \hline
+DMS-REQ-0291 Query Repeatibility & Data Backbone, LSP Web APIs\\ \hline
+DMS-REQ-0292 Uniqueness of IDs Across Data Releases & Data Backbone, LSP Web APIs\\ \hline
+DMS-REQ-0293 Selection of Datasets & Data Backbone, LSP Web APIs\\ \hline
 DMS-REQ-0294 Processing of Datasets & OCS Driven Batch, Offline
 Processing, Prompt Processing, Calibration Products Production
 Execution, Data Release Production Execution, Data
-Backbone\tabularnewline
-DMS-REQ-0295 Transparent Data Access & DAX VO+ Services\tabularnewline
+Backbone\\ \hline
+DMS-REQ-0295 Transparent Data Access & LSP Web APIs\\ \hline
 DMS-REQ-0119 DAC resource allocation for Level 3 processing & Bulk
-Distribution, Proposal Manager, DAX VO+ Services, LSP JupyterLab, LSP
-Portal\tabularnewline
+Distribution, Proposal Manager, LSP Web APIs, LSP JupyterLab, LSP
+Portal\\ \hline
 DMS-REQ-0120 Level 3 Data Product Self Consistency & Data Backbone,
-Workload+Workflow, DAX VO+ Services\tabularnewline
+Workload+Workflow, LSP Web APIs\\ \hline
 DMS-REQ-0121 Provenance for Level 3 processing at DACs & Data Backbone,
-Workload+Workflow, Data Access Client, Task Execution Framework, DAX VO+
-Services\tabularnewline
+Workload+Workflow, Data Access Client, Task Execution Framework, LSP Web APIs\\ \hline
 DMS-REQ-0125 Software framework for Level 3 catalog processing & Data
 Backbone, Workload+Workflow, Data Access Client, Task Execution
-Framework, DAX VO+ Services\tabularnewline
+Framework, LSP Web APIs\\ \hline
 DMS-REQ-0128 Software framework for Level 3 image processing & Data
 Backbone, Workload+Workflow, Data Access Client, Task Execution
-Framework, DAX VO+ Services\tabularnewline
-DMS-REQ-0290 Level 3 Data Import & Data Backbone, DAX VO+
-Services\tabularnewline
+Framework, LSP Web APIs\\ \hline
+DMS-REQ-0290 Level 3 Data Import & Data Backbone, LSP Web APIs\\ \hline
 DMS-REQ-0340 Access Controls of Level 3 Data Products & Data Backbone,
-Identity Manager\tabularnewline
+Identity Manager\\ \hline
 DMS-REQ-0009 Simulated Data & Alert Production, Annual Calibration,
 Daily Calibration Update, Data Release Production, MOPS and Forced
 Photometry, Periodic Calibration, Raw Calibration, Template
-Generation\tabularnewline
+Generation\\ \hline
 DMS-REQ-0032 Image Differencing & Science Algorithms, Alert Production,
-Data Release Production\tabularnewline
+Data Release Production\\ \hline
 DMS-REQ-0033 Provide Source Detection Software & Science Algorithms,
-Alert Production, Data Release Production\tabularnewline
+Alert Production, Data Release Production\\ \hline
 DMS-REQ-0042 Provide Astrometric Model & Science Algorithms, Alert
-Production, Data Release Production\tabularnewline
+Production, Data Release Production, Science Primitives\\ \hline
 DMS-REQ-0043 Provide Calibrated Photometry & Science Algorithms, Alert
-Production, Data Release Production\tabularnewline
+Production, Data Release Production, Science Primitives\\ \hline
 DMS-REQ-0052 Enable a Range of Shape Measurement Approaches & Science
-Algorithms, Alert Production, Data Release Production\tabularnewline
-DMS-REQ-0160 Provide User Interface Services & LSP Portal\tabularnewline
+Algorithms, Alert Production, Data Release Production, Science Primitives\\ \hline
+DMS-REQ-0160 Provide User Interface Services & LSP Portal\\ \hline
 DMS-REQ-0296 Pre-cursor, and Real Data & Data Backbone, Data Access
-Client, Science Algorithms\tabularnewline
+Client, Science Algorithms\\ \hline
 DMS-REQ-0351 Provide Beam Projector Coordinate Calculation Software
-&\tabularnewline
+& Science Primitives\\ \hline
 DMS-REQ-0308 Software Architecture to Enable Community Re-Use & Science
 Algorithms, Alert Production, Annual Calibration, Daily Calibration
 Update, Data Release Production, MOPS and Forced Photometry, Periodic
-Calibration, Raw Calibration, Template Generation\tabularnewline
-DMS-REQ-0065 Provide Image Access Services & DAX VO+
-Services\tabularnewline
-DMS-REQ-0155 Provide Data Access Services & DAX VO+
-Services\tabularnewline
-DMS-REQ-0298 Data Product and Raw Data Access & Data Backbone, DAX VO+
-Services\tabularnewline
-DMS-REQ-0299 Data Product Ingest & Data Backbone, DAX VO+
-Services\tabularnewline
+Calibration, Raw Calibration, Template Generation\\ \hline
+DMS-REQ-0065 Provide Image Access Services & LSP Web APIs\\ \hline
+DMS-REQ-0155 Provide Data Access Services & LSP Web APIs\\ \hline
+DMS-REQ-0298 Data Product and Raw Data Access & Data Backbone, LSP Web APIs\\ \hline
+DMS-REQ-0299 Data Product Ingest & Data Backbone, LSP Web APIs\\ \hline
 DMS-REQ-0300 Bulk Download Service & Bulk Distribution, Data
-Backbone\tabularnewline
+Backbone\\ \hline
 DMS-REQ-0156 Provide Pipeline Execution Services &
-Workload+Workflow\tabularnewline
-DMS-REQ-0302 Production Orchestration & Workload+Workflow\tabularnewline
-DMS-REQ-0303 Production Monitoring & Workload+Workflow\tabularnewline
+Workload+Workflow\\ \hline
+DMS-REQ-0302 Production Orchestration & Workload+Workflow\\ \hline
+DMS-REQ-0303 Production Monitoring & Workload+Workflow\\ \hline
 DMS-REQ-0304 Production Fault Tolerance & Workload+Workflow, Task
-Execution Framework\tabularnewline
+Execution Framework\\ \hline
 DMS-REQ-0158 Provide Pipeline Construction Services & Task Execution
-Framework\tabularnewline
+Framework\\ \hline
 DMS-REQ-0305 Task Specification & Task Execution
-Framework\tabularnewline
+Framework\\ \hline
 DMS-REQ-0306 Task Configuration & Task Execution
-Framework\tabularnewline
+Framework\\ \hline
 DMS-REQ-0297 DMS Initialization Component & ITC
-Environments\tabularnewline
+Environments\\ \hline
 DMS-REQ-0301 Control of Level-1 Production & Prompt
-Processing\tabularnewline
+Processing\\ \hline
 DMS-REQ-0307 Unique Processing Coverage &
-Workload+Workflow\tabularnewline
-\bottomrule
-\end{longtable}
+Workload+Workflow\\ \hline
+\end{xtabular}
+
+\setitemize{noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt}
 
 \subsection{Component to Requirement
 Traceability}\label{component-to-requirement-traceability}
 
 Note that only ``leaf'' components are traced to requirements.
 
-\begin{longtable}[]{@{}ll@{}}
-\toprule
-Component & Requirements\tabularnewline
-\midrule
-\endhead
-Data Management &\tabularnewline
-Level 1 System &\tabularnewline
-Alert Distribution & DMS-REQ-0004 Nightly Data Accessible Within 24 hrs,
-DMS-REQ-0008 Pipeline Availability, DMS-REQ-0161 Optimization of Cost,
-Reliability and Availability in Order, DMS-REQ-0162 Pipeline Throughput,
-DMS-REQ-0167 Incorporate Autonomics, DMS-REQ-0314 Compute Platform
-Heterogeneity, DMS-REQ-0318 Data Management Unscheduled Downtime,
-DMS-REQ-0002 Transient Alert Distribution, DMS-REQ-0343 Performance
-Requirements for LSST Alert Filtering Service\tabularnewline
-Alert Filtering & DMS-REQ-0004 Nightly Data Accessible Within 24 hrs,
-DMS-REQ-0008 Pipeline Availability, DMS-REQ-0161 Optimization of Cost,
-Reliability and Availability in Order, DMS-REQ-0162 Pipeline Throughput,
-DMS-REQ-0167 Incorporate Autonomics, DMS-REQ-0314 Compute Platform
-Heterogeneity, DMS-REQ-0318 Data Management Unscheduled Downtime,
-DMS-REQ-0002 Transient Alert Distribution, DMS-REQ-0342 Alert Filtering
-Service, DMS-REQ-0343 Performance Requirements for LSST Alert Filtering
-Service, DMS-REQ-0348 Pre-defined alert filters\tabularnewline
-Image and EFD Archiving & DMS-REQ-0018 Raw Science Image Data
-Acquisition, DMS-REQ-0020 Wavefront Sensor Data Acquisition,
-DMS-REQ-0024 Raw Image Assembly, DMS-REQ-0068 Raw Science Image
-Metadata, DMS-REQ-0265 Guider Calibration Data Acquisition, DMS-REQ-0346
-Data Availability, DMS-REQ-0008 Pipeline Availability, DMS-REQ-0162
-Pipeline Throughput, DMS-REQ-0165 Infrastructure Sizing for ``catching
-up'', DMS-REQ-0167 Incorporate Autonomics, DMS-REQ-0314 Compute Platform
-Heterogeneity, DMS-REQ-0318 Data Management Unscheduled Downtime,
-DMS-REQ-0102 Provide Engineering and Facility Database Archive,
-DMS-REQ-0309 Raw Data Archiving Reliability, DMS-REQ-0315 DMS
-Communication with OCS, DMS-REQ-0284 Level-1 Production
-Completeness\tabularnewline
-OCS Driven Batch & DMS-REQ-0059 Bad Pixel Map, DMS-REQ-0060 Bias
-Residual Image, DMS-REQ-0061 Crosstalk Correction Matrix, DMS-REQ-0062
-Illumination Correction Frame, DMS-REQ-0063 Monochromatic Flatfield Data
-Cube, DMS-REQ-0130 Calibration Data Products, DMS-REQ-0132 Calibration
-Image Provenance, DMS-REQ-0282 Dark Current Correction Frame,
-DMS-REQ-0283 Fringe Correction Frame, DMS-REQ-0265 Guider Calibration
-Data Acquisition, DMS-REQ-0346 Data Availability, DMS-REQ-0101 Level 1
-Calibration Report Definition, DMS-REQ-0008 Pipeline Availability,
-DMS-REQ-0162 Pipeline Throughput, DMS-REQ-0167 Incorporate Autonomics,
-DMS-REQ-0314 Compute Platform Heterogeneity, DMS-REQ-0318 Data
-Management Unscheduled Downtime, DMS-REQ-0315 DMS Communication with
-OCS, DMS-REQ-0131 Calibration Images Available Within Specified Time,
-DMS-REQ-0289 Calibration Production Processing, DMS-REQ-0294 Processing
-of Datasets\tabularnewline
-Offline Processing & DMS-REQ-0346 Data Availability, DMS-REQ-0004
-Nightly Data Accessible Within 24 hrs, DMS-REQ-0321 Level 1 Processing
-of Special Programs Data, DMS-REQ-0344 Constraints on Level 1 Special
-Program Products Generation, DMS-REQ-0008 Pipeline Availability,
-DMS-REQ-0162 Pipeline Throughput, DMS-REQ-0165 Infrastructure Sizing for
-``catching up'', DMS-REQ-0167 Incorporate Autonomics, DMS-REQ-0314
-Compute Platform Heterogeneity, DMS-REQ-0318 Data Management Unscheduled
-Downtime, DMS-REQ-0341 Providing a Precovery Service, DMS-REQ-0089 Solar
-System Objects Available Within Specified Time, DMS-REQ-0284 Level-1
-Production Completeness, DMS-REQ-0294 Processing of
-Datasets\tabularnewline
-Prompt Processing & DMS-REQ-0022 Crosstalk Corrected Science Image Data
-Acquisition, DMS-REQ-0346 Data Availability, DMS-REQ-0004 Nightly Data
-Accessible Within 24 hrs, DMS-REQ-0099 Level 1 Performance Report
-Definition, DMS-REQ-0321 Level 1 Processing of Special Programs Data,
-DMS-REQ-0344 Constraints on Level 1 Special Program Products Generation,
-DMS-REQ-0008 Pipeline Availability, DMS-REQ-0162 Pipeline Throughput,
-DMS-REQ-0167 Incorporate Autonomics, DMS-REQ-0314 Compute Platform
-Heterogeneity, DMS-REQ-0318 Data Management Unscheduled Downtime,
-DMS-REQ-0312 Level 1 Data Product Access, DMS-REQ-0315 DMS Communication
-with OCS, DMS-REQ-0002 Transient Alert Distribution, DMS-REQ-0131
-Calibration Images Available Within Specified Time, DMS-REQ-0284 Level-1
-Production Completeness, DMS-REQ-0294 Processing of Datasets,
-DMS-REQ-0301 Control of Level-1 Production\tabularnewline
-Telemetry Gateway & DMS-REQ-0008 Pipeline Availability, DMS-REQ-0314
-Compute Platform Heterogeneity, DMS-REQ-0318 Data Management Unscheduled
-Downtime, DMS-REQ-0315 DMS Communication with OCS\tabularnewline
-Level 2 System &\tabularnewline
-Calibration Products Production Execution & DMS-REQ-0059 Bad Pixel Map,
-DMS-REQ-0060 Bias Residual Image, DMS-REQ-0061 Crosstalk Correction
-Matrix, DMS-REQ-0062 Illumination Correction Frame, DMS-REQ-0063
-Monochromatic Flatfield Data Cube, DMS-REQ-0130 Calibration Data
-Products, DMS-REQ-0132 Calibration Image Provenance, DMS-REQ-0282 Dark
-Current Correction Frame, DMS-REQ-0283 Fringe Correction Frame,
-DMS-REQ-0265 Guider Calibration Data Acquisition, DMS-REQ-0346 Data
-Availability, DMS-REQ-0008 Pipeline Availability, DMS-REQ-0163
-Re-processing Capacity, DMS-REQ-0167 Incorporate Autonomics,
-DMS-REQ-0314 Compute Platform Heterogeneity, DMS-REQ-0318 Data
-Management Unscheduled Downtime, DMS-REQ-0289 Calibration Production
-Processing, DMS-REQ-0294 Processing of Datasets\tabularnewline
-Data Release Production Execution & DMS-REQ-0346 Data Availability,
-DMS-REQ-0008 Pipeline Availability, DMS-REQ-0163 Re-processing Capacity,
-DMS-REQ-0167 Incorporate Autonomics, DMS-REQ-0314 Compute Platform
-Heterogeneity, DMS-REQ-0318 Data Management Unscheduled Downtime,
-DMS-REQ-0294 Processing of Datasets\tabularnewline
-Data Access Center &\tabularnewline
-Bulk Distribution & DMS-REQ-0185 Archive Center, DMS-REQ-0186 Archive
-Center Disaster Recovery, DMS-REQ-0314 Compute Platform Heterogeneity,
-DMS-REQ-0318 Data Management Unscheduled Downtime, DMS-REQ-0122 Access
-to catalogs for external Level 3 processing, DMS-REQ-0126 Access to
-images for external Level 3 processing, DMS-REQ-0193 Data Access
-Centers, DMS-REQ-0119 DAC resource allocation for Level 3 processing,
-DMS-REQ-0300 Bulk Download Service\tabularnewline
-Proposal Manager & DMS-REQ-0314 Compute Platform Heterogeneity,
-DMS-REQ-0318 Data Management Unscheduled Downtime, DMS-REQ-0119 DAC
-resource allocation for Level 3 processing\tabularnewline
-Analysis and Developer Services &\tabularnewline
-Developer Services & DMS-REQ-0314 Compute Platform
-Heterogeneity\tabularnewline
-Integration and Test & DMS-REQ-0314 Compute Platform
-Heterogeneity\tabularnewline
-Infrastructure &\tabularnewline
-Data Backbone & DMS-REQ-0334 Persisting Data Products, DMS-REQ-0336
-Regenerating Data Products from Previous Data Releases, DMS-REQ-0338
-Targeted Coadds, DMS-REQ-0339 Tracking Characterization Changes Between
-Data Releases, DMS-REQ-0322 Special Programs Database, DMS-REQ-0344
-Constraints on Level 1 Special Program Products Generation, DMS-REQ-0185
-Archive Center, DMS-REQ-0186 Archive Center Disaster Recovery,
-DMS-REQ-0176 Base Facility Infrastructure, DMS-REQ-0177 Base Facility
-Temporary Storage, DMS-REQ-0008 Pipeline Availability, DMS-REQ-0161
-Optimization of Cost, Reliability and Availability in Order,
-DMS-REQ-0162 Pipeline Throughput, DMS-REQ-0163 Re-processing Capacity,
-DMS-REQ-0164 Temporary Storage for Communications Links, DMS-REQ-0165
-Infrastructure Sizing for ``catching up'', DMS-REQ-0166 Incorporate
-Fault-Tolerance, DMS-REQ-0167 Incorporate Autonomics, DMS-REQ-0314
-Compute Platform Heterogeneity, DMS-REQ-0318 Data Management Unscheduled
-Downtime, DMS-REQ-0122 Access to catalogs for external Level 3
-processing, DMS-REQ-0123 Access to input catalogs for DAC-based Level 3
-processing, DMS-REQ-0124 Federation with external catalogs, DMS-REQ-0126
-Access to images for external Level 3 processing, DMS-REQ-0127 Access to
-input images for DAC-based Level 3 processing, DMS-REQ-0193 Data Access
-Centers, DMS-REQ-0197 No Limit on Data Access Centers, DMS-REQ-0077
-Maintain Archive Publicly Accessible, DMS-REQ-0094 Keep Historical Alert
-Archive, DMS-REQ-0102 Provide Engineering and Facility Database Archive,
-DMS-REQ-0309 Raw Data Archiving Reliability, DMS-REQ-0310 Un-Archived
-Data Product Cache, DMS-REQ-0311 Regenerate Un-archived Data Products,
-DMS-REQ-0312 Level 1 Data Product Access, DMS-REQ-0313 Level 1 and 2
-Catalog Access, DMS-REQ-0089 Solar System Objects Available Within
-Specified Time, DMS-REQ-0287 DIASource Precovery, DMS-REQ-0350
-Associating Objects across data releases, DMS-REQ-0291 Query
-Repeatibility, DMS-REQ-0292 Uniqueness of IDs Across Data Releases,
-DMS-REQ-0293 Selection of Datasets, DMS-REQ-0294 Processing of Datasets,
-DMS-REQ-0120 Level 3 Data Product Self Consistency, DMS-REQ-0121
-Provenance for Level 3 processing at DACs, DMS-REQ-0125 Software
-framework for Level 3 catalog processing, DMS-REQ-0128 Software
-framework for Level 3 image processing, DMS-REQ-0290 Level 3 Data
-Import, DMS-REQ-0340 Access Controls of Level 3 Data Products,
-DMS-REQ-0296 Pre-cursor, and Real Data, DMS-REQ-0298 Data Product and
-Raw Data Access, DMS-REQ-0299 Data Product Ingest, DMS-REQ-0300 Bulk
-Download Service\tabularnewline
-Identity Manager & DMS-REQ-0314 Compute Platform Heterogeneity,
-DMS-REQ-0318 Data Management Unscheduled Downtime, DMS-REQ-0197 No Limit
-on Data Access Centers, DMS-REQ-0340 Access Controls of Level 3 Data
-Products\tabularnewline
-ITC Environments & DMS-REQ-0185 Archive Center, DMS-REQ-0186 Archive
-Center Disaster Recovery, DMS-REQ-0187 Archive Center Co-Location with
-Existing Facility, DMS-REQ-0176 Base Facility Infrastructure,
-DMS-REQ-0178 Base Facility Co-Location with Existing Facility,
-DMS-REQ-0316 Commissioning Cluster, DMS-REQ-0008 Pipeline Availability,
-DMS-REQ-0161 Optimization of Cost, Reliability and Availability in
-Order, DMS-REQ-0162 Pipeline Throughput, DMS-REQ-0163 Re-processing
-Capacity, DMS-REQ-0165 Infrastructure Sizing for ``catching up'',
-DMS-REQ-0167 Incorporate Autonomics, DMS-REQ-0314 Compute Platform
-Heterogeneity, DMS-REQ-0318 Data Management Unscheduled Downtime,
-DMS-REQ-0193 Data Access Centers, DMS-REQ-0196 Data Access Center
-Geographical Distribution, DMS-REQ-0197 No Limit on Data Access Centers,
-DMS-REQ-0170 Prefer Computing and Storage Down, DMS-REQ-0297 DMS
-Initialization Component\tabularnewline
-Networks & DMS-REQ-0188 Archive to Data Access Center Network,
-DMS-REQ-0189 Archive to Data Access Center Network Availability,
-DMS-REQ-0190 Archive to Data Access Center Network Reliability,
-DMS-REQ-0191 Archive to Data Access Center Network Secondary Link,
-DMS-REQ-0180 Base to Archive Network, DMS-REQ-0181 Base to Archive
-Network Availability, DMS-REQ-0182 Base to Archive Network Reliability,
-DMS-REQ-0183 Base to Archive Network Secondary Link, DMS-REQ-0008
-Pipeline Availability, DMS-REQ-0161 Optimization of Cost, Reliability
-and Availability in Order, DMS-REQ-0162 Pipeline Throughput,
-DMS-REQ-0163 Re-processing Capacity, DMS-REQ-0165 Infrastructure Sizing
-for ``catching up'', DMS-REQ-0167 Incorporate Autonomics, DMS-REQ-0314
-Compute Platform Heterogeneity, DMS-REQ-0318 Data Management Unscheduled
-Downtime, DMS-REQ-0193 Data Access Centers, DMS-REQ-0194 Data Access
-Center Simultaneous Connections, DMS-REQ-0197 No Limit on Data Access
-Centers, DMS-REQ-0168 Summit Facility Data Communications, DMS-REQ-0171
-Summit to Base Network, DMS-REQ-0172 Summit to Base Network
-Availability, DMS-REQ-0173 Summit to Base Network Reliability,
-DMS-REQ-0174 Summit to Base Network Secondary Link, DMS-REQ-0175 Summit
-to Base Network Ownership and Operation\tabularnewline
-Workload+Workflow & DMS-REQ-0120 Level 3 Data Product Self Consistency,
-DMS-REQ-0121 Provenance for Level 3 processing at DACs, DMS-REQ-0125
-Software framework for Level 3 catalog processing, DMS-REQ-0128 Software
-framework for Level 3 image processing, DMS-REQ-0156 Provide Pipeline
-Execution Services, DMS-REQ-0302 Production Orchestration, DMS-REQ-0303
-Production Monitoring, DMS-REQ-0304 Production Fault
-Tolerance\tabularnewline
-Data Access Client & DMS-REQ-0333 Maximum Likelihood Values and
-Covariances, DMS-REQ-0347 Measurements in catalogs, DMS-REQ-0314 Compute
-Platform Heterogeneity, DMS-REQ-0121 Provenance for Level 3 processing
-at DACs, DMS-REQ-0125 Software framework for Level 3 catalog processing,
-DMS-REQ-0128 Software framework for Level 3 image processing,
-DMS-REQ-0296 Pre-cursor, and Real Data\tabularnewline
-Task Execution Framework & DMS-REQ-0320 Processing of Data From Special
-Programs, DMS-REQ-0314 Compute Platform Heterogeneity, DMS-REQ-0121
-Provenance for Level 3 processing at DACs, DMS-REQ-0125 Software
-framework for Level 3 catalog processing, DMS-REQ-0128 Software
-framework for Level 3 image processing, DMS-REQ-0304 Production Fault
-Tolerance, DMS-REQ-0158 Provide Pipeline Construction Services,
-DMS-REQ-0305 Task Specification, DMS-REQ-0306 Task
-Configuration\tabularnewline
-Science Platform &\tabularnewline
-DAX VO+ Services & DMS-REQ-0331 Computing Derived Quantities,
-DMS-REQ-0332 Denormalizing Database Tables, DMS-REQ-0347 Measurements in
-catalogs, DMS-REQ-0323 Calculating SSObject Parameters, DMS-REQ-0324
-Matching DIASources to Objects, DMS-REQ-0334 Persisting Data Products,
-DMS-REQ-0336 Regenerating Data Products from Previous Data Releases,
-DMS-REQ-0338 Targeted Coadds, DMS-REQ-0339 Tracking Characterization
-Changes Between Data Releases, DMS-REQ-0322 Special Programs Database,
-DMS-REQ-0344 Constraints on Level 1 Special Program Products Generation,
-DMS-REQ-0161 Optimization of Cost, Reliability and Availability in
-Order, DMS-REQ-0314 Compute Platform Heterogeneity, DMS-REQ-0318 Data
-Management Unscheduled Downtime, DMS-REQ-0123 Access to input catalogs
-for DAC-based Level 3 processing, DMS-REQ-0124 Federation with external
-catalogs, DMS-REQ-0127 Access to input images for DAC-based Level 3
-processing, DMS-REQ-0193 Data Access Centers, DMS-REQ-0197 No Limit on
-Data Access Centers, DMS-REQ-0075 Catalog Queries, DMS-REQ-0078 Catalog
-Export Formats, DMS-REQ-0311 Regenerate Un-archived Data Products,
-DMS-REQ-0312 Level 1 Data Product Access, DMS-REQ-0313 Level 1 and 2
-Catalog Access, DMS-REQ-0345 Logging of catalog queries, DMS-REQ-0089
-Solar System Objects Available Within Specified Time, DMS-REQ-0287
-DIASource Precovery, DMS-REQ-0291 Query Repeatibility, DMS-REQ-0292
-Uniqueness of IDs Across Data Releases, DMS-REQ-0293 Selection of
-Datasets, DMS-REQ-0295 Transparent Data Access, DMS-REQ-0119 DAC
-resource allocation for Level 3 processing, DMS-REQ-0120 Level 3 Data
-Product Self Consistency, DMS-REQ-0121 Provenance for Level 3 processing
-at DACs, DMS-REQ-0125 Software framework for Level 3 catalog processing,
-DMS-REQ-0128 Software framework for Level 3 image processing,
-DMS-REQ-0290 Level 3 Data Import, DMS-REQ-0065 Provide Image Access
-Services, DMS-REQ-0155 Provide Data Access Services, DMS-REQ-0298 Data
-Product and Raw Data Access, DMS-REQ-0299 Data Product
-Ingest\tabularnewline
-LSP JupyterLab & DMS-REQ-0161 Optimization of Cost, Reliability and
-Availability in Order, DMS-REQ-0314 Compute Platform Heterogeneity,
-DMS-REQ-0318 Data Management Unscheduled Downtime, DMS-REQ-0123 Access
-to input catalogs for DAC-based Level 3 processing, DMS-REQ-0124
-Federation with external catalogs, DMS-REQ-0127 Access to input images
-for DAC-based Level 3 processing, DMS-REQ-0193 Data Access Centers,
-DMS-REQ-0194 Data Access Center Simultaneous Connections, DMS-REQ-0197
-No Limit on Data Access Centers, DMS-REQ-0119 DAC resource allocation
-for Level 3 processing\tabularnewline
-LSP Portal & DMS-REQ-0161 Optimization of Cost, Reliability and
-Availability in Order, DMS-REQ-0314 Compute Platform Heterogeneity,
-DMS-REQ-0318 Data Management Unscheduled Downtime, DMS-REQ-0123 Access
-to input catalogs for DAC-based Level 3 processing, DMS-REQ-0124
-Federation with external catalogs, DMS-REQ-0127 Access to input images
-for DAC-based Level 3 processing, DMS-REQ-0193 Data Access Centers,
-DMS-REQ-0194 Data Access Center Simultaneous Connections, DMS-REQ-0197
-No Limit on Data Access Centers, DMS-REQ-0341 Providing a Precovery
-Service, DMS-REQ-0119 DAC resource allocation for Level 3 processing,
-DMS-REQ-0160 Provide User Interface Services\tabularnewline
-QC System & DMS-REQ-0097 Level 1 Data Quality Report Definition,
-DMS-REQ-0099 Level 1 Performance Report Definition, DMS-REQ-0314 Compute
-Platform Heterogeneity, DMS-REQ-0318 Data Management Unscheduled
-Downtime, DMS-REQ-0096 Generate Data Quality Report Within Specified
-Time, DMS-REQ-0098 Generate DMS Performance Report Within Specified
-Time, DMS-REQ-0100 Generate Calibration Report Within Specified
-Time\tabularnewline
-Science Algorithms & DMS-REQ-0032 Image Differencing, DMS-REQ-0033
-Provide Source Detection Software, DMS-REQ-0042 Provide Astrometric
-Model, DMS-REQ-0043 Provide Calibrated Photometry, DMS-REQ-0052 Enable a
-Range of Shape Measurement Approaches, DMS-REQ-0296 Pre-cursor, and Real
-Data, DMS-REQ-0308 Software Architecture to Enable Community
-Re-Use\tabularnewline
-Science Payloads &\tabularnewline
-Alert Production & DMS-REQ-0333 Maximum Likelihood Values and
-Covariances, DMS-REQ-0347 Measurements in catalogs, DMS-REQ-0004 Nightly
-Data Accessible Within 24 hrs, DMS-REQ-0010 Difference Exposures,
-DMS-REQ-0074 Difference Exposure Attributes, DMS-REQ-0069 Processed
-Visit Images, DMS-REQ-0029 Generate Photometric Zeropoint for Visit
-Image, DMS-REQ-0030 Generate WCS for Visit Images, DMS-REQ-0070 Generate
-PSF for Visit Images, DMS-REQ-0072 Processed Visit Image Content,
-DMS-REQ-0327 Background Model Calculation, DMS-REQ-0328 Documenting
-Image Characterization, DMS-REQ-0097 Level 1 Data Quality Report
-Definition, DMS-REQ-0266 Exposure Catalog, DMS-REQ-0269 DIASource
-Catalog, DMS-REQ-0270 Faint DIASource Measurements, DMS-REQ-0271
-DIAObject Catalog, DMS-REQ-0272 DIAObject Attributes, DMS-REQ-0274 Alert
-Content, DMS-REQ-0317 DIAForcedSource Catalog, DMS-REQ-0319
-Characterizing Variability, DMS-REQ-0324 Matching DIASources to Objects,
-DMS-REQ-0321 Level 1 Processing of Special Programs Data, DMS-REQ-0344
-Constraints on Level 1 Special Program Products Generation, DMS-REQ-0312
-Level 1 Data Product Access, DMS-REQ-0002 Transient Alert Distribution,
-DMS-REQ-0285 Level 1 Source Association, DMS-REQ-0288 Use of External
-Orbit Catalogs, DMS-REQ-0009 Simulated Data, DMS-REQ-0032 Image
-Differencing, DMS-REQ-0033 Provide Source Detection Software,
-DMS-REQ-0042 Provide Astrometric Model, DMS-REQ-0043 Provide Calibrated
-Photometry, DMS-REQ-0052 Enable a Range of Shape Measurement Approaches,
-DMS-REQ-0308 Software Architecture to Enable Community
-Re-Use\tabularnewline
-Annual Calibration & DMS-REQ-0059 Bad Pixel Map, DMS-REQ-0060 Bias
-Residual Image, DMS-REQ-0061 Crosstalk Correction Matrix, DMS-REQ-0062
-Illumination Correction Frame, DMS-REQ-0063 Monochromatic Flatfield Data
-Cube, DMS-REQ-0130 Calibration Data Products, DMS-REQ-0132 Calibration
-Image Provenance, DMS-REQ-0282 Dark Current Correction Frame,
-DMS-REQ-0283 Fringe Correction Frame, DMS-REQ-0265 Guider Calibration
-Data Acquisition, DMS-REQ-0289 Calibration Production Processing,
-DMS-REQ-0009 Simulated Data, DMS-REQ-0308 Software Architecture to
-Enable Community Re-Use\tabularnewline
-Daily Calibration Update & DMS-REQ-0059 Bad Pixel Map, DMS-REQ-0060 Bias
-Residual Image, DMS-REQ-0061 Crosstalk Correction Matrix, DMS-REQ-0062
-Illumination Correction Frame, DMS-REQ-0063 Monochromatic Flatfield Data
-Cube, DMS-REQ-0130 Calibration Data Products, DMS-REQ-0132 Calibration
-Image Provenance, DMS-REQ-0282 Dark Current Correction Frame,
-DMS-REQ-0283 Fringe Correction Frame, DMS-REQ-0265 Guider Calibration
-Data Acquisition, DMS-REQ-0101 Level 1 Calibration Report Definition,
-DMS-REQ-0100 Generate Calibration Report Within Specified Time,
-DMS-REQ-0131 Calibration Images Available Within Specified Time,
-DMS-REQ-0289 Calibration Production Processing, DMS-REQ-0009 Simulated
-Data, DMS-REQ-0308 Software Architecture to Enable Community
-Re-Use\tabularnewline
-Data Release Production & DMS-REQ-0326 Storing Approximations of
-Per-pixel Metadata, DMS-REQ-0331 Computing Derived Quantities,
-DMS-REQ-0333 Maximum Likelihood Values and Covariances, DMS-REQ-0347
-Measurements in catalogs, DMS-REQ-0325 Regenerating L1 Data Products
-During Data Release Processing, DMS-REQ-0034 Associate Sources to
-Objects, DMS-REQ-0047 Provide PSF for Coadded Images, DMS-REQ-0103
-Produce Images for EPO, DMS-REQ-0106 Coadded Image Provenance,
-DMS-REQ-0267 Source Catalog, DMS-REQ-0268 Forced-Source Catalog,
-DMS-REQ-0275 Object Catalog, DMS-REQ-0046 Provide Photometric Redshifts
-of Galaxies, DMS-REQ-0276 Object Characterization, DMS-REQ-0277 Coadd
-Source Catalog, DMS-REQ-0349 Detecting extended low surface brightness
-objects, DMS-REQ-0278 Coadd Image Method Constraints, DMS-REQ-0279 Deep
-Detection Coadds, DMS-REQ-0280 Template Coadds, DMS-REQ-0281 Multi-band
-Coadds, DMS-REQ-0329 All-Sky Visualization of Data Releases,
-DMS-REQ-0330 Best Seeing Coadds, DMS-REQ-0335 PSF-Matched Coadds,
-DMS-REQ-0337 Detecting faint variable objects, DMS-REQ-0320 Processing
-of Data From Special Programs, DMS-REQ-0350 Associating Objects across
-data releases, DMS-REQ-0009 Simulated Data, DMS-REQ-0032 Image
-Differencing, DMS-REQ-0033 Provide Source Detection Software,
-DMS-REQ-0042 Provide Astrometric Model, DMS-REQ-0043 Provide Calibrated
-Photometry, DMS-REQ-0052 Enable a Range of Shape Measurement Approaches,
-DMS-REQ-0308 Software Architecture to Enable Community
-Re-Use\tabularnewline
-MOPS and Forced Photometry & DMS-REQ-0004 Nightly Data Accessible Within
-24 hrs, DMS-REQ-0273 SSObject Catalog, DMS-REQ-0317 DIAForcedSource
-Catalog, DMS-REQ-0319 Characterizing Variability, DMS-REQ-0321 Level 1
-Processing of Special Programs Data, DMS-REQ-0344 Constraints on Level 1
-Special Program Products Generation, DMS-REQ-0341 Providing a Precovery
-Service, DMS-REQ-0089 Solar System Objects Available Within Specified
-Time, DMS-REQ-0286 SSObject Precovery, DMS-REQ-0287 DIASource Precovery,
-DMS-REQ-0288 Use of External Orbit Catalogs, DMS-REQ-0009 Simulated
-Data, DMS-REQ-0308 Software Architecture to Enable Community
-Re-Use\tabularnewline
-Periodic Calibration & DMS-REQ-0059 Bad Pixel Map, DMS-REQ-0060 Bias
-Residual Image, DMS-REQ-0061 Crosstalk Correction Matrix, DMS-REQ-0062
-Illumination Correction Frame, DMS-REQ-0063 Monochromatic Flatfield Data
-Cube, DMS-REQ-0130 Calibration Data Products, DMS-REQ-0132 Calibration
-Image Provenance, DMS-REQ-0282 Dark Current Correction Frame,
-DMS-REQ-0283 Fringe Correction Frame, DMS-REQ-0265 Guider Calibration
-Data Acquisition, DMS-REQ-0289 Calibration Production Processing,
-DMS-REQ-0009 Simulated Data, DMS-REQ-0308 Software Architecture to
-Enable Community Re-Use\tabularnewline
-Raw Calibration & DMS-REQ-0101 Level 1 Calibration Report Definition,
-DMS-REQ-0131 Calibration Images Available Within Specified Time,
-DMS-REQ-0009 Simulated Data, DMS-REQ-0308 Software Architecture to
-Enable Community Re-Use\tabularnewline
-Template Generation & DMS-REQ-0280 Template Coadds, DMS-REQ-0009
-Simulated Data, DMS-REQ-0308 Software Architecture to Enable Community
-Re-Use\tabularnewline
-Science Primitives & DMS-REQ-0042 Provide Astrometric Model,
-DMS-REQ-0043 Provide Calibrated Photometry, DMS-REQ-0052 Enable a Range
-of Shape Measurement Approaches, DMS-REQ-0351 Provide Beam Projector
-Coordinate Calculation Software\tabularnewline
-\bottomrule
-\end{longtable}
+\tablefirsthead{\hline \multicolumn{1}{|c|}{\textbf{Component}} &
+                       \multicolumn{1}{c|}{\textbf{Requirements}} \\ \hline}
+\tablehead{\hline \multicolumn{1}{|c|}{\textbf{Component}} &
+                       \multicolumn{1}{c|}{\textbf{Requirements}} \\ \hline}
+\begin{xtabular}{|p{0.1\textwidth}|p{0.85\textwidth}|}
+Data Management & \\ \hline
+Level 1 System & \\ \hline
+Alert Distribution &
+\begin{itemize}
+\item DMS-REQ-0004 Nightly Data Accessible Within 24 hrs
+\item DMS-REQ-0008 Pipeline Availability
+\item DMS-REQ-0161 Optimization of Cost, Reliability and Availability in Order
+\item DMS-REQ-0162 Pipeline Throughput
+\item DMS-REQ-0167 Incorporate Autonomics
+\item DMS-REQ-0314 Compute Platform Heterogeneity
+\item DMS-REQ-0318 Data Management Unscheduled Downtime
+\item DMS-REQ-0002 Transient Alert Distribution
+\item DMS-REQ-0343 Performance Requirements for LSST Alert Filtering Service
+\end{itemize} \\ \hline
+Alert Filtering &
+\begin{itemize}
+\item DMS-REQ-0004 Nightly Data Accessible Within 24 hrs
+\item DMS-REQ-0008 Pipeline Availability
+\item DMS-REQ-0161 Optimization of Cost, Reliability and Availability in Order
+\item DMS-REQ-0162 Pipeline Throughput
+\item DMS-REQ-0167 Incorporate Autonomics
+\item DMS-REQ-0314 Compute Platform Heterogeneity
+\item DMS-REQ-0318 Data Management Unscheduled Downtime
+\item DMS-REQ-0002 Transient Alert Distribution
+\item DMS-REQ-0342 Alert Filtering Service
+\item DMS-REQ-0343 Performance Requirements for LSST Alert Filtering Service
+\item DMS-REQ-0348 Pre-defined alert filters
+\end{itemize} \\ \hline
+Image and EFD Archiving &
+\begin{itemize} \item DMS-REQ-0018 Raw Science Image Data Acquisition
+\item DMS-REQ-0020 Wavefront Sensor Data Acquisition
+\item DMS-REQ-0024 Raw Image Assembly
+\item DMS-REQ-0068 Raw Science Image Metadata
+\item DMS-REQ-0265 Guider Calibration Data Acquisition
+\item DMS-REQ-0346 Data Availability
+\item DMS-REQ-0008 Pipeline Availability
+\item DMS-REQ-0162 Pipeline Throughput
+\item DMS-REQ-0165 Infrastructure Sizing for ``catching up''
+\item DMS-REQ-0167 Incorporate Autonomics
+\item DMS-REQ-0314 Compute Platform Heterogeneity
+\item DMS-REQ-0318 Data Management Unscheduled Downtime
+\item DMS-REQ-0102 Provide Engineering and Facility Database Archive
+\item DMS-REQ-0309 Raw Data Archiving Reliability
+\item DMS-REQ-0315 DMS Communication with OCS
+\item DMS-REQ-0284 Level-1 Production Completeness \end{itemize} \\ \hline
+OCS Driven Batch &
+\begin{itemize} \item DMS-REQ-0059 Bad Pixel Map
+\item DMS-REQ-0060 Bias Residual Image
+\item DMS-REQ-0061 Crosstalk Correction Matrix
+\item DMS-REQ-0062 Illumination Correction Frame
+\item DMS-REQ-0063 Monochromatic Flatfield Data Cube
+\item DMS-REQ-0130 Calibration Data Products
+\item DMS-REQ-0132 Calibration Image Provenance
+\item DMS-REQ-0282 Dark Current Correction Frame
+\item DMS-REQ-0283 Fringe Correction Frame
+\item DMS-REQ-0265 Guider Calibration Data Acquisition
+\item DMS-REQ-0346 Data Availability
+\item DMS-REQ-0101 Level 1 Calibration Report Definition
+\item DMS-REQ-0008 Pipeline Availability
+\item DMS-REQ-0162 Pipeline Throughput
+\item DMS-REQ-0167 Incorporate Autonomics
+\item DMS-REQ-0314 Compute Platform Heterogeneity
+\item DMS-REQ-0318 Data Management Unscheduled Downtime
+\item DMS-REQ-0315 DMS Communication with OCS
+\item DMS-REQ-0131 Calibration Images Available Within Specified Time
+\item DMS-REQ-0289 Calibration Production Processing
+\item DMS-REQ-0294 Processing of Datasets \end{itemize} \\ \hline
+Offline Processing &
+\begin{itemize} \item DMS-REQ-0346 Data Availability
+\item DMS-REQ-0004 Nightly Data Accessible Within 24 hrs
+\item DMS-REQ-0321 Level 1 Processing of Special Programs Data
+\item DMS-REQ-0344 Constraints on Level 1 Special Program Products Generation
+\item DMS-REQ-0008 Pipeline Availability
+\item DMS-REQ-0162 Pipeline Throughput
+\item DMS-REQ-0165 Infrastructure Sizing for ``catching up''
+\item DMS-REQ-0167 Incorporate Autonomics
+\item DMS-REQ-0314 Compute Platform Heterogeneity
+\item DMS-REQ-0318 Data Management Unscheduled Downtime
+\item DMS-REQ-0341 Providing a Precovery Service
+\item DMS-REQ-0089 Solar System Objects Available Within Specified Time
+\item DMS-REQ-0284 Level-1 Production Completeness
+\item DMS-REQ-0294 Processing of Datasets \end{itemize} \\ \hline
+Prompt Processing &
+\begin{itemize} \item DMS-REQ-0022 Crosstalk Corrected Science Image Data Acquisition
+\item DMS-REQ-0346 Data Availability
+\item DMS-REQ-0004 Nightly Data Accessible Within 24 hrs
+\item DMS-REQ-0099 Level 1 Performance Report Definition
+\item DMS-REQ-0321 Level 1 Processing of Special Programs Data
+\item DMS-REQ-0344 Constraints on Level 1 Special Program Products Generation
+\item DMS-REQ-0008 Pipeline Availability
+\item DMS-REQ-0162 Pipeline Throughput
+\item DMS-REQ-0167 Incorporate Autonomics
+\item DMS-REQ-0314 Compute Platform Heterogeneity
+\item DMS-REQ-0318 Data Management Unscheduled Downtime
+\item DMS-REQ-0312 Level 1 Data Product Access
+\item DMS-REQ-0315 DMS Communication with OCS
+\item DMS-REQ-0002 Transient Alert Distribution
+\item DMS-REQ-0131 Calibration Images Available Within Specified Time
+\item DMS-REQ-0284 Level-1 Production Completeness
+\item DMS-REQ-0294 Processing of Datasets
+\item DMS-REQ-0301 Control of Level-1 Production \end{itemize} \\ \hline
+Telemetry Gateway &
+\begin{itemize} \item DMS-REQ-0008 Pipeline Availability
+\item DMS-REQ-0314 Compute Platform Heterogeneity
+\item DMS-REQ-0318 Data Management Unscheduled Downtime
+\item DMS-REQ-0315 DMS Communication with OCS \end{itemize} \\ \hline Level 2 System & \\ \hline
+Calibration Products Production Execution &
+\begin{itemize} \item DMS-REQ-0059 Bad Pixel Map
+\item DMS-REQ-0060 Bias Residual Image
+\item DMS-REQ-0061 Crosstalk Correction Matrix
+\item DMS-REQ-0062 Illumination Correction Frame
+\item DMS-REQ-0063 Monochromatic Flatfield Data Cube
+\item DMS-REQ-0130 Calibration Data Products
+\item DMS-REQ-0132 Calibration Image Provenance
+\item DMS-REQ-0282 Dark Current Correction Frame
+\item DMS-REQ-0283 Fringe Correction Frame
+\item DMS-REQ-0265 Guider Calibration Data Acquisition
+\item DMS-REQ-0346 Data Availability
+\item DMS-REQ-0008 Pipeline Availability
+\item DMS-REQ-0163 Re-processing Capacity
+\item DMS-REQ-0167 Incorporate Autonomics
+\item DMS-REQ-0314 Compute Platform Heterogeneity
+\item DMS-REQ-0318 Data Management Unscheduled Downtime
+\item DMS-REQ-0289 Calibration Production Processing
+\item DMS-REQ-0294 Processing of Datasets \end{itemize} \\ \hline
+Data Release Production Execution &
+\begin{itemize} \item DMS-REQ-0346 Data Availability
+\item DMS-REQ-0008 Pipeline Availability
+\item DMS-REQ-0163 Re-processing Capacity
+\item DMS-REQ-0167 Incorporate Autonomics
+\item DMS-REQ-0314 Compute Platform Heterogeneity
+\item DMS-REQ-0318 Data Management Unscheduled Downtime
+\item DMS-REQ-0294 Processing of Datasets \end{itemize} \\ \hline
+Data Access Center &
+\\ \hline
+Bulk Distribution &
+\begin{itemize} \item DMS-REQ-0185 Archive Center
+\item DMS-REQ-0186 Archive Center Disaster Recovery
+\item DMS-REQ-0314 Compute Platform Heterogeneity
+\item DMS-REQ-0318 Data Management Unscheduled Downtime
+\item DMS-REQ-0122 Access to catalogs for external Level 3 processing
+\item DMS-REQ-0126 Access to images for external Level 3 processing
+\item DMS-REQ-0193 Data Access Centers
+\item DMS-REQ-0119 DAC resource allocation for Level 3 processing
+\item DMS-REQ-0300 Bulk Download Service \end{itemize} \\ \hline
+Proposal Manager &
+\begin{itemize} \item DMS-REQ-0314 Compute Platform Heterogeneity
+\item DMS-REQ-0318 Data Management Unscheduled Downtime
+\item DMS-REQ-0119 DAC resource allocation for Level 3 processing \end{itemize} \\ \hline
+Analysis and Developer Services &
+\\ \hline
+Developer Services &
+\begin{itemize} \item DMS-REQ-0314 Compute Platform Heterogeneity \end{itemize} \\ \hline
+Integration and Test &
+\begin{itemize} \item DMS-REQ-0314 Compute Platform Heterogeneity \end{itemize} \\ \hline
+Infrastructure &
+\\ \hline
+Data Backbone &
+\begin{itemize} \item DMS-REQ-0334 Persisting Data Products
+\item DMS-REQ-0336 Regenerating Data Products from Previous Data Releases
+\item DMS-REQ-0338 Targeted Coadds
+\item DMS-REQ-0339 Tracking Characterization Changes Between Data Releases
+\item DMS-REQ-0322 Special Programs Database
+\item DMS-REQ-0344 Constraints on Level 1 Special Program Products Generation
+\item DMS-REQ-0185 Archive Center
+\item DMS-REQ-0186 Archive Center Disaster Recovery
+\item DMS-REQ-0176 Base Facility Infrastructure
+\item DMS-REQ-0177 Base Facility Temporary Storage
+\item DMS-REQ-0008 Pipeline Availability
+\item DMS-REQ-0161 Optimization of Cost, Reliability and Availability in Order
+\item DMS-REQ-0162 Pipeline Throughput
+\item DMS-REQ-0163 Re-processing Capacity
+\item DMS-REQ-0164 Temporary Storage for Communications Links
+\item DMS-REQ-0165 Infrastructure Sizing for ``catching up''
+\item DMS-REQ-0166 Incorporate Fault-Tolerance
+\item DMS-REQ-0167 Incorporate Autonomics
+\item DMS-REQ-0314 Compute Platform Heterogeneity
+\item DMS-REQ-0318 Data Management Unscheduled Downtime
+\item DMS-REQ-0122 Access to catalogs for external Level 3 processing
+\item DMS-REQ-0123 Access to input catalogs for DAC-based Level 3 processing
+\item DMS-REQ-0124 Federation with external catalogs
+\item DMS-REQ-0126 Access to images for external Level 3 processing
+\item DMS-REQ-0127 Access to input images for DAC-based Level 3 processing
+\item DMS-REQ-0193 Data Access Centers
+\item DMS-REQ-0197 No Limit on Data Access Centers
+\item DMS-REQ-0077 Maintain Archive Publicly Accessible
+\item DMS-REQ-0094 Keep Historical Alert Archive
+\item DMS-REQ-0102 Provide Engineering and Facility Database Archive
+\item DMS-REQ-0309 Raw Data Archiving Reliability
+\item DMS-REQ-0310 Un-Archived Data Product Cache
+\item DMS-REQ-0311 Regenerate Un-archived Data Products
+\item DMS-REQ-0312 Level 1 Data Product Access
+\item DMS-REQ-0313 Level 1 and 2 Catalog Access
+\item DMS-REQ-0089 Solar System Objects Available Within Specified Time
+\item DMS-REQ-0287 DIASource Precovery
+\item DMS-REQ-0350 Associating Objects across data releases
+\item DMS-REQ-0291 Query Repeatibility
+\item DMS-REQ-0292 Uniqueness of IDs Across Data Releases
+\item DMS-REQ-0293 Selection of Datasets
+\item DMS-REQ-0294 Processing of Datasets
+\item DMS-REQ-0120 Level 3 Data Product Self Consistency
+\item DMS-REQ-0121 Provenance for Level 3 processing at DACs
+\item DMS-REQ-0125 Software framework for Level 3 catalog processing
+\item DMS-REQ-0128 Software framework for Level 3 image processing
+\item DMS-REQ-0290 Level 3 Data Import
+\item DMS-REQ-0340 Access Controls of Level 3 Data Products
+\item DMS-REQ-0296 Pre-cursor, and Real Data
+\item DMS-REQ-0298 Data Product and Raw Data Access
+\item DMS-REQ-0299 Data Product Ingest
+\item DMS-REQ-0300 Bulk Download Service \end{itemize} \\ \hline
+Identity Manager &
+\begin{itemize} \item DMS-REQ-0314 Compute Platform Heterogeneity
+\item DMS-REQ-0318 Data Management Unscheduled Downtime
+\item DMS-REQ-0197 No Limit on Data Access Centers
+\item DMS-REQ-0340 Access Controls of Level 3 Data Products \end{itemize} \\ \hline
+ITC Environments &
+\begin{itemize} \item DMS-REQ-0185 Archive Center
+\item DMS-REQ-0186 Archive Center Disaster Recovery
+\item DMS-REQ-0187 Archive Center Co-Location with Existing Facility
+\item DMS-REQ-0176 Base Facility Infrastructure
+\item DMS-REQ-0178 Base Facility Co-Location with Existing Facility
+\item DMS-REQ-0316 Commissioning Cluster
+\item DMS-REQ-0008 Pipeline Availability
+\item DMS-REQ-0161 Optimization of Cost, Reliability and Availability in Order
+\item DMS-REQ-0162 Pipeline Throughput
+\item DMS-REQ-0163 Re-processing Capacity
+\item DMS-REQ-0165 Infrastructure Sizing for ``catching up''
+\item DMS-REQ-0167 Incorporate Autonomics
+\item DMS-REQ-0314 Compute Platform Heterogeneity
+\item DMS-REQ-0318 Data Management Unscheduled Downtime
+\item DMS-REQ-0193 Data Access Centers
+\item DMS-REQ-0196 Data Access Center Geographical Distribution
+\item DMS-REQ-0197 No Limit on Data Access Centers
+\item DMS-REQ-0170 Prefer Computing and Storage Down
+\item DMS-REQ-0297 DMS Initialization Component \end{itemize} \\ \hline
+Networks &
+\begin{itemize} \item DMS-REQ-0188 Archive to Data Access Center Network
+\item DMS-REQ-0189 Archive to Data Access Center Network Availability
+\item DMS-REQ-0190 Archive to Data Access Center Network Reliability
+\item DMS-REQ-0191 Archive to Data Access Center Network Secondary Link
+\item DMS-REQ-0180 Base to Archive Network
+\item DMS-REQ-0181 Base to Archive Network Availability
+\item DMS-REQ-0182 Base to Archive Network Reliability
+\item DMS-REQ-0183 Base to Archive Network Secondary Link
+\item DMS-REQ-0008 Pipeline Availability
+\item DMS-REQ-0161 Optimization of Cost, Reliability and Availability in Order
+\item DMS-REQ-0162 Pipeline Throughput
+\item DMS-REQ-0163 Re-processing Capacity
+\item DMS-REQ-0165 Infrastructure Sizing for ``catching up''
+\item DMS-REQ-0167 Incorporate Autonomics
+\item DMS-REQ-0314 Compute Platform Heterogeneity
+\item DMS-REQ-0318 Data Management Unscheduled Downtime
+\item DMS-REQ-0193 Data Access Centers
+\item DMS-REQ-0194 Data Access Center Simultaneous Connections
+\item DMS-REQ-0197 No Limit on Data Access Centers
+\item DMS-REQ-0168 Summit Facility Data Communications
+\item DMS-REQ-0171 Summit to Base Network
+\item DMS-REQ-0172 Summit to Base Network Availability
+\item DMS-REQ-0173 Summit to Base Network Reliability
+\item DMS-REQ-0174 Summit to Base Network Secondary Link
+\item DMS-REQ-0175 Summit to Base Network Ownership and Operation \end{itemize} \\ \hline
+Workload+Workflow &
+\begin{itemize} \item DMS-REQ-0120 Level 3 Data Product Self Consistency
+\item DMS-REQ-0121 Provenance for Level 3 processing at DACs
+\item DMS-REQ-0125 Software framework for Level 3 catalog processing
+\item DMS-REQ-0128 Software framework for Level 3 image processing
+\item DMS-REQ-0156 Provide Pipeline Execution Services
+\item DMS-REQ-0302 Production Orchestration
+\item DMS-REQ-0303 Production Monitoring
+\item DMS-REQ-0304 Production Fault Tolerance \end{itemize} \\ \hline
+Data Access Client &
+\begin{itemize} \item DMS-REQ-0333 Maximum Likelihood Values and Covariances
+\item DMS-REQ-0347 Measurements in catalogs
+\item DMS-REQ-0314 Compute Platform Heterogeneity
+\item DMS-REQ-0121 Provenance for Level 3 processing at DACs
+\item DMS-REQ-0125 Software framework for Level 3 catalog processing
+\item DMS-REQ-0128 Software framework for Level 3 image processing
+\item DMS-REQ-0296 Pre-cursor, and Real Data \end{itemize} \\ \hline
+Task Execution Framework &
+\begin{itemize} \item DMS-REQ-0320 Processing of Data From Special Programs
+\item DMS-REQ-0314 Compute Platform Heterogeneity
+\item DMS-REQ-0121 Provenance for Level 3 processing at DACs
+\item DMS-REQ-0125 Software framework for Level 3 catalog processing
+\item DMS-REQ-0128 Software framework for Level 3 image processing
+\item DMS-REQ-0304 Production Fault Tolerance
+\item DMS-REQ-0158 Provide Pipeline Construction Services
+\item DMS-REQ-0305 Task Specification
+\item DMS-REQ-0306 Task Configuration \end{itemize} \\ \hline
+Science Platform &
+\\ \hline
+LSP Web APIs &
+\begin{itemize} \item DMS-REQ-0331 Computing Derived Quantities
+\item DMS-REQ-0332 Denormalizing Database Tables
+\item DMS-REQ-0347 Measurements in catalogs
+\item DMS-REQ-0323 Calculating SSObject Parameters
+\item DMS-REQ-0324 Matching DIASources to Objects
+\item DMS-REQ-0334 Persisting Data Products
+\item DMS-REQ-0336 Regenerating Data Products from Previous Data Releases
+\item DMS-REQ-0338 Targeted Coadds
+\item DMS-REQ-0339 Tracking Characterization Changes Between Data Releases
+\item DMS-REQ-0322 Special Programs Database
+\item DMS-REQ-0344 Constraints on Level 1 Special Program Products Generation
+\item DMS-REQ-0161 Optimization of Cost, Reliability and Availability in Order
+\item DMS-REQ-0314 Compute Platform Heterogeneity
+\item DMS-REQ-0318 Data Management Unscheduled Downtime
+\item DMS-REQ-0123 Access to input catalogs for DAC-based Level 3 processing
+\item DMS-REQ-0124 Federation with external catalogs
+\item DMS-REQ-0127 Access to input images for DAC-based Level 3 processing
+\item DMS-REQ-0193 Data Access Centers
+\item DMS-REQ-0197 No Limit on Data Access Centers
+\item DMS-REQ-0075 Catalog Queries
+\item DMS-REQ-0078 Catalog Export Formats
+\item DMS-REQ-0311 Regenerate Un-archived Data Products
+\item DMS-REQ-0312 Level 1 Data Product Access
+\item DMS-REQ-0313 Level 1 and 2 Catalog Access
+\item DMS-REQ-0345 Logging of catalog queries
+\item DMS-REQ-0089 Solar System Objects Available Within Specified Time
+\item DMS-REQ-0287 DIASource Precovery
+\item DMS-REQ-0291 Query Repeatibility
+\item DMS-REQ-0292 Uniqueness of IDs Across Data Releases
+\item DMS-REQ-0293 Selection of Datasets
+\item DMS-REQ-0295 Transparent Data Access
+\item DMS-REQ-0119 DAC resource allocation for Level 3 processing
+\item DMS-REQ-0120 Level 3 Data Product Self Consistency
+\item DMS-REQ-0121 Provenance for Level 3 processing at DACs
+\item DMS-REQ-0125 Software framework for Level 3 catalog processing
+\item DMS-REQ-0128 Software framework for Level 3 image processing
+\item DMS-REQ-0290 Level 3 Data Import
+\item DMS-REQ-0065 Provide Image Access Services
+\item DMS-REQ-0155 Provide Data Access Services
+\item DMS-REQ-0298 Data Product and Raw Data Access
+\item DMS-REQ-0299 Data Product Ingest \end{itemize} \\ \hline
+LSP JupyterLab &
+\begin{itemize} \item DMS-REQ-0161 Optimization of Cost, Reliability and Availability in Order
+\item DMS-REQ-0314 Compute Platform Heterogeneity
+\item DMS-REQ-0318 Data Management Unscheduled Downtime
+\item DMS-REQ-0123 Access to input catalogs for DAC-based Level 3 processing
+\item DMS-REQ-0124 Federation with external catalogs
+\item DMS-REQ-0127 Access to input images for DAC-based Level 3 processing
+\item DMS-REQ-0193 Data Access Centers
+\item DMS-REQ-0194 Data Access Center Simultaneous Connections
+\item DMS-REQ-0197 No Limit on Data Access Centers
+\item DMS-REQ-0119 DAC resource allocation for Level 3 processing \end{itemize} \\ \hline
+LSP Portal &
+\begin{itemize} \item DMS-REQ-0161 Optimization of Cost, Reliability and Availability in Order
+\item DMS-REQ-0314 Compute Platform Heterogeneity
+\item DMS-REQ-0318 Data Management Unscheduled Downtime
+\item DMS-REQ-0123 Access to input catalogs for DAC-based Level 3 processing
+\item DMS-REQ-0124 Federation with external catalogs
+\item DMS-REQ-0127 Access to input images for DAC-based Level 3 processing
+\item DMS-REQ-0193 Data Access Centers
+\item DMS-REQ-0194 Data Access Center Simultaneous Connections
+\item DMS-REQ-0197 No Limit on Data Access Centers
+\item DMS-REQ-0341 Providing a Precovery Service
+\item DMS-REQ-0119 DAC resource allocation for Level 3 processing
+\item DMS-REQ-0160 Provide User Interface Services \end{itemize} \\ \hline
+QC System &
+\begin{itemize} \item DMS-REQ-0097 Level 1 Data Quality Report Definition
+\item DMS-REQ-0099 Level 1 Performance Report Definition
+\item DMS-REQ-0314 Compute Platform Heterogeneity
+\item DMS-REQ-0318 Data Management Unscheduled Downtime
+\item DMS-REQ-0096 Generate Data Quality Report Within Specified Time
+\item DMS-REQ-0098 Generate DMS Performance Report Within Specified Time
+\item DMS-REQ-0100 Generate Calibration Report Within Specified Time \end{itemize} \\ \hline
+Science Algorithms &
+\begin{itemize} \item DMS-REQ-0032 Image Differencing
+\item DMS-REQ-0033 Provide Source Detection Software
+\item DMS-REQ-0042 Provide Astrometric Model
+\item DMS-REQ-0043 Provide Calibrated Photometry
+\item DMS-REQ-0052 Enable a Range of Shape Measurement Approaches
+\item DMS-REQ-0296 Pre-cursor, and Real Data
+\item DMS-REQ-0308 Software Architecture to Enable Community Re-Use \end{itemize} \\ \hline
+Science Payloads &
+\\ \hline
+Alert Production &
+\begin{itemize} \item DMS-REQ-0333 Maximum Likelihood Values and Covariances
+\item DMS-REQ-0347 Measurements in catalogs
+\item DMS-REQ-0004 Nightly Data Accessible Within 24 hrs
+\item DMS-REQ-0010 Difference Exposures
+\item DMS-REQ-0074 Difference Exposure Attributes
+\item DMS-REQ-0069 Processed Visit Images
+\item DMS-REQ-0029 Generate Photometric Zeropoint for Visit Image
+\item DMS-REQ-0030 Generate WCS for Visit Images
+\item DMS-REQ-0070 Generate PSF for Visit Images
+\item DMS-REQ-0072 Processed Visit Image Content
+\item DMS-REQ-0327 Background Model Calculation
+\item DMS-REQ-0328 Documenting Image Characterization
+\item DMS-REQ-0097 Level 1 Data Quality Report Definition
+\item DMS-REQ-0266 Exposure Catalog
+\item DMS-REQ-0269 DIASource Catalog
+\item DMS-REQ-0270 Faint DIASource Measurements
+\item DMS-REQ-0271 DIAObject Catalog
+\item DMS-REQ-0272 DIAObject Attributes
+\item DMS-REQ-0274 Alert Content
+\item DMS-REQ-0317 DIAForcedSource Catalog
+\item DMS-REQ-0319 Characterizing Variability
+\item DMS-REQ-0324 Matching DIASources to Objects
+\item DMS-REQ-0321 Level 1 Processing of Special Programs Data
+\item DMS-REQ-0344 Constraints on Level 1 Special Program Products Generation
+\item DMS-REQ-0312 Level 1 Data Product Access
+\item DMS-REQ-0002 Transient Alert Distribution
+\item DMS-REQ-0285 Level 1 Source Association
+\item DMS-REQ-0288 Use of External Orbit Catalogs
+\item DMS-REQ-0009 Simulated Data
+\item DMS-REQ-0032 Image Differencing
+\item DMS-REQ-0033 Provide Source Detection Software
+\item DMS-REQ-0042 Provide Astrometric Model
+\item DMS-REQ-0043 Provide Calibrated Photometry
+\item DMS-REQ-0052 Enable a Range of Shape Measurement Approaches
+\item DMS-REQ-0308 Software Architecture to Enable Community Re-Use \end{itemize} \\ \hline
+Annual Calibration &
+\begin{itemize} \item DMS-REQ-0059 Bad Pixel Map
+\item DMS-REQ-0060 Bias Residual Image
+\item DMS-REQ-0061 Crosstalk Correction Matrix
+\item DMS-REQ-0062 Illumination Correction Frame
+\item DMS-REQ-0063 Monochromatic Flatfield Data Cube
+\item DMS-REQ-0130 Calibration Data Products
+\item DMS-REQ-0132 Calibration Image Provenance
+\item DMS-REQ-0282 Dark Current Correction Frame
+\item DMS-REQ-0283 Fringe Correction Frame
+\item DMS-REQ-0265 Guider Calibration Data Acquisition
+\item DMS-REQ-0289 Calibration Production Processing
+\item DMS-REQ-0009 Simulated Data
+\item DMS-REQ-0308 Software Architecture to Enable Community Re-Use \end{itemize} \\ \hline
+Daily Calibration Update &
+\begin{itemize} \item DMS-REQ-0059 Bad Pixel Map
+\item DMS-REQ-0060 Bias Residual Image
+\item DMS-REQ-0061 Crosstalk Correction Matrix
+\item DMS-REQ-0062 Illumination Correction Frame
+\item DMS-REQ-0063 Monochromatic Flatfield Data Cube
+\item DMS-REQ-0130 Calibration Data Products
+\item DMS-REQ-0132 Calibration Image Provenance
+\item DMS-REQ-0282 Dark Current Correction Frame
+\item DMS-REQ-0283 Fringe Correction Frame
+\item DMS-REQ-0265 Guider Calibration Data Acquisition
+\item DMS-REQ-0101 Level 1 Calibration Report Definition
+\item DMS-REQ-0100 Generate Calibration Report Within Specified Time
+\item DMS-REQ-0131 Calibration Images Available Within Specified Time
+\item DMS-REQ-0289 Calibration Production Processing
+\item DMS-REQ-0009 Simulated Data
+\item DMS-REQ-0308 Software Architecture to Enable Community Re-Use \end{itemize} \\ \hline
+Data Release Production &
+\begin{itemize} \item DMS-REQ-0326 Storing Approximations of Per-pixel Metadata
+\item DMS-REQ-0331 Computing Derived Quantities
+\item DMS-REQ-0333 Maximum Likelihood Values and Covariances
+\item DMS-REQ-0347 Measurements in catalogs
+\item DMS-REQ-0325 Regenerating L1 Data Products During Data Release Processing
+\item DMS-REQ-0034 Associate Sources to Objects
+\item DMS-REQ-0047 Provide PSF for Coadded Images
+\item DMS-REQ-0103 Produce Images for EPO
+\item DMS-REQ-0106 Coadded Image Provenance
+\item DMS-REQ-0267 Source Catalog
+\item DMS-REQ-0268 Forced-Source Catalog
+\item DMS-REQ-0275 Object Catalog
+\item DMS-REQ-0046 Provide Photometric Redshifts of Galaxies
+\item DMS-REQ-0276 Object Characterization
+\item DMS-REQ-0277 Coadd Source Catalog
+\item DMS-REQ-0349 Detecting extended low surface brightness objects
+\item DMS-REQ-0278 Coadd Image Method Constraints
+\item DMS-REQ-0279 Deep Detection Coadds
+\item DMS-REQ-0280 Template Coadds
+\item DMS-REQ-0281 Multi-band Coadds
+\item DMS-REQ-0329 All-Sky Visualization of Data Releases
+\item DMS-REQ-0330 Best Seeing Coadds
+\item DMS-REQ-0335 PSF-Matched Coadds
+\item DMS-REQ-0337 Detecting faint variable objects
+\item DMS-REQ-0320 Processing of Data From Special Programs
+\item DMS-REQ-0350 Associating Objects across data releases
+\item DMS-REQ-0009 Simulated Data
+\item DMS-REQ-0032 Image Differencing
+\item DMS-REQ-0033 Provide Source Detection Software
+\item DMS-REQ-0042 Provide Astrometric Model
+\item DMS-REQ-0043 Provide Calibrated Photometry
+\item DMS-REQ-0052 Enable a Range of Shape Measurement Approaches
+\item DMS-REQ-0308 Software Architecture to Enable Community Re-Use \end{itemize} \\ \hline
+MOPS and Forced Photometry &
+\begin{itemize} \item DMS-REQ-0004 Nightly Data Accessible Within 24 hrs
+\item DMS-REQ-0273 SSObject Catalog
+\item DMS-REQ-0317 DIAForcedSource Catalog
+\item DMS-REQ-0319 Characterizing Variability
+\item DMS-REQ-0321 Level 1 Processing of Special Programs Data
+\item DMS-REQ-0344 Constraints on Level 1 Special Program Products Generation
+\item DMS-REQ-0341 Providing a Precovery Service
+\item DMS-REQ-0089 Solar System Objects Available Within Specified Time
+\item DMS-REQ-0286 SSObject Precovery
+\item DMS-REQ-0287 DIASource Precovery
+\item DMS-REQ-0288 Use of External Orbit Catalogs
+\item DMS-REQ-0009 Simulated Data
+\item DMS-REQ-0308 Software Architecture to Enable Community Re-Use \end{itemize} \\ \hline
+Periodic Calibration &
+\begin{itemize} \item DMS-REQ-0059 Bad Pixel Map
+\item DMS-REQ-0060 Bias Residual Image
+\item DMS-REQ-0061 Crosstalk Correction Matrix
+\item DMS-REQ-0062 Illumination Correction Frame
+\item DMS-REQ-0063 Monochromatic Flatfield Data Cube
+\item DMS-REQ-0130 Calibration Data Products
+\item DMS-REQ-0132 Calibration Image Provenance
+\item DMS-REQ-0282 Dark Current Correction Frame
+\item DMS-REQ-0283 Fringe Correction Frame
+\item DMS-REQ-0265 Guider Calibration Data Acquisition
+\item DMS-REQ-0289 Calibration Production Processing
+\item DMS-REQ-0009 Simulated Data
+\item DMS-REQ-0308 Software Architecture to Enable Community Re-Use \end{itemize} \\ \hline
+Raw Calibration &
+\begin{itemize} \item DMS-REQ-0101 Level 1 Calibration Report Definition
+\item DMS-REQ-0131 Calibration Images Available Within Specified Time
+\item DMS-REQ-0009 Simulated Data
+\item DMS-REQ-0308 Software Architecture to Enable Community Re-Use \end{itemize} \\ \hline
+Template Generation &
+\begin{itemize} \item DMS-REQ-0280 Template Coadds
+\item DMS-REQ-0009 Simulated Data
+\item DMS-REQ-0308 Software Architecture to Enable Community Re-Use \end{itemize} \\ \hline
+Science Primitives &
+\begin{itemize} \item DMS-REQ-0042 Provide Astrometric Model
+\item DMS-REQ-0043 Provide Calibrated Photometry
+\item DMS-REQ-0052 Enable a Range of Shape Measurement Approaches
+\item DMS-REQ-0351 Provide Beam Projector Coordinate Calculation Software \end{itemize} \\ \hline
+\end{xtabular}
 
 \end{document}
