@@ -1062,6 +1062,40 @@ optimally run the particular task (i.e., which level of intra-node
 parallelization is be desired).
 
 It also includes a configuration API and a logging API.
+
+\section{Design and Implementation Standards}\label{design-implementation-standards}
+
+Standards have been adopted by the DM Change Control Board (CCB) that apply to
+all component designs within the LSST DM System.  Coding standards and the like
+that are not pertinent to design may be found in the LSST DM Developer Guide
+(\cite{DevGuide}).
+
+\subsection{Python Version}
+
+All LSST DM code will run under Python 3 by 2018-01-31.  Package authors may
+choose to have their code backward-compatible with Python 2.7, but this is only
+required for Science Pipelines code that is a dependency of \texttt{lsst\_apps}, and then only until external dependencies become Python 3-only.
+
+Python 2.7 will be deprecated by the time LSST begins operations, and many
+external dependencies are in the process of moving to being Python 3-only.
+
+\subsection{HTTPS Protocol}
+
+In the absence of a specific technical justification and acceptance by the LSST
+Information Security Officer and DM Change Control Board, all Web-enabled user
+interfaces and Web services exposed to users and the public Internet will use
+the HTTPS protocol and not the HTTP protocol.  To reiterate: this is only a
+default, and exceptions can be made when justified.
+
+The covered interfaces include those of the three LSP Aspects (Portal,
+JupyterLab, and Web APIs).
+
+The requirement to implement data access policies limiting data access to
+identified rights holders will require all, or nearly all, data access to be
+authenticated provides a strong technical justification.  In addition, it
+appears to be appropriate "technical best practice" in the current Internet
+environment, in the absence of good reasons to do otherwise.
+
 \newpage
 \section{Appendix: Traceability}\label{appendix-traceability}
 
