@@ -16,27 +16,6 @@
   the DM Leadership Team}
 \setDocCurator{Kian-Tat Lim}
 
-% Scale images if necessary, so that they will not overflow the page
-% margins by default, and it is still possible to overwrite the defaults
-% using explicit options in \includegraphics[width, height, ...]{}
-% \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-% \setcounter{secnumdepth}{0}
-% Redefines (sub)paragraphs to behave more like sections
-% \ifx\paragraph\undefined\else
-% \let\oldparagraph\paragraph
-% \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
-% \fi
-% \ifx\subparagraph\undefined\else
-% \let\oldsubparagraph\subparagraph
-% \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
-% \fi
-
-% set default figure placement to htbp
-% \makeatletter
-% \def\fps@figure{htbp}
-% \makeatother
-
-
 \date{\today}
 \setDocAbstract{%
   The LSST Data Management System (DMS) is a set of services
@@ -60,16 +39,6 @@
 
 \section{Overview}\label{overview}
 
-Still to be done:
-\begin{itemize}
-\item
-  fill out more text
-\item
-  internal links
-\item
-  synchronize with OpsCon documents
-\end{itemize}
-
 The LSST Data Management System (DMS) is a set of services employing a
 variety of software components running on computational and networking
 infrastructure that combine to deliver science data products to the
@@ -79,7 +48,7 @@ Operations era, it is operated by a combination of the LSST Data
 Facility, Science Operations, and Observatory Operations departments.
 
 The data products to be delivered are defined and described in the Data
-Products Definition Document (LSE-163). These are divided into three
+Products Definition Document (\citeds{LSE-163}). These are divided into three
 major categories.
 
 One category of data products is generated on a nightly or daily cadence
@@ -144,7 +113,7 @@ application payloads and isolate them from their environment, including
 changes to underlying technologies. These components also provide data
 access for science users and staff. The detailed design of the
 components in this tier is given in Data Management Middleware Design,
-LDM-152. The bottom tier is ``infrastructure'': hardware, networking,
+\citeds{LDM-152}. The bottom tier is ``infrastructure'': hardware, networking,
 and low-level software and services that provide a computing
 environment. The detailed design of components in this tier is given in
 Data Management Services \& Infrastructure, \citeds{LDM-129}, and Network Design,
@@ -317,7 +286,7 @@ See Figure \ref{fig:mwandinfra}.
 
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{DM_Middleware_and_Infrastructure.png}
+\includegraphics[width=\textwidth]{images/MiddlewareInfrastructure.pdf}
 \caption{Data Management Middleware and Infrastructure}
 \label{fig:mwandinfra}
 \end{figure}
@@ -346,7 +315,7 @@ monitoring, and control only at the highest level.
 \subsection{Service Descriptions}\label{base-service-descriptions}
 
 Detailed concepts of operations for each service can be found in
-``Concept of Operations for the LSST Production Services'' (LDM-230).
+``Concept of Operations for the LSST Production Services'' (\citeds{LDM-230}).
 
 
 \subsubsection{Image and EFD Archiving}\label{image-and-efd-archiving}
@@ -400,7 +369,7 @@ This service obtains information from the NCSA Enclave Level 1 Domain,
 particularly status and quality metrics from Prompt Processing of images
 and the Level 1 Quality Control service, and transmits it to the OCS as
 specified in the Data Management-OCS Software Communication Interface
-(LSE-72). Note that more detailed information on the status and
+(\citeds{LSE-72}). Note that more detailed information on the status and
 performance of DMS services will also be available to Observatory
 operators through remote displays originated from the
 Management/Monitoring infrastructure services in all DMS computational
@@ -473,7 +442,7 @@ rapidly and reliably and so are designed to execute autonomously.
 \subsection{Service Descriptions}\label{ncsa-l1-service-descriptions}
 
 Detailed concepts of operations for each service can be found in
-``Concept of Operations for the LSST Production Services'' (LDM-230).
+``Concept of Operations for the LSST Production Services'' (\citeds{LDM-230}).
 
 \subsubsection{Prompt Processing}\label{prompt-processing}
 
