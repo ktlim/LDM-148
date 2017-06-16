@@ -1071,11 +1071,12 @@ Traceability}\label{requirement-to-component-traceability}
 Note that DMS-REQ-0006 has no components; this requirement is in the
 process of being dropped.
 
-\tablefirsthead{\hline \multicolumn{1}{|c|}{\textbf{Requirement}} &
-                       \multicolumn{1}{c|}{\textbf{Components}} \\ \hline}
-\tablehead{\hline \multicolumn{1}{|c|}{\textbf{Requirement}} &
-                       \multicolumn{1}{c|}{\textbf{Components}} \\ \hline}
-\begin{xtabular}{|p{0.4\textwidth}|p{0.55\textwidth}|}
+\footnotesize
+\tablefirsthead{\hline \multicolumn{1}{c}{\textbf{Requirement}} &
+                       \multicolumn{1}{c}{\textbf{Components}} \\ \hline}
+\tablehead{\hline \multicolumn{1}{c}{\textbf{Requirement}} &
+                       \multicolumn{1}{c}{\textbf{Components}} \\ \hline}
+\begin{xtabular}{p{0.4\textwidth}p{0.55\textwidth}}
 DMS-REQ-0059 Bad Pixel Map & OCS Driven Batch, Calibration Products
 Production Execution, Annual Calibration, Daily Calibration Update,
 Periodic Calibration\\ \hline
@@ -1450,19 +1451,20 @@ Processing\\ \hline
 DMS-REQ-0307 Unique Processing Coverage &
 Workload+Workflow\\ \hline
 \end{xtabular}
-
-\setitemize{noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt}
+\normalsize
 
 \subsection{Component to Requirement
 Traceability}\label{component-to-requirement-traceability}
 
 Note that only ``leaf'' components are traced to requirements.
 
-\tablefirsthead{\hline \multicolumn{1}{|c|}{\textbf{Component}} &
-                       \multicolumn{1}{c|}{\textbf{Requirements}} \\ \hline}
-\tablehead{\hline \multicolumn{1}{|c|}{\textbf{Component}} &
-                       \multicolumn{1}{c|}{\textbf{Requirements}} \\ \hline}
-\begin{xtabular}{|p{0.1\textwidth}|p{0.85\textwidth}|}
+\setitemize{noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt}
+\tablefirsthead{\hline \multicolumn{1}{c}{\textbf{Component}} &
+                       \multicolumn{1}{c}{\textbf{Requirements}} \\ \hline}
+\tablehead{\hline \multicolumn{1}{c}{\textbf{Component}} &
+                       \multicolumn{1}{c}{\textbf{Requirements}} \\ \hline}
+\footnotesize
+\begin{xtabular}{lp{0.7\textwidth}}
 Data Management & \\ \hline
 Level 1 System & \\ \hline
 Alert Distribution &
@@ -1492,7 +1494,8 @@ Alert Filtering &
 \item DMS-REQ-0348 Pre-defined alert filters
 \end{itemize} \\ \hline
 Image and EFD Archiving &
-\begin{itemize} \item DMS-REQ-0018 Raw Science Image Data Acquisition
+\begin{itemize}
+\item DMS-REQ-0018 Raw Science Image Data Acquisition
 \item DMS-REQ-0020 Wavefront Sensor Data Acquisition
 \item DMS-REQ-0024 Raw Image Assembly
 \item DMS-REQ-0068 Raw Science Image Metadata
@@ -1507,9 +1510,11 @@ Image and EFD Archiving &
 \item DMS-REQ-0102 Provide Engineering and Facility Database Archive
 \item DMS-REQ-0309 Raw Data Archiving Reliability
 \item DMS-REQ-0315 DMS Communication with OCS
-\item DMS-REQ-0284 Level-1 Production Completeness \end{itemize} \\ \hline
+\item DMS-REQ-0284 Level-1 Production Completeness
+\end{itemize} \\ \hline
 OCS Driven Batch &
-\begin{itemize} \item DMS-REQ-0059 Bad Pixel Map
+\begin{itemize}
+\item DMS-REQ-0059 Bad Pixel Map
 \item DMS-REQ-0060 Bias Residual Image
 \item DMS-REQ-0061 Crosstalk Correction Matrix
 \item DMS-REQ-0062 Illumination Correction Frame
@@ -1529,9 +1534,11 @@ OCS Driven Batch &
 \item DMS-REQ-0315 DMS Communication with OCS
 \item DMS-REQ-0131 Calibration Images Available Within Specified Time
 \item DMS-REQ-0289 Calibration Production Processing
-\item DMS-REQ-0294 Processing of Datasets \end{itemize} \\ \hline
+\item DMS-REQ-0294 Processing of Datasets
+\end{itemize} \\ \hline
 Offline Processing &
-\begin{itemize} \item DMS-REQ-0346 Data Availability
+\begin{itemize}
+\item DMS-REQ-0346 Data Availability
 \item DMS-REQ-0004 Nightly Data Accessible Within 24 hrs
 \item DMS-REQ-0321 Level 1 Processing of Special Programs Data
 \item DMS-REQ-0344 Constraints on Level 1 Special Program Products Generation
@@ -1544,9 +1551,11 @@ Offline Processing &
 \item DMS-REQ-0341 Providing a Precovery Service
 \item DMS-REQ-0089 Solar System Objects Available Within Specified Time
 \item DMS-REQ-0284 Level-1 Production Completeness
-\item DMS-REQ-0294 Processing of Datasets \end{itemize} \\ \hline
+\item DMS-REQ-0294 Processing of Datasets
+\end{itemize} \\ \hline
 Prompt Processing &
-\begin{itemize} \item DMS-REQ-0022 Crosstalk Corrected Science Image Data Acquisition
+\begin{itemize}
+\item DMS-REQ-0022 Crosstalk Corrected Science Image Data Acquisition
 \item DMS-REQ-0346 Data Availability
 \item DMS-REQ-0004 Nightly Data Accessible Within 24 hrs
 \item DMS-REQ-0099 Level 1 Performance Report Definition
@@ -1563,14 +1572,18 @@ Prompt Processing &
 \item DMS-REQ-0131 Calibration Images Available Within Specified Time
 \item DMS-REQ-0284 Level-1 Production Completeness
 \item DMS-REQ-0294 Processing of Datasets
-\item DMS-REQ-0301 Control of Level-1 Production \end{itemize} \\ \hline
+\item DMS-REQ-0301 Control of Level-1 Production
+\end{itemize} \\ \hline
 Telemetry Gateway &
-\begin{itemize} \item DMS-REQ-0008 Pipeline Availability
+\begin{itemize}
+\item DMS-REQ-0008 Pipeline Availability
 \item DMS-REQ-0314 Compute Platform Heterogeneity
 \item DMS-REQ-0318 Data Management Unscheduled Downtime
-\item DMS-REQ-0315 DMS Communication with OCS \end{itemize} \\ \hline Level 2 System & \\ \hline
+\item DMS-REQ-0315 DMS Communication with OCS
+\end{itemize} \\ \hline Level 2 System & \\ \hline
 Calibration Products Production Execution &
-\begin{itemize} \item DMS-REQ-0059 Bad Pixel Map
+\begin{itemize}
+\item DMS-REQ-0059 Bad Pixel Map
 \item DMS-REQ-0060 Bias Residual Image
 \item DMS-REQ-0061 Crosstalk Correction Matrix
 \item DMS-REQ-0062 Illumination Correction Frame
@@ -1587,19 +1600,23 @@ Calibration Products Production Execution &
 \item DMS-REQ-0314 Compute Platform Heterogeneity
 \item DMS-REQ-0318 Data Management Unscheduled Downtime
 \item DMS-REQ-0289 Calibration Production Processing
-\item DMS-REQ-0294 Processing of Datasets \end{itemize} \\ \hline
+\item DMS-REQ-0294 Processing of Datasets
+\end{itemize} \\ \hline
 Data Release Production Execution &
-\begin{itemize} \item DMS-REQ-0346 Data Availability
+\begin{itemize}
+\item DMS-REQ-0346 Data Availability
 \item DMS-REQ-0008 Pipeline Availability
 \item DMS-REQ-0163 Re-processing Capacity
 \item DMS-REQ-0167 Incorporate Autonomics
 \item DMS-REQ-0314 Compute Platform Heterogeneity
 \item DMS-REQ-0318 Data Management Unscheduled Downtime
-\item DMS-REQ-0294 Processing of Datasets \end{itemize} \\ \hline
+\item DMS-REQ-0294 Processing of Datasets
+\end{itemize} \\ \hline
 Data Access Center &
 \\ \hline
 Bulk Distribution &
-\begin{itemize} \item DMS-REQ-0185 Archive Center
+\begin{itemize}
+\item DMS-REQ-0185 Archive Center
 \item DMS-REQ-0186 Archive Center Disaster Recovery
 \item DMS-REQ-0314 Compute Platform Heterogeneity
 \item DMS-REQ-0318 Data Management Unscheduled Downtime
@@ -1607,21 +1624,29 @@ Bulk Distribution &
 \item DMS-REQ-0126 Access to images for external Level 3 processing
 \item DMS-REQ-0193 Data Access Centers
 \item DMS-REQ-0119 DAC resource allocation for Level 3 processing
-\item DMS-REQ-0300 Bulk Download Service \end{itemize} \\ \hline
+\item DMS-REQ-0300 Bulk Download Service
+\end{itemize} \\ \hline
 Proposal Manager &
-\begin{itemize} \item DMS-REQ-0314 Compute Platform Heterogeneity
+\begin{itemize}
+\item DMS-REQ-0314 Compute Platform Heterogeneity
 \item DMS-REQ-0318 Data Management Unscheduled Downtime
-\item DMS-REQ-0119 DAC resource allocation for Level 3 processing \end{itemize} \\ \hline
+\item DMS-REQ-0119 DAC resource allocation for Level 3 processing
+\end{itemize} \\ \hline
 Analysis and Developer Services &
 \\ \hline
 Developer Services &
-\begin{itemize} \item DMS-REQ-0314 Compute Platform Heterogeneity \end{itemize} \\ \hline
+\begin{itemize}
+\item DMS-REQ-0314 Compute Platform Heterogeneity
+\end{itemize} \\ \hline
 Integration and Test &
-\begin{itemize} \item DMS-REQ-0314 Compute Platform Heterogeneity \end{itemize} \\ \hline
+\begin{itemize}
+\item DMS-REQ-0314 Compute Platform Heterogeneity
+\end{itemize} \\ \hline
 Infrastructure &
 \\ \hline
 Data Backbone &
-\begin{itemize} \item DMS-REQ-0334 Persisting Data Products
+\begin{itemize}
+\item DMS-REQ-0334 Persisting Data Products
 \item DMS-REQ-0336 Regenerating Data Products from Previous Data Releases
 \item DMS-REQ-0338 Targeted Coadds
 \item DMS-REQ-0339 Tracking Characterization Changes Between Data Releases
@@ -1631,6 +1656,9 @@ Data Backbone &
 \item DMS-REQ-0186 Archive Center Disaster Recovery
 \item DMS-REQ-0176 Base Facility Infrastructure
 \item DMS-REQ-0177 Base Facility Temporary Storage
+\end{itemize} \\ \hline
+Data Backbone (continued) &
+\begin{itemize}
 \item DMS-REQ-0008 Pipeline Availability
 \item DMS-REQ-0161 Optimization of Cost, Reliability and Availability in Order
 \item DMS-REQ-0162 Pipeline Throughput
@@ -1671,15 +1699,22 @@ Data Backbone &
 \item DMS-REQ-0340 Access Controls of Level 3 Data Products
 \item DMS-REQ-0296 Pre-cursor, and Real Data
 \item DMS-REQ-0298 Data Product and Raw Data Access
+\end{itemize} \\ \hline
+Data Backbone (continued) &
+\begin{itemize}
 \item DMS-REQ-0299 Data Product Ingest
-\item DMS-REQ-0300 Bulk Download Service \end{itemize} \\ \hline
+\item DMS-REQ-0300 Bulk Download Service
+\end{itemize} \\ \hline
 Identity Manager &
-\begin{itemize} \item DMS-REQ-0314 Compute Platform Heterogeneity
+\begin{itemize}
+\item DMS-REQ-0314 Compute Platform Heterogeneity
 \item DMS-REQ-0318 Data Management Unscheduled Downtime
 \item DMS-REQ-0197 No Limit on Data Access Centers
-\item DMS-REQ-0340 Access Controls of Level 3 Data Products \end{itemize} \\ \hline
+\item DMS-REQ-0340 Access Controls of Level 3 Data Products
+\end{itemize} \\ \hline
 ITC Environments &
-\begin{itemize} \item DMS-REQ-0185 Archive Center
+\begin{itemize}
+\item DMS-REQ-0185 Archive Center
 \item DMS-REQ-0186 Archive Center Disaster Recovery
 \item DMS-REQ-0187 Archive Center Co-Location with Existing Facility
 \item DMS-REQ-0176 Base Facility Infrastructure
@@ -1697,9 +1732,11 @@ ITC Environments &
 \item DMS-REQ-0196 Data Access Center Geographical Distribution
 \item DMS-REQ-0197 No Limit on Data Access Centers
 \item DMS-REQ-0170 Prefer Computing and Storage Down
-\item DMS-REQ-0297 DMS Initialization Component \end{itemize} \\ \hline
+\item DMS-REQ-0297 DMS Initialization Component
+\end{itemize} \\ \hline
 Networks &
-\begin{itemize} \item DMS-REQ-0188 Archive to Data Access Center Network
+\begin{itemize}
+\item DMS-REQ-0188 Archive to Data Access Center Network
 \item DMS-REQ-0189 Archive to Data Access Center Network Availability
 \item DMS-REQ-0190 Archive to Data Access Center Network Reliability
 \item DMS-REQ-0191 Archive to Data Access Center Network Secondary Link
@@ -1723,26 +1760,32 @@ Networks &
 \item DMS-REQ-0172 Summit to Base Network Availability
 \item DMS-REQ-0173 Summit to Base Network Reliability
 \item DMS-REQ-0174 Summit to Base Network Secondary Link
-\item DMS-REQ-0175 Summit to Base Network Ownership and Operation \end{itemize} \\ \hline
+\item DMS-REQ-0175 Summit to Base Network Ownership and Operation
+\end{itemize} \\ \hline
 Workload+Workflow &
-\begin{itemize} \item DMS-REQ-0120 Level 3 Data Product Self Consistency
+\begin{itemize}
+\item DMS-REQ-0120 Level 3 Data Product Self Consistency
 \item DMS-REQ-0121 Provenance for Level 3 processing at DACs
 \item DMS-REQ-0125 Software framework for Level 3 catalog processing
 \item DMS-REQ-0128 Software framework for Level 3 image processing
 \item DMS-REQ-0156 Provide Pipeline Execution Services
 \item DMS-REQ-0302 Production Orchestration
 \item DMS-REQ-0303 Production Monitoring
-\item DMS-REQ-0304 Production Fault Tolerance \end{itemize} \\ \hline
+\item DMS-REQ-0304 Production Fault Tolerance
+\end{itemize} \\ \hline
 Data Access Client &
-\begin{itemize} \item DMS-REQ-0333 Maximum Likelihood Values and Covariances
+\begin{itemize}
+\item DMS-REQ-0333 Maximum Likelihood Values and Covariances
 \item DMS-REQ-0347 Measurements in catalogs
 \item DMS-REQ-0314 Compute Platform Heterogeneity
 \item DMS-REQ-0121 Provenance for Level 3 processing at DACs
 \item DMS-REQ-0125 Software framework for Level 3 catalog processing
 \item DMS-REQ-0128 Software framework for Level 3 image processing
-\item DMS-REQ-0296 Pre-cursor, and Real Data \end{itemize} \\ \hline
+\item DMS-REQ-0296 Pre-cursor, and Real Data
+\end{itemize} \\ \hline
 Task Execution Framework &
-\begin{itemize} \item DMS-REQ-0320 Processing of Data From Special Programs
+\begin{itemize}
+\item DMS-REQ-0320 Processing of Data From Special Programs
 \item DMS-REQ-0314 Compute Platform Heterogeneity
 \item DMS-REQ-0121 Provenance for Level 3 processing at DACs
 \item DMS-REQ-0125 Software framework for Level 3 catalog processing
@@ -1750,11 +1793,13 @@ Task Execution Framework &
 \item DMS-REQ-0304 Production Fault Tolerance
 \item DMS-REQ-0158 Provide Pipeline Construction Services
 \item DMS-REQ-0305 Task Specification
-\item DMS-REQ-0306 Task Configuration \end{itemize} \\ \hline
+\item DMS-REQ-0306 Task Configuration
+\end{itemize} \\ \hline
 Science Platform &
 \\ \hline
 LSP Web APIs &
-\begin{itemize} \item DMS-REQ-0331 Computing Derived Quantities
+\begin{itemize}
+\item DMS-REQ-0331 Computing Derived Quantities
 \item DMS-REQ-0332 Denormalizing Database Tables
 \item DMS-REQ-0347 Measurements in catalogs
 \item DMS-REQ-0323 Calculating SSObject Parameters
@@ -1766,6 +1811,9 @@ LSP Web APIs &
 \item DMS-REQ-0322 Special Programs Database
 \item DMS-REQ-0344 Constraints on Level 1 Special Program Products Generation
 \item DMS-REQ-0161 Optimization of Cost, Reliability and Availability in Order
+\end{itemize} \\ \hline
+LSP Web APIs (continued) &
+\begin{itemize}
 \item DMS-REQ-0314 Compute Platform Heterogeneity
 \item DMS-REQ-0318 Data Management Unscheduled Downtime
 \item DMS-REQ-0123 Access to input catalogs for DAC-based Level 3 processing
@@ -1794,9 +1842,11 @@ LSP Web APIs &
 \item DMS-REQ-0065 Provide Image Access Services
 \item DMS-REQ-0155 Provide Data Access Services
 \item DMS-REQ-0298 Data Product and Raw Data Access
-\item DMS-REQ-0299 Data Product Ingest \end{itemize} \\ \hline
+\item DMS-REQ-0299 Data Product Ingest
+\end{itemize} \\ \hline
 LSP JupyterLab &
-\begin{itemize} \item DMS-REQ-0161 Optimization of Cost, Reliability and Availability in Order
+\begin{itemize}
+\item DMS-REQ-0161 Optimization of Cost, Reliability and Availability in Order
 \item DMS-REQ-0314 Compute Platform Heterogeneity
 \item DMS-REQ-0318 Data Management Unscheduled Downtime
 \item DMS-REQ-0123 Access to input catalogs for DAC-based Level 3 processing
@@ -1805,9 +1855,11 @@ LSP JupyterLab &
 \item DMS-REQ-0193 Data Access Centers
 \item DMS-REQ-0194 Data Access Center Simultaneous Connections
 \item DMS-REQ-0197 No Limit on Data Access Centers
-\item DMS-REQ-0119 DAC resource allocation for Level 3 processing \end{itemize} \\ \hline
+\item DMS-REQ-0119 DAC resource allocation for Level 3 processing
+\end{itemize} \\ \hline
 LSP Portal &
-\begin{itemize} \item DMS-REQ-0161 Optimization of Cost, Reliability and Availability in Order
+\begin{itemize}
+\item DMS-REQ-0161 Optimization of Cost, Reliability and Availability in Order
 \item DMS-REQ-0314 Compute Platform Heterogeneity
 \item DMS-REQ-0318 Data Management Unscheduled Downtime
 \item DMS-REQ-0123 Access to input catalogs for DAC-based Level 3 processing
@@ -1818,27 +1870,33 @@ LSP Portal &
 \item DMS-REQ-0197 No Limit on Data Access Centers
 \item DMS-REQ-0341 Providing a Precovery Service
 \item DMS-REQ-0119 DAC resource allocation for Level 3 processing
-\item DMS-REQ-0160 Provide User Interface Services \end{itemize} \\ \hline
+\item DMS-REQ-0160 Provide User Interface Services
+\end{itemize} \\ \hline
 QC System &
-\begin{itemize} \item DMS-REQ-0097 Level 1 Data Quality Report Definition
+\begin{itemize}
+\item DMS-REQ-0097 Level 1 Data Quality Report Definition
 \item DMS-REQ-0099 Level 1 Performance Report Definition
 \item DMS-REQ-0314 Compute Platform Heterogeneity
 \item DMS-REQ-0318 Data Management Unscheduled Downtime
 \item DMS-REQ-0096 Generate Data Quality Report Within Specified Time
 \item DMS-REQ-0098 Generate DMS Performance Report Within Specified Time
-\item DMS-REQ-0100 Generate Calibration Report Within Specified Time \end{itemize} \\ \hline
+\item DMS-REQ-0100 Generate Calibration Report Within Specified Time
+\end{itemize} \\ \hline
 Science Algorithms &
-\begin{itemize} \item DMS-REQ-0032 Image Differencing
+\begin{itemize}
+\item DMS-REQ-0032 Image Differencing
 \item DMS-REQ-0033 Provide Source Detection Software
 \item DMS-REQ-0042 Provide Astrometric Model
 \item DMS-REQ-0043 Provide Calibrated Photometry
 \item DMS-REQ-0052 Enable a Range of Shape Measurement Approaches
 \item DMS-REQ-0296 Pre-cursor, and Real Data
-\item DMS-REQ-0308 Software Architecture to Enable Community Re-Use \end{itemize} \\ \hline
+\item DMS-REQ-0308 Software Architecture to Enable Community Re-Use
+\end{itemize} \\ \hline
 Science Payloads &
 \\ \hline
 Alert Production &
-\begin{itemize} \item DMS-REQ-0333 Maximum Likelihood Values and Covariances
+\begin{itemize}
+\item DMS-REQ-0333 Maximum Likelihood Values and Covariances
 \item DMS-REQ-0347 Measurements in catalogs
 \item DMS-REQ-0004 Nightly Data Accessible Within 24 hrs
 \item DMS-REQ-0010 Difference Exposures
@@ -1861,6 +1919,9 @@ Alert Production &
 \item DMS-REQ-0319 Characterizing Variability
 \item DMS-REQ-0324 Matching DIASources to Objects
 \item DMS-REQ-0321 Level 1 Processing of Special Programs Data
+\end{itemize} \\ \hline
+Alert Production (continued) &
+\begin{itemize}
 \item DMS-REQ-0344 Constraints on Level 1 Special Program Products Generation
 \item DMS-REQ-0312 Level 1 Data Product Access
 \item DMS-REQ-0002 Transient Alert Distribution
@@ -1872,9 +1933,11 @@ Alert Production &
 \item DMS-REQ-0042 Provide Astrometric Model
 \item DMS-REQ-0043 Provide Calibrated Photometry
 \item DMS-REQ-0052 Enable a Range of Shape Measurement Approaches
-\item DMS-REQ-0308 Software Architecture to Enable Community Re-Use \end{itemize} \\ \hline
+\item DMS-REQ-0308 Software Architecture to Enable Community Re-Use
+\end{itemize} \\ \hline
 Annual Calibration &
-\begin{itemize} \item DMS-REQ-0059 Bad Pixel Map
+\begin{itemize}
+\item DMS-REQ-0059 Bad Pixel Map
 \item DMS-REQ-0060 Bias Residual Image
 \item DMS-REQ-0061 Crosstalk Correction Matrix
 \item DMS-REQ-0062 Illumination Correction Frame
@@ -1886,9 +1949,11 @@ Annual Calibration &
 \item DMS-REQ-0265 Guider Calibration Data Acquisition
 \item DMS-REQ-0289 Calibration Production Processing
 \item DMS-REQ-0009 Simulated Data
-\item DMS-REQ-0308 Software Architecture to Enable Community Re-Use \end{itemize} \\ \hline
+\item DMS-REQ-0308 Software Architecture to Enable Community Re-Use
+\end{itemize} \\ \hline
 Daily Calibration Update &
-\begin{itemize} \item DMS-REQ-0059 Bad Pixel Map
+\begin{itemize}
+\item DMS-REQ-0059 Bad Pixel Map
 \item DMS-REQ-0060 Bias Residual Image
 \item DMS-REQ-0061 Crosstalk Correction Matrix
 \item DMS-REQ-0062 Illumination Correction Frame
@@ -1903,9 +1968,11 @@ Daily Calibration Update &
 \item DMS-REQ-0131 Calibration Images Available Within Specified Time
 \item DMS-REQ-0289 Calibration Production Processing
 \item DMS-REQ-0009 Simulated Data
-\item DMS-REQ-0308 Software Architecture to Enable Community Re-Use \end{itemize} \\ \hline
+\item DMS-REQ-0308 Software Architecture to Enable Community Re-Use
+\end{itemize} \\ \hline
 Data Release Production &
-\begin{itemize} \item DMS-REQ-0326 Storing Approximations of Per-pixel Metadata
+\begin{itemize}
+\item DMS-REQ-0326 Storing Approximations of Per-pixel Metadata
 \item DMS-REQ-0331 Computing Derived Quantities
 \item DMS-REQ-0333 Maximum Likelihood Values and Covariances
 \item DMS-REQ-0347 Measurements in catalogs
@@ -1929,6 +1996,9 @@ Data Release Production &
 \item DMS-REQ-0330 Best Seeing Coadds
 \item DMS-REQ-0335 PSF-Matched Coadds
 \item DMS-REQ-0337 Detecting faint variable objects
+\end{itemize} \\ \hline
+Data Release Production (continued) &
+\begin{itemize}
 \item DMS-REQ-0320 Processing of Data From Special Programs
 \item DMS-REQ-0350 Associating Objects across data releases
 \item DMS-REQ-0009 Simulated Data
@@ -1937,9 +2007,11 @@ Data Release Production &
 \item DMS-REQ-0042 Provide Astrometric Model
 \item DMS-REQ-0043 Provide Calibrated Photometry
 \item DMS-REQ-0052 Enable a Range of Shape Measurement Approaches
-\item DMS-REQ-0308 Software Architecture to Enable Community Re-Use \end{itemize} \\ \hline
+\item DMS-REQ-0308 Software Architecture to Enable Community Re-Use
+\end{itemize} \\ \hline
 MOPS and Forced Photometry &
-\begin{itemize} \item DMS-REQ-0004 Nightly Data Accessible Within 24 hrs
+\begin{itemize}
+\item DMS-REQ-0004 Nightly Data Accessible Within 24 hrs
 \item DMS-REQ-0273 SSObject Catalog
 \item DMS-REQ-0317 DIAForcedSource Catalog
 \item DMS-REQ-0319 Characterizing Variability
@@ -1951,9 +2023,11 @@ MOPS and Forced Photometry &
 \item DMS-REQ-0287 DIASource Precovery
 \item DMS-REQ-0288 Use of External Orbit Catalogs
 \item DMS-REQ-0009 Simulated Data
-\item DMS-REQ-0308 Software Architecture to Enable Community Re-Use \end{itemize} \\ \hline
+\item DMS-REQ-0308 Software Architecture to Enable Community Re-Use
+\end{itemize} \\ \hline
 Periodic Calibration &
-\begin{itemize} \item DMS-REQ-0059 Bad Pixel Map
+\begin{itemize}
+\item DMS-REQ-0059 Bad Pixel Map
 \item DMS-REQ-0060 Bias Residual Image
 \item DMS-REQ-0061 Crosstalk Correction Matrix
 \item DMS-REQ-0062 Illumination Correction Frame
@@ -1965,21 +2039,28 @@ Periodic Calibration &
 \item DMS-REQ-0265 Guider Calibration Data Acquisition
 \item DMS-REQ-0289 Calibration Production Processing
 \item DMS-REQ-0009 Simulated Data
-\item DMS-REQ-0308 Software Architecture to Enable Community Re-Use \end{itemize} \\ \hline
+\item DMS-REQ-0308 Software Architecture to Enable Community Re-Use
+\end{itemize} \\ \hline
 Raw Calibration &
-\begin{itemize} \item DMS-REQ-0101 Level 1 Calibration Report Definition
+\begin{itemize}
+\item DMS-REQ-0101 Level 1 Calibration Report Definition
 \item DMS-REQ-0131 Calibration Images Available Within Specified Time
 \item DMS-REQ-0009 Simulated Data
-\item DMS-REQ-0308 Software Architecture to Enable Community Re-Use \end{itemize} \\ \hline
+\item DMS-REQ-0308 Software Architecture to Enable Community Re-Use
+\end{itemize} \\ \hline
 Template Generation &
-\begin{itemize} \item DMS-REQ-0280 Template Coadds
+\begin{itemize}
+\item DMS-REQ-0280 Template Coadds
 \item DMS-REQ-0009 Simulated Data
-\item DMS-REQ-0308 Software Architecture to Enable Community Re-Use \end{itemize} \\ \hline
+\item DMS-REQ-0308 Software Architecture to Enable Community Re-Use
+\end{itemize} \\ \hline
 Science Primitives &
-\begin{itemize} \item DMS-REQ-0042 Provide Astrometric Model
+\begin{itemize}
+\item DMS-REQ-0042 Provide Astrometric Model
 \item DMS-REQ-0043 Provide Calibrated Photometry
 \item DMS-REQ-0052 Enable a Range of Shape Measurement Approaches
-\item DMS-REQ-0351 Provide Beam Projector Coordinate Calculation Software \end{itemize} \\ \hline
+\item DMS-REQ-0351 Provide Beam Projector Coordinate Calculation Software
+\end{itemize} \\ \hline
 \end{xtabular}
 
 \input{refs}
