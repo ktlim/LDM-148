@@ -274,7 +274,7 @@ computational environment or domains they are in noted):
 
 The relationships between these services, their deployment environments,
 functional domains, and science application ``payloads'' can be
-visualized in Figure \ref{fig:deployment}.
+visualized in Figure~\ref{fig:deployment}.
 
 \begin{figure}
 \centering
@@ -283,7 +283,7 @@ visualized in Figure \ref{fig:deployment}.
 \label{fig:deployment}
 \end{figure}
 
-The common infrastructure services are illustrated in Figure \ref{fig:commonservices}.
+The common infrastructure services are illustrated in Figure~\ref{fig:commonservices}.
 
 \begin{figure}
 \centering
@@ -296,9 +296,11 @@ The science application software for the Alert Production, daytime
 processing, Data Release Production, and calibration processing is built
 out of a set of frameworks that accept plugins. In turn, those
 frameworks build on middleware that provides portability and
-scalability.
+scalability.  The relationships between the packages implementing
+these se frameworks and plugins and the underlying middleware packages
+are shown in Figure~\ref{fig:scipi}.
 
-Key applications software components include (see Figure \ref{fig:scipi}):
+Key applications software components include:
 \begin{itemize}
 \item
   Low-level astronomical software primitives and data structures
@@ -350,7 +352,8 @@ Infrastructure components include:
   Monitoring
 \end{itemize}
 
-See Figure \ref{fig:mwandinfra}.
+The relationships between the middleware and infrastructure components
+are illustrated in Figure~\ref{fig:mwandinfra}.
 
 \begin{figure}
 \centering
@@ -741,7 +744,7 @@ instances}\label{lsst-science-platform-dac-instances}
 This service provides an exploratory analysis environment for science
 users. It can be further broken down into three ``Aspects'' that it
 presents to end users, along with underlying ``backend services'' that
-users can take advantage of, as illustrated in Figure \ref{fig:lsp}.
+users can take advantage of, as illustrated in Figure~\ref{fig:lsp}.
 
 \begin{figure}
 \centering
@@ -897,7 +900,7 @@ instances within the Data Backbone in each DAC as well as in the NCSA
 Enclave.
 
 The relationships between the Data Backbone components are illustrated
-in Figure \ref{fig:dbb}.
+in Figure~\ref{fig:dbb}.
 
 \begin{figure}
 \centering
