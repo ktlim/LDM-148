@@ -1,0 +1,6 @@
+[submodule "lsst-texmf"]
+	path = lsst-texmf
+	url = https://github.com/lsst/lsst-texmf
+[submodule "images"]
+	path = images
+	url = https://github.com/lsst-dm/images
