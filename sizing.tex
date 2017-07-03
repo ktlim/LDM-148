@@ -25,7 +25,7 @@ observations, the number of observed stars and galaxies expected per band, the
 processing operations per data element, the data transfer rates between and
 within processing locations, the ingest and query rates of input and output
 data, the alert generation rates, and latency and throughput requirements for
-all data products. 
+all data products.
 
 Processing requirements were extrapolated from the functional model of
 operations, prototype pipelines and algorithms, and existing precursor
@@ -36,10 +36,10 @@ with time.  Advances in hardware performance, however, are expected to reduce
 the number of nodes needed and the power and cooling devoted to them. This causes some of the performance figures in Table \ref{table:compute-sizing} to reach
 a high-water mark during the survey.
 
-\begin{table}
 \centering
 \begin{longtable}{|c|c|c|c|}
-\hline
+\caption{DMS Compute Infrastructure Sizing; growth from Survey Year 1 to Year 10; hwm = high-water mark \label{table:compute-sizing}}\\   %%%% need this line break for caption
+ \hline
 	& & \textit{Archive Site} & \textit{Base Site} \\ \hline
 \multirow{4}{*}{Compute} & TeraFLOPS (sustained) & 197 $\rightarrow$ 970 & 30 $\rightarrow$ 62 \\ \cline{2-4}
   & Nodes & 436 $\rightarrow$ 305 (455 hwm) & 56 $\rightarrow$ 17 (59 hwm) \\ \cline{2-4}
@@ -50,9 +50,6 @@ a high-water mark during the survey.
   & Power & 274 $\rightarrow$ 273 kW (309 hwm) & 158 $\rightarrow$ 248 kW (248 hwm) \\ \cline{2-4}
   & Cooling & 0.9 $\rightarrow$ 0.9 mmbtu (1.1 hwm) & 0.5 $\rightarrow$ 0.8 mmbtu (0.8 hwm) \\ \hline
 \end{longtable}
-\caption{DMS Compute Infrastructure Sizing; growth from Survey Year 1 to Year 10; hwm = high-water mark}
-\label{table:compute-sizing}
-\end{table}
 
 Storage and input/output requirements were extrapolated from the data model of
 LSST data products, the DMS and precursor database schemas, and
@@ -60,9 +57,9 @@ existing database management system overhead factors in precursor
 surveys and experiments adjusted to LSST scale. A summary of key numbers is
 in Table \ref{table:storage-sizing}.
 
-\begin{table}
 \centering
 \begin{longtable}{|c|c|c|c|}
+\caption{DMS Storage Infrastructure Sizing; growth from Survey Year 1 to Year 10 \label{table:storage-sizing}}\\
 \hline
 	& & \textit{Archive Site} & \textit{Base Site} \\ \hline
 \multirow{3}{*}{File Storage} & Capacity & 24 $\rightarrow$ 81 PB & \\ \cline{2-4}
@@ -75,9 +72,7 @@ in Table \ref{table:storage-sizing}.
   & Tapes & 2413 $\rightarrow$ 3691 (4117 hwm) & \\ \cline{2-4}
   & Tape Bandwidth & 36 $\rightarrow$ 65 GB/s & \\ \hline
 \end{longtable}
-\caption{DMS Storage Infrastructure Sizing; growth from Survey Year 1 to Year 10}
-\label{table:storage-sizing}
-\end{table}
+
 
 Communications requirements were developed and modeled for the data transfers
 and user query/response load, extrapolated from existing surveys and adjusted
@@ -103,7 +98,7 @@ In all of the above, industry-provided technology trends (\citeds{LDM-143})
 were used to extrapolate to the LSST construction and operations phases in
 which the technology will be acquired, configured, deployed, operated, and
 maintained. A just-in-time acquisition strategy is employed to leverage
-favorable cost/performance trends. 
+favorable cost/performance trends.
 
 The resulting performance and sizing requirements show the DMS to be a
 supercomputing­-class system with correspondingly large data input/output and
