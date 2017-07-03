@@ -80,22 +80,28 @@ in Table \ref{table:storage-sizing}.
 
 Communications requirements were developed and modeled for the data transfers
 and user query/response load, extrapolated from existing surveys and adjusted
-to LSST scale.  These requirements are illustrated in Figure \ref{fig:near-real-time-flows} for per-visit transfers and Figure \ref{fig:annual-reprocessing-flows} for annual transfers.  Peak bandwidths assume 5 seconds for international
-image transfer and 30 days to transfer Data Release catalogs from NCSA to the
-Chilean DAC.
+to LSST scale.  These requirements are illustrated in Figure
+\ref{fig:near-real-time-flows} for per-visit transfers.  Peak bandwidths assume
+a 3 second budget for Summit to Base image transfer and a 5 second budget for
+international image transfer.
+
+The Summit to Base and Base to NCSA network links have been significantly
+over-engineered for four main reasons: first, because the incremental costs of
+higher bandwidth once the link has been provisioned at all have been small;
+second, to allow key functions, such as interfacing with the Camera Data System
+or performing image analysis and measurement to generate alerts, to be
+performed in appropriate locations; third, to increase reliability of the
+system; and fourth, to simplify certain components such as the Forwarders and
+Archivers that interface with or depend on the networks.  A high-speed Base to
+NCSA link also enables Data Releases to be transferred south to the Chilean DAC
+over the network rather than through physical media, as originally planned,
+decoupling science from maintenance and upgrade activities to a greater extent.
 
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{images/NearRealTimeDataFlow.pdf}
 \caption{Near Real-Time Data Flows}
 \label{fig:near-real-time-flows}
-\end{figure}
-
-\begin{figure}
-\centering
-\includegraphics[width=0.5\textwidth]{images/AnnualReprocessingDataFlow.pdf}
-\caption{Annual Reprocessing Data Flows}
-\label{fig:annual-reprocessing-flows}
 \end{figure}
 
 In all of the above, industry-provided technology trends (\citeds{LDM-143})
