@@ -36,7 +36,7 @@ with time.  Advances in hardware performance, however, are expected to reduce
 the number of nodes needed and the power and cooling devoted to them. This causes some of the performance figures in Table \ref{table:compute-sizing} to reach
 a high-water mark during the survey.
 
-\centering
+\begin{center}
 \begin{longtable}{|c|c|c|c|}
 \caption{DMS Compute Infrastructure Sizing; growth from Survey Year 1 to Year 10; hwm = high-water mark \label{table:compute-sizing}}\\   %%%% need this line break for caption
  \hline
@@ -50,6 +50,7 @@ a high-water mark during the survey.
   & Power & 274 $\rightarrow$ 273 kW (309 hwm) & 158 $\rightarrow$ 248 kW (248 hwm) \\ \cline{2-4}
   & Cooling & 0.9 $\rightarrow$ 0.9 mmbtu (1.1 hwm) & 0.5 $\rightarrow$ 0.8 mmbtu (0.8 hwm) \\ \hline
 \end{longtable}
+\end{center}
 
 Storage and input/output requirements were extrapolated from the data model of
 LSST data products, the DMS and precursor database schemas, and
@@ -57,7 +58,6 @@ existing database management system overhead factors in precursor
 surveys and experiments adjusted to LSST scale. A summary of key numbers is
 in Table \ref{table:storage-sizing}.
 
-\centering
 \begin{longtable}{|c|c|c|c|}
 \caption{DMS Storage Infrastructure Sizing; growth from Survey Year 1 to Year 10 \label{table:storage-sizing}}\\
 \hline
