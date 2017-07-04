@@ -1,19 +1,21 @@
-sudo: false
+sudo: true
+dist: trusty
+services:
+  - docker
 language: python
-matrix:
-  include:
-    - python: "3.5"
-      env: LTD_MASON_BUILD=true
-install:
-  - pip install -r requirements.txt
-  - pip install "ltd-mason>=0.2,<0.3"
+python:
+  - '3.5'
+before_install:
+  - "pip install 'lander>=0.1.0,<0.2'"
 script:
-  - sphinx-build -b html -a -n -d _build/doctree . _build/html
+  # Compile PDF using containerized lsst-texmf
+  - "docker run --rm -v `pwd`:/workspace -w /workspace lsstsqre/lsst-texmf:latest sh -c 'make'"
 after_success:
-  - ltd-mason-travis --html-dir _build/html
+  # Deploy website. See https://github.com/lsst-sqre/lander for CLI options
+  - "lander --pdf LDM-148.pdf --upload --lsstdoc LDM-148.tex --env=travis --ltd-product $PRODUCT --docushare-url https://ls.st/ldm-148*"
 env:
   global:
-    - LTD_MASON_BUILD=false  # disable builds in regular text matrix
-    - LTD_MASON_PRODUCT="ldm-148"
-    - secure: "QInjYn792MM1tZoikLKZaDsx4MkY4jb9023NydpGnhnKZ5CjuqqnDulTukZppJPfbj3t46a80IUCiL2WpJcZs8jIRuE2uE3MmA83n9U1r6GUrBVLMr75Z5LzN12lJPmXoLdM13osen7eOuJn2zipwi6xdNkLJmkyFf99SZRe1y0MeRdL9HP3MnXxPUfr22PcVIYiUAB8BLI+qOMk5bywtqd8JZKDeBl5L8UVJyZg1oaCPrgEmOQL6AEbKkbpsUK7MuumVYzbugNQQBWzIQclBf2TaF1gPMoZpZI5SnOh2ZflPoamhTp/ms9k3pIFjpwUVJwibHCfshgVD9J4+G1X45YbAyoFi6OW72jOO/1TvkLFVEiqbh7m5/T7R/c0Se+l9+SmJJDFES4CDelmCBl3xE8nJ9zfKZI3AVgiRgUqkc40PHzpgVM+xnlizM5PZ49HFdUbWIfXuTNC4g7l2W68sQidD7PM5SU37fmPFN5sErMFqgueEwW8HxysmGWDhl0B3T7SfeFoXcLqhDFPBL+Ek2ZJNT1JF8ffkdJLQ0gtWi33eF+6WUFNsIBYUajrW6ol+atm2oAV4O02FcY4HC5uqjrj4RKdrddiPSUEIt3bdMmsbfpRiKak21/36eFrOcSZSKckAQq5NzbevM6gjBnK/qK79ZjBKMgggRvZspsoRI8="
-    - secure: "DrJGqtymJtJxBsDENXdtZwlVDsq3Lztr2hiexSf6seP1MKAmMY1yRxmsO0fdDPcttAWUpjWdJNwFYKvrckaA0oHMkcDjnn9BQDHvQk/S8XYnIaUXmiXORuQbqEoayqYlbg+dy6ZBuzfbPPviOHEqqMuma1KMBBRHbdMeU9D4E3XnNq9tLUX/Af4g2aAhxLbgwvESLGleJq6P3gU/THqYi6WifniFKxZj9EsVfaEMmMMbihzfwh2m3yiYto0yj6BHBkWiHrlwOuCEVwm+Qw0xBG58ZYDbqwUYQxLD8DAHY+PIeSGKvJ3AG826TZAjNnt26lSRcXKymJ7FpF6Ckiuf2xRDGW2/1VoledCaLae2ExAmL977NvXG5VjyhiDXWyBlZevR0pHtR0D+DC0o5ZYGVjsXhPq1KOPEWSoHe11p2r72bPkpSJkGmU/2CqX9yfWvsikUHMBJ0yvAYIxHcDTUy+Qp0A3VxNd+o1WGSDay62Z75pw2xa6XA9jtr/2VG4Z9fKV4okgNv+u3ThJoGLP6x7X7jfWDupZRHpdsi0hje6KSr0YdycVvOPoAR8FO7wi5AsZJCTL2WA1bvo9v/r9rkh24i3dLgLvoFHPgwdSmO6HnkEEVC97yD7ap9q7YcH2y1GBP4gE2Kb1TUzMUbTqJK+Z71xOATlEo9YTNmqVrlnw="
+    - PRODUCT="ldm-148"
+    # Add LSST the Docs credentials
+    - secure: "YPq8wqTffziwT/3Tk5mBFOColcjmhwOxnfcdBqF2ECPInbPJVgVHSea6MA1cXbd97vRWuL18LQSGKH1De0FAJ220Fqcjt0OdF6BbWqOopDN5JBmSxBY8+t15YwyJjKSPd1uoRMuLq+DdhYBZgbVJYk63xwM+Z5wemY58uzSxqFsrd4HIQmtnmZsrSMj2Ktn/jW3WOjziGjhAEy3vKRnPFcNQRtTwS5mbs//LK9h0JO/0wuHHscBjIBq0sDLQXjKKdOHqTZwA+vO1enyc64lkyBahdcFPc/eXovISMRmaWimIXC+lGNQ6rR7f0lo1OxTgbiwKBKWojKztKRHvsdJSc++nl8R0ZhvJDzsr4Yz+Psg4PDCDxUEhiwptGTqlvHLk2rtGgCo74PDBWHDgC6zsJrx9zAcGYPk1ab4+uAoujc97/zbT+gBBFgV0n5PddDDNsHhl58gmb6D/p4XQuLvscIrVxSINfGHDD/gNIhZ50uiFm6qTs9hFz6mKIDjdVBdCnZImMivWBikS/aCpUr4DibzsXkAOsuZc/cuJ2j0Ue8OxIHaMOoRODoT0OfV1JCftgL9u8DO/hh3XkoR4KgIwR81MV7vsYKF4afV/Qn0pwPU05xisfMEI1z/VA4BlfzKHrH/nAIcAHV2iLz2GSzd83ugOiJv83M++1BGhSG5Fzgs="
+    - secure: "EaRUl/cSAL1H+XZXY9U9l3DRiO+f0OzJeUOUaq0oNL8gvquFoUlrJUXuSWeP6CSeRz/RqPg7I/tyoDjes65P9ju+5thKdXHZIG1w6jQoB64Qv81Vt73Wla1VcrxrDmHoeT5u4BnspuSowR1kBtNaodK8YYfiOfUObPQQPnJpkn/nLA0tOfcRQc3du3pKCkAWkBJXAEQSuaJYfy7HIEFRg1pNabZfb0KjXWMtBRUjfTyhMLYYReoVscz6cRae2BGi0dC2eMJG88NGo00jsJ5aqVkezHflrhizGI/0Zp706oSOdGAoSIRxmdccsngi/MdPPeTwK9NgasQikIpBNkc+Z5cUFQufHqHkx8iDb3QQIIFnS0yGs4eOT6YOBKYSc8c+vBGGDv7hQxF38+mIjUTuDZt59/dntGhaBqmlY4SH7LqXdQrTUL+pr7PNQFVxI1kTHmaHa4vvqIYy9BK2Ua2bk4ltAaDqT7YRo4+HQwFr4jrRw7I4tKU7NlTYBczM0SAHf7O8XdPFcOtZ3fipK/RSb1H4Jn2VgmDMpYpj9XkM66FGFN/zUfXt6WdTJLTv+HprBwIYBaJhlF24ENa1U803mF20MGX7Xv9cja1ZOWEcqfHFS82GvNBUN+mn6HGy/v35eK4NVY8HJHZUSUPrF3LlayzZw100WexnHPsHlURPtwc="
