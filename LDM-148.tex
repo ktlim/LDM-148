@@ -151,7 +151,7 @@ LSST data products.
 
 Underlying all of the above is a Data Backbone that provides storage, tracking,
 and replication for all LSST data products.  The Data Backbone links all of the
-computational enclaves and the Data Access Centers, acting as the spine that
+computational environments and the Data Access Centers, acting as the spine that
 supports them all.
 
 \input{sizing}
@@ -196,13 +196,14 @@ at the Base Site in La Serena, Chile; the Archive Facility data center
 at the National Center for Supercomputing Applications (NCSA) in Urbana,
 Illinois, USA; and the Satellite Computing Facility at CC-IN2P3 in Lyon,
 France. These are linked by high-speed networks to allow rapid data
-movement. The Base and Archive Facilities include production
-computational environments (the Base Enclave and NCSA Enclave,
-respectively) and also the US and Chilean Data Access Centers. In
+movement. The Base Facility includes the Base Center production
+computational environments and also the Chilean Data Access Center.
+The Archive Facility also hosts the US Data Access Center.
+In
 addition, a Commissioning Cluster computational environment also resides
 at the Base Facility.
 
-The DMS service instances in the NCSA Enclave can be broken down into
+The DMS service instances at NCSA can be broken down into
 three main functional domains: a near-realtime online domain (L1)
 closely linked to the rest of the Observatory; an offline Level 2 domain
 (L2) organized primarily around the annual Data Release Production; and
@@ -363,21 +364,21 @@ are illustrated in Figure~\ref{fig:mwandinfra}.
 \label{fig:mwandinfra}
 \end{figure}
 
-\section{Base Enclave}\label{base-enclave}
+\section{Base Center}\label{base-center}
 
-Services located in this enclave are located at the Base solely because
+Services located in this environment are located at the Base solely because
 they must interact with the OCS or the Camera Data System (also known as
 the Camera DAQ) or both. In several cases, services located here
-interact closely with corresponding services in the NCSA Enclave's Level
+interact closely with corresponding services in NCSA's Level
 1 Domain, to the point where the Base service cannot function if the
 NCSA service is not operational. This reliance has been taken into
 account in the fault tolerance strategies used.
 
-The primary goals of the services in this enclave are to transfer data
+The primary goals of the services in this environment are to transfer data
 to appropriate locations, either to NCSA, from NCSA, or to the Data
 Backbone.
 
-The services in this enclave and their partners in the NCSA Enclave
+The services in this environment and their partners in the NCSA
 Level 1 Domain need to run rapidly and reliably. They run at times
 (outside office hours) and with latencies that are not amenable to a
 human-in-the-loop design. Instead, they are designed to execute
@@ -419,7 +420,7 @@ Backbone.
 This component is composed of two instances that capture
 crosstalk-corrected images from the LSSTCam and ComCam Camera Data
 Systems along with selected metadata from the OCS and/or EFD and
-transfer them to the Prompt Processing service in the NCSA Enclave Level
+transfer them to the Prompt Processing service in the NCSA Level
 1 Domain.
 
 There is no Prompt Processing Ingest instance for the auxiliary
@@ -428,7 +429,7 @@ telescope spectrograph.
 \subsubsection{OCS Driven Batch Control}\label{ocs-driven-batch-control}
 
 This service receives commands from the OCS and invokes the OCS Driven
-Batch Processing service in the NCSA Enclave Level 1 Domain to execute
+Batch Processing service in the NCSA Level 1 Domain to execute
 corresponding science payloads. It is used for modest-latency analysis
 of images during Commissioning and for processing daily calibration
 images in normal observing operations. A summary status for the
@@ -437,7 +438,7 @@ the normal OCS commanding protocol.
 
 \subsubsection{Telemetry Gateway}\label{telemetry-gateway}
 
-This service obtains information from the NCSA Enclave Level 1 Domain,
+This service obtains information from the NCSA Level 1 Domain,
 particularly status and quality metrics from Prompt Processing of images
 and the Level 1 Quality Control service, and transmits it to the OCS as
 specified in the Data Management-OCS Software Communication Interface
@@ -449,7 +450,7 @@ environments.
 
 \subsection{Interfaces}\label{base-interfaces}
 
-OCS to all Base Enclave services: these interface through the SAL
+OCS to all Base Center services: these interface through the SAL
 library provided by the OCS subsystem.
 
 Archiver and Catch-Up Archiver to Data Backbone: files are copied to
@@ -478,11 +479,11 @@ used to transfer execution instructions over the international network
 from the control service to the processing service and return status and
 result information.
 
-Telemetry Gateway from NCSA Enclave Level 1 Domain services: RabbitMQ is
+Telemetry Gateway from NCSA Level 1 Domain services: RabbitMQ is
 used to transfer status and quality metrics to the gateway over the
 international network.
 
-\section{NCSA Enclave Level 1 Domain}\label{ncsa-enclave-level-1-domain}
+\section{NCSA Level 1 Domain}\label{ncsa-level-1-domain}
 
 This domain is responsible for the compute-intensive processing for all
 near-realtime operations and other operations closely tied with the
@@ -508,7 +509,7 @@ The Level 1 Quality Control service monitors the ``online'' science data
 products, including alerts, notifying operators if any anomalies are
 found.
 
-Like the services in the Base Enclave, these services need to run
+Like the services in the Base Center, these services need to run
 rapidly and reliably and so are designed to execute autonomously.
 
 \subsection{Service Descriptions}\label{ncsa-l1-service-descriptions}
@@ -605,7 +606,7 @@ effectively be an infinite time window.
 Science Payloads to Data Backbone: payloads use the Data Butler as a
 client to access files and catalog databases within the Data Backbone.
 
-\section{NCSA Enclave Level 2 Domain}\label{ncsa-enclave-level-2-domain}
+\section{NCSA Level 2 Domain}\label{ncsa-level-2-domain}
 
 This domain is responsible for all longer-period data processing
 operations, including the largest and most complex payloads supported by
@@ -693,7 +694,7 @@ Data Backbone to local storage for access by the science payloads via
 the Data Butler. Similarly, the staging system will ingest output images
 and catalogs into the Data Backbone.
 
-\section{Satellite Computing Enclave}\label{satellite-computing-enclave}
+\section{Satellite Computing Center}\label{satellite-computing-center}
 
 \subsection{Service Description}\label{satellite-service-description}
 
@@ -708,10 +709,10 @@ of the Data Release Production Execution service at NCSA.
 DRP Satellite Processing to DRP Execution: DRP Execution will stage data
 to the Satellite Processing facility.  All raw data, including images,
 metadata, and the Transformed EFD, will be transferred.  Intermediate
-data products will be transferred back to the NCSA Enclave Level 2 Domain.
+data products will be transferred back to the NCSA Level 2 Domain.
 
 
-\section{Data Access Center Enclaves}\label{data-access-center-enclaves}
+\section{Data Access Centers}\label{data-access-centers}
 
 There are two Data Access Centers, one in the US at NCSA and one in
 Chile at the Base. These DACs are responsible for all
@@ -790,8 +791,8 @@ Bulk Data Distribution to partners: The exact delivery mechanism for
 large-scale data distribution is TBD.
 
 
-\section{NCSA Enclave Analysis and Developer Support
-Domain}\label{ncsa-enclave-analysis-and-developer-support-domain}
+\section{NCSA Analysis and Developer Support
+Domain}\label{ncsa-analysis-and-developer-support-domain}
 
 This domain encompasses environments for analysts, developers, and
 integration and test. Its users are the Observatory staff as they
@@ -824,9 +825,8 @@ documentation services, etc.
 Integration environments representing various deployment environments,
 deployment services, test datasets, test execution services, metric measurement
 and tracking services, etc.  This service includes the DM instance of the
-Camera DAQ Test Stand, used in a Base Enclave integration environment, as well
-as the Prototype Data Access Center (PDAC), which is a Data Access Center
-Enclave integration environment.
+Camera DAQ Test Stand, used in an integration environment simulating the Base Center, as well
+as the Prototype Data Access Center (PDAC), which is an integration environment simulating a Data Access Center.
 
 \subsection{Interfaces}\label{ncsa-ads-interfaces}
 
@@ -897,8 +897,7 @@ new datasets and database entries and a retrieval mechanism compatible
 with the Data Butler.
 
 The Qserv distributed database system for large-scale catalog data has
-instances within the Data Backbone in each DAC as well as in the NCSA
-Enclave.
+instances within the Data Backbone in each DAC as well as at NCSA.
 
 The relationships between the Data Backbone components are illustrated
 in Figure~\ref{fig:dbb}.
@@ -913,7 +912,7 @@ in Figure~\ref{fig:dbb}.
 \subsubsection{Management/Monitoring}\label{managementmonitoring}
 
 These services provide management and monitoring at service and
-infrastructure systems levels for each enclave and domain.
+infrastructure systems levels for each computing environment.
 
 \subsubsection{Provisioning/Deployment}\label{provisioningdeployment}
 
@@ -947,7 +946,7 @@ The priority order for processing is:
   Data Release Production
 \end{itemize}
 
-The Base Enclave's services are not highly dynamic or flexible, as they
+The Base Center's services are not highly dynamic or flexible, as they
 primarily provide interfacing to the OCS and Camera Data System. The
 baseline provisioning for them is using vSphere; they will be deployed
 using Puppet.
@@ -981,12 +980,12 @@ any DMS component, especially the LSST Science Platform instances.
 \subsection{Interfaces}\label{infrastructure-interfaces}
 
 The infrastructure services generally interact with all other deployed
-services.  In the Base Enclave, there is no workload/workflow management or
+services.  In the Base Center, there is no workload/workflow management or
 batch processing; provisioning and deployment are also simplified.
 
-Identity management instances are present in the Base and NCSA Enclaves.
+Identity management instances are present in the Base Center and at NCSA.
 (Another replica will be maintained at the Summit.)  These are used to support
-authentication and authorization for the other physically co-located enclaves:
+authentication and authorization for the other physically co-located environments:
 the Commissioning Cluster and the two Data Access Centers.
 
 
