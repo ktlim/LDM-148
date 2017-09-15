@@ -402,8 +402,8 @@ ComCam when so configured, retrieving them from their respective Camera
 Data System instances. They also capture specific sets of metadata
 associated with the images, including telemetry values and event
 timings, from the OCS publish/subscribe middleware and/or from the EFD.
-The image pixels and metadata are then permanently archived in the Data
-Backbone. The catch-up versions archive into the Data Backbone any raw
+The image pixels and metadata are then permanently archived in the Data Backbone via the Observatory Operations Data Service (OODS).
+The catch-up versions archive into the OODS and Data Backbone any raw
 images and metadata that were missed by the primary archiving services
 due to network or other outage, retrieving them from the flash storage
 in the Camera Data System instances and the EFD.
@@ -414,6 +414,12 @@ commands) from the EFD and its large file annex, transforms it into a
 form more suitable for querying by image timestamp, and loads it into
 the permanently archived ``Transformed EFD'' database in the Data
 Backbone.
+
+\subsubsection{Observatory Operations Data Service}\label{obs-ops-data}
+
+This component provides low-latency access to images and metadata for use by Observatory systems and the Commissioning Cluster LSP instance.
+It maintains a higher level of service availability than the Data Backbone and so provides a staging area for to-be-archived data prior to ingestion into the Data Backbone.
+After images and metadata are ingested, they remain available through the OODS for a policy-configured amount of time.
 
 \subsubsection{Prompt Processing Ingest}\label{prompt-processing-ingest}
 
@@ -453,11 +459,16 @@ environments.
 OCS to all Base Center services: these interface through the SAL
 library provided by the OCS subsystem.
 
-Archiver and Catch-Up Archiver to Data Backbone: files are copied to
+Archiver and Catch-Up Archiver to Observatory Operations Data Service:
+image files with associated metadata are written to OODS storage.
+
+Observatory Operations Data Service to Data Backbone: files are copied to
 Data Backbone storage via a file transfer mechanism, and their
 information and metadata are registered with Data Backbone management
 dataabases. The Data Butler is not used for this low-level,
 non-science-payload interface.
+
+Observatory Operations Data Service to Commissioning Cluster LSP and other users: the OODS provides a mountable POSIX filesystem interface. A web interface (e.g. WebDAV) may also be provided, but this will be as simple as possible to enable maintaining a very high level of service availability and reliability.
 
 EFD to EFD Transformer: this interface is via connection to the
 databases that make up the EFD as well as file transfer from the EFD's
