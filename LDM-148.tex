@@ -785,6 +785,9 @@ holders). Resource management of the backend services is based on a
 small ``birthright'' quota with additional resources allocated by a
 committee.
 
+LSST Science Platform instances access read-only data products, including files and databases, from the Data Backbone.
+In addition, files may be cached within the LSP instance for speed, and large-scale catalogs are typically loaded into an instance of the Qserv database management system for efficient query and analysis.
+
 All usage of any LSST Science Platform instance requires authentication
 to ensure availability only to LSST data rights holders or LSST
 operations staff.
@@ -906,9 +909,6 @@ caches of files at each endpoint as well as persistence to long-term
 archival storage (e.g. tape). It provides a registration mechanism for
 new datasets and database entries and a retrieval mechanism compatible
 with the Data Butler.
-
-The Qserv distributed database system for large-scale catalog data has
-instances within the Data Backbone in each DAC as well as at NCSA.
 
 The relationships between the Data Backbone components are illustrated
 in Figure~\ref{fig:dbb}.
