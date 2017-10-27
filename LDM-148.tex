@@ -228,6 +228,8 @@ computational environment or domains they are in noted):
 \item
   Telemetry Gateway (Base)
 \item
+  Observatory Visit Prediction Service (Base)
+\item
   Prompt Processing (L1)
 \item
   OCS Driven Batch Processing (L1)
@@ -453,6 +455,11 @@ performance of DMS services will also be available to Observatory
 operators through remote displays originated from the
 Management/Monitoring infrastructure services in all DMS computational
 environments.
+
+\subsubsection{Observatory Visit Prediction Service}\label{observatory-visit-prediction}
+
+This service receives telemetry from the OCS describing the next visit location and the telescope scheduler's predictions of its future visits.
+It publishes these as an unauthenticated, globally-accessible web service comprising both a web page for human inspection and a web API for usage by automated tools.
 
 \subsection{Interfaces}\label{base-interfaces}
 
