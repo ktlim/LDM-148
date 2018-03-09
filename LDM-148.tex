@@ -747,8 +747,9 @@ metadata. The Web API Aspect regenerates ``virtual'' data products on
 demand when required.
 
 The backend services provide general-purpose user computation, including
-batch job submission; user file storage accessible to all three Aspects;
-and user database storage for relational tables.  Data may be shared with
+batch job submission from the Containerized Application Management Service and Batch Computing Service pools;
+file storage for User Generated data products which is accessible to all three Aspects and in particular exposed through one or more Web API Aspect services;
+and database storage for User Generated relational tables which is also accessible to all three Aspects.  User Generated data may be shared with
 individual users, with groups, or with all DAC users (data rights
 holders). Resource management of the backend services is based on a
 small ``birthright'' quota with additional resources allocated by a
