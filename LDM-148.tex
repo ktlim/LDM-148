@@ -49,7 +49,7 @@ combination of the LSST Data Facility, Science Operations, and Observatory
 Operations departments.
 
 The data products to be delivered are defined and described in the ``Data
-Products Definition Document'' (\citeds{LSE-163}). These are divided into three
+Products Definition Document'' \citedsp{LSE-163}. These are divided into three
 major categories.
 
 One category of data products is generated on a nightly or daily cadence
@@ -171,22 +171,22 @@ The DMS services can be considered to consist of four tiers of software
 components. The top tier is the LSST Science Platform, which is deployed
 in the DACs and other computational environments to provide a user
 interface and analysis environment for science users and LSST staff. The
-detailed design of this tier is given in ``LSST Science Platform'' (\citeds{LDM-542}). The next
+detailed design of this tier is given in ``LSST Science Platform'' \citedsp{LDM-542}. The next
 tier is composed of science ``applications'' software that generates
 data products. This software is used to build ``payloads'', sequences of
 pipelines, that perform particular data analysis and product generation
 tasks. It is also used by science users and staff to analyze the data
 products. The detailed design of the components in this tier is given in
-``Data Management Science Pipelines Design'' (\citeds{LDM-151}). A lower tier is
+``Data Management Science Pipelines Design'' \citedsp{LDM-151}. A lower tier is
 ``middleware'' software components and services that execute the science
 application payloads and isolate them from their environment, including
 changes to underlying technologies. These components also provide data
 access for science users and staff. The detailed design of the
-components in this tier is given in ``Data Management Middleware Design'' (\citeds{LDM-152}).
+components in this tier is given in ``Data Management Middleware Design'' \citedsp{LDM-152}.
 The bottom tier is ``infrastructure'': hardware, networking,
 and low-level software and services that provide a computing
 environment. The detailed design of components in this tier is given in
-``LSST Data Facility Logical Information Technology and Communications Design'' (\citeds{LDM-129}) and ``Network Design'' (\citeds{LSE-78}).
+``LSST Data Facility Logical Information Technology and Communications Design'' \citedsp{LDM-129} and ``Network Design'' \citedsp{LSE-78}.
 
 The DMS computing environments reside in four main physical locations:
 the Summit Site including the main Observatory and Auxiliary Telescope
@@ -373,7 +373,7 @@ monitoring, and control only at the highest level.
 \subsection{Service Descriptions}\label{base-service-descriptions}
 
 Detailed concepts of operations for each service can be found in
-``Concept of Operations for the LSST Production Services'' (\citeds{LDM-230}).
+``Concept of Operations for the LSST Production Services'' \citedsp{LDM-230}.
 
 
 \subsubsection{Image and EFD Archiving}\label{image-and-efd-archiving}
@@ -450,7 +450,7 @@ This service obtains information from the NCSA L1 Enclave,
 particularly status and quality metrics from Prompt Processing of images
 and the Prompt Quality Control service, and transmits it to the OCS as
 specified in the ``Data Management-OCS Software Communication Interface''
-(\citeds{LSE-72}). Note that more detailed information on the status and
+\citedsp{LSE-72}. Note that more detailed information on the status and
 performance of DMS services will also be available to Observatory
 operators through remote displays originated from the
 Service Management/Monitoring infrastructure services in all DMS computational
@@ -526,7 +526,7 @@ rapidly and reliably and so are designed to execute autonomously.
 \subsection{Service Descriptions}\label{ncsa-l1-service-descriptions}
 
 Detailed concepts of operations for each service can be found in
-``Concept of Operations for the LSST Production Services'' (\citeds{LDM-230}).
+``Concept of Operations for the LSST Production Services'' \citedsp{LDM-230}.
 
 \subsubsection{Prompt Processing}\label{prompt-processing}
 
@@ -870,9 +870,9 @@ services in the enclaves described above are deployed and operate.
 \subsection{Service Descriptions}\label{infrastructure-service-descriptions}
 
 Detailed concepts of operations for each service can be found in
-``Concept of Operations for the LSST Production Services'' (\citeds{LDM-230}).
+``Concept of Operations for the LSST Production Services'' \citedsp{LDM-230}.
 The detailed design of the infrastructure is in
-``LSST Data Facility Logical Information Technology and Communications Design'' (\citeds{LDM-129}) and ``Network Design'' (\citeds{LSE-78}).
+``LSST Data Facility Logical Information Technology and Communications Design'' \citedsp{LDM-129} and ``Network Design'' \citedsp{LSE-78}.
 
 \subsubsection{Data Backbone}\label{data-backbone}
 
@@ -954,7 +954,7 @@ Kubernetes is the baseline technology choice for this service.
 This service provides security, including monitoring, vulnerability management,
 incident detection and response, access controls, intrusion detection, and
 configuration management.  Information security is provided in accordance with
-the ``LSST Master Infromation Security Policy'' (\citeds{LPM-121}).
+the ``LSST Master Infromation Security Policy'' \citedsp{LPM-121}.
 
 \subsubsection{Identity Management}\label{identity-management}
 
@@ -995,7 +995,7 @@ the Commissioning Cluster and the two Data Access Centers.
 \subsection{Science Payloads}\label{science-payloads}
 
 These payloads are described in more detail in the DM Applications Design
-Document (\citeds{LDM-151}). Payloads are built from application software
+Document \citedsp{LDM-151}. Payloads are built from application software
 components.  Most payloads execute under control of the Batch Production
 service.  Exceptions include the Alert Production Payload, the Raw
 Calibration Validation Payload, and the Daily Calibration Products Update
@@ -1091,7 +1091,7 @@ within dynamic ``notebook'' environments.
 
 \subsection{Middleware}\label{middleware}
 
-The detailed design of the Middleware components is in ``Data Management Middleware Design'' (\citeds{LDM-152}).
+The detailed design of the Middleware components is in ``Data Management Middleware Design'' \citedsp{LDM-152}.
 
 \subsubsection{Data Butler Access
 Client}\label{data-butler-access-client}
