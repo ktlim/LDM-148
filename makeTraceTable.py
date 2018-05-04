@@ -11,14 +11,13 @@ with open(sys.argv[1], "r") as f:
     header = next(reader)
     components = []
     for c in header:
-        if "[" in c:
-            # Separate component from package
-            component = c.split(" [")[0]
-            # Protect ampersand from LaTeX and make readable
-            component = re.sub(r'\&', 'and', component)
-            # Remove leading digits used for sort ordering
-            component = re.sub(r'^\d+\s+', '', component)
-            components.append(component)
+        # Separate component from package
+        component = c.split(" [")[0]
+        # Protect ampersand from LaTeX and make readable
+        component = re.sub(r'\&', 'and', component)
+        # Remove leading digits used for sort ordering
+        component = re.sub(r'^\d+\s+', '', component)
+        components.append(component)
     n = len(components)
 
     # Each succeeding line corresponds to a requirement
