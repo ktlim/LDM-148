@@ -46,7 +46,7 @@ Traceability}\label{requirement-to-component-traceability}
         # Protect ampersand from LaTeX and make readable
         req = re.sub(r'\&', 'and', req)
         # Remove digits after req id used for sort ordering
-        req = re.sub(r'\s+\d+', '', req)
+        req = re.sub(r'([A-Z]-\d+)\s+\d+', r'\1', req)
         clist = []
         for i in range(1, n):
             if row[i]:
