@@ -81,8 +81,8 @@ facilities, services, and software for their generation and storage.  This
 category of User Generated data products has historically been referred to as ``Level 3''.
 
 Data products are delivered to science users through Data Access
-Centers (DACs). In addition, streams of near-realtime alerts and telescope
-pointing predictions are provided.  Each LSST data product has associated
+Centers (DACs). In addition, streams of near-realtime alerts and planned
+observations are provided.  Each LSST data product has associated
 metadata providing provenance and quality metrics and tracing it to relevant
 calibration information in the archive. The DACs are composed of modest but
 significant computational, storage, networking, and other resources intended
@@ -191,75 +191,59 @@ environment. The detailed design of components in this tier is given in
 The DMS computing environments reside in four main physical locations:
 the Summit Site including the main Observatory and Auxiliary Telescope
 buildings on Cerro Pachon, Chile; the Base Facility data center located
-at the Base Site in La Serena, Chile; the Archive Facility data center
+at the Base Site in La Serena, Chile; the NCSA Facility data center
 at the National Center for Supercomputing Applications (NCSA) in Urbana,
-Illinois, USA; and the Satellite Computing Facility at CC-IN2P3 in Lyon,
+Illinois, USA; and the Satellite Facility at CC-IN2P3 in Lyon,
 France. These are linked by high-speed networks to allow rapid data
 movement.
 
-The Base Facility includes three computational environments: the Base portion of the L1 Enclave directly supporting Observatory operations, the Commissioning Cluster, and the Chilean Data Access Center.
+The Base Facility includes four enclaves: the Base portion of the Prompt Enclave directly supporting Observatory operations, the Commissioning Cluster, an Archive Enclave holding data products, and the Chilean Data Access Center.
 
-The Archive Facility includes four computational environments: the NCSA portion of the L1 Enclave, the NCSA General Production Enclave hosting all offline "data release" activities, the Development and Integration Enclave, and the US Data Access Center.
+The NCSA Facility also includes four enclaves: the NCSA portion of the Prompt Enclave, the Offline Production Enclave hosting all offline "data release" and calibration activities, another Archive Enclave, and the US Data Access Center.
 
-These environments are distinguished by having different users, operations timescales, interfaces, and often components.
+Additionally, a separate Development and Integration Enclave at NCSA hosts many of the services and tools necessary to build and test the DMS.
 
-DMS services are assigned to each of these environments or provide underlying infrastructure as part of Master Provisioning Enclaves at each Facility.
+These enclaves are distinguished by having different users, operations timescales, interfaces, and often components.
+
+DMS services are assigned to each of these enclaves.  Some enclave hardware may be dedicated; the remainder is allocated from Master Provisioning hardware pools at each Facility.
 
 The service instances that make up the DMS include (with the
-computational environment they are in noted):
+enclave they are in noted):
 \begin{itemize}
 \item
-  Image and EFD Archiving (Base L1)
+  Archiving (Prompt Base)
 \item
-  Pointing Prediction Publishing (Base L1)
+  Planned Observation Publication (Prompt Base)
 \item
-  Prompt Processing Ingest (Base L1)
+  Prompt Processing Ingest (Prompt Base)
 \item
-  Observatory Operations Data (Base L1)
+  Observatory Operations Data (Prompt Base)
 \item
-  Observatory Control System (OCS) Driven Batch (Base L1)
+  Observatory Control System (OCS) Driven Batch (Prompt Base)
 \item
-  Telemetry Gateway (Base L1)
+  Telemetry Gateway (Prompt Base)
 \item
-  Prompt Processing (NCSA L1)
+  Prompt Processing (Prompt NCSA)
 \item
-  Alert Distribution/Filtering (NCSA L1)
+  Alert Distribution (Prompt NCSA)
 \item
-  Prompt Quality Control (QC) (NCSA L1)
+  Prompt Quality Control (QC) (Prompt NCSA)
 \item
-  Batch Production (NCSA General Production, Satellite Facility)
+  Batch Production (Offline Production, Satellite Facility)
 \item
-  Data Release QC (NCSA General Production)
+  Data Release QC (Offline Production)
 \item
   LSST Science Platform Commissioning Cluster instance (Commissioning
   Cluster)
 \item
   LSST Science Platform Data Access Center instances (DACs)
 \item
-  Bulk Data Distribution (DAC)
+  Bulk Distribution (DAC)
 \item
-  LSST Science Platform Science Validation instance (Development and Integration)
-\item
-  Developer Services (Development and Integration)
-\item
-  Data Backbone (Infra)
-\item
-  Managed Database (Infra)
-\item
-  Batch Computing (Infra)
-\item
-  Containerized Application Management (Infra)
-\item
-  IT Security (Infra)
-\item
-  Identity Management (Infra)
-\item
-  ITC Provisioning and Management (Infra)
-\item
-  Service Management/Monitoring (Infra)
+  Data Backbone (Archive Base and NCSA)
 \end{itemize}
 
-The relationships between these services, their deployment computational environments,
+The relationships between these services, their deployment enclaves
 physical facilities, and science application ``payloads'' can be
 visualized in Figure~\ref{fig:deployment}.
 
@@ -269,6 +253,28 @@ visualized in Figure~\ref{fig:deployment}.
 \caption{Data Management System Deployment}
 \label{fig:deployment}
 \end{figure}
+
+Other services necessary to build, test, and operate the DMS include:
+\begin{itemize}
+\item
+  LSST Science Platform Science Validation instance (Development and Integration)
+\item
+  Developer Services (Development and Integration)
+\item
+  Managed Database (Infrastructure)
+\item
+  Batch Computing (Infrastructure)
+\item
+  Containerized Application Management (Infrastructure)
+\item
+  IT Security (Infrastructure)
+\item
+  Identity Management (Infrastructure)
+\item
+  ITC Provisioning and Management (Infrastructure)
+\item
+  Service Management/Monitoring (Infrastructure)
+\end{itemize}
 
 The common infrastructure services are illustrated in Figure~\ref{fig:commonservices}.
 
@@ -284,7 +290,7 @@ processing, Data Release Production, and calibration processing is built
 out of a set of frameworks that accept plugins. In turn, those
 frameworks build on middleware that provides portability and
 scalability.  The relationships between the packages implementing
-these se frameworks and plugins and the underlying middleware packages
+these frameworks and plugins and the underlying middleware packages
 are shown in Figure~\ref{fig:scipi}.
 
 Key applications software components include:
@@ -322,7 +328,7 @@ Key middleware components include:
   Task framework (\texttt{pex\_*}, \texttt{log}, \texttt{pipe\_base},
   \texttt{ctrl\_pool})
 \item
-  Workflow and orchestration for production control (\texttt{ctrl\_*})
+  Campaign management and workflow for production control (\texttt{ctrl\_*})
 \end{itemize}
 
 Infrastructure components include:
@@ -349,21 +355,21 @@ are illustrated in Figure~\ref{fig:mwandinfra}.
 \label{fig:mwandinfra}
 \end{figure}
 
-\section{Base L1 Enclave}\label{base-l1-enclave}
+\section{Prompt Base Enclave}\label{prompt-base-enclave}
 
-Services located in this environment are located at the Base solely because
+Services located in this enclave are located at the Base solely because
 they must interact with the OCS or the Camera Data System (also known as
 the Camera DAQ) or both. In several cases, services located here
-interact closely with corresponding services in the NCSA L1 Enclave,
+interact closely with corresponding services in the Prompt NCSA Enclave,
 to the point where the Base service cannot function if the
 NCSA service is not operational. This reliance has been taken into
 account in the fault tolerance strategies used.
 
-The primary goals of the services in this environment are to transfer data
+The primary goals of the services in this enclave are to transfer data
 to appropriate locations, either to NCSA, from NCSA, or to the Data
 Backbone.
 
-The services in this enclave and their partners in the NCSA L1 Enclave
+The services in this enclave and their partners in the Prompt NCSA Enclave
 need to run rapidly and reliably. They run at times
 (outside office hours) and with latencies that are not amenable to a
 human-in-the-loop design. Instead, they are designed to execute
@@ -376,7 +382,7 @@ Detailed concepts of operations for each service can be found in
 \textit{Concept of Operations for the LSST Production Services} \citedsp{LDM-230}.
 
 
-\subsubsection{Image and EFD Archiving}\label{image-and-efd-archiving}
+\subsubsection{Archiving}\label{archiving}
 
 This component is composed of several Image Archiver service and
 Catch-Up Image Archiver instances: one pair each for the LSSTCam, the
@@ -405,9 +411,9 @@ form more suitable for querying by image timestamp, and loads it into
 the permanently archived ``Transformed EFD'' database in the Data
 Backbone.
 
-\subsubsection{Pointing Prediction Publishing}\label{pointing-prediction-publishing}
+\subsubsection{Planned Observation Publication}\label{planned-observation-publication}
 
-This service receives telemetry from the OCS describing the next visit location and the telescope scheduler's predictions of its future visits.
+This service receives telemetry from the OCS describing the next visit location and the telescope scheduler's predictions of its future observations.
 It publishes these as an unauthenticated, globally-accessible web service comprising both a web page for human inspection and a web API for usage by automated tools.
 
 \subsubsection{Prompt Processing Ingest}\label{prompt-processing-ingest}
@@ -430,7 +436,7 @@ After images and metadata are ingested, they remain available through the OODS f
 \subsubsection{OCS Driven Batch}\label{ocs-driven-batch}
 
 This service receives commands from the OCS and invokes a Batch Computing service to execute configured science payloads.
-The service can be configured to execute on the Commissioning Cluster at the Base or in the General Production Enclave at NCSA.
+The service can be configured to execute on the Commissioning Cluster at the Base or in the Offline Production Enclave at NCSA.
 It is used for modest-latency analysis of images during Commissioning and for processing daily calibration images in normal observing operations.
 Images and metadata are taken from the Data Backbone, and results are provided back to the Data Backbone; there is no direct connection from this service to the Camera Data System.
 This obviously bounds the minimum latency from image acquisition to processing start by the latency of the Archiving service and Data Backbone transfer.
@@ -438,19 +444,18 @@ A summary status for the processing performed is sent to the OCS Driven Batch Co
 
 \subsubsection{Telemetry Gateway}\label{telemetry-gateway}
 
-This service obtains information from the NCSA L1 Enclave,
+This service obtains information from the Prompt NCSA Enclave,
 particularly status and quality metrics from Prompt Processing of images
 and the Prompt Quality Control service, and transmits it to the OCS as
 specified in the \textit{Data Management-OCS Software Communication Interface}
 \citedsp{LSE-72}. Note that more detailed information on the status and
 performance of DMS services will also be available to Observatory
 operators through remote displays originated from the
-Service Management/Monitoring infrastructure services in all DMS computational
-environments.
+Service Management/Monitoring infrastructure services in all DMS enclaves.
 
 \subsection{Interfaces}\label{base-interfaces}
 
-OCS to all Base L1 Enclave services: these interface through the SAL
+OCS to all Prompt Base Enclave services: these interface through the SAL
 library provided by the OCS subsystem.
 
 Archiver and Catch-Up Archiver to Observatory Operations Data Service:
@@ -482,14 +487,14 @@ processing service.
 
 OCS Driven Batch to Batch Computing: HTCondor is
 used to transfer execution instructions
-from the control service to the batch service, whether to the Commissioning Cluster or over the international network to the NCSA General Production Enclave, and return status and
+from the control service to the batch service, whether to the Commissioning Cluster or over the international network to the Offline Production Enclave, and return status and
 result information.
 
-Telemetry Gateway from NCSA Enclave L1 Domain services: RabbitMQ is
+Telemetry Gateway from Prompt NCSA Enclave services: RabbitMQ is
 used to transfer status and quality metrics to the gateway over the
 international network.
 
-\section{NCSA L1 Enclave}\label{ncsa-level-1-enclave}
+\section{Prompt NCSA Enclave}\label{prompt-ncsa-enclave}
 
 This enclave is responsible for the compute-intensive processing for all
 near-realtime operations and other operations closely tied with the
@@ -499,7 +504,7 @@ to the DACs, alert subscribers, and back to the OCS.
 
 The Prompt Processing service executes science payloads that are tightly integrated with the observing cadence and is intended to function in near-realtime with strict result deadlines for both science and raw calibration images.
 
-Note that offline (typically daytime) processing to generate Prompt data products occurs under the control of the Batch Production service in the NCSA General Production Enclave using its Batch Computing resources.
+Note that offline (typically daytime) processing to generate Prompt data products occurs under the control of the Batch Production service in the Offline Production Enclave using its Batch Computing resources.
 
 The Alert Distribution service receives batches of alerts resulting from Prompt Processing of each science visit; it then provides bulk alert streams to community alert brokers and filtered alert streams to LSST data rights holders.
 
@@ -510,7 +515,7 @@ found.
 Like the services in the Base Center, these services need to run
 rapidly and reliably and so are designed to execute autonomously.
 
-\subsection{Service Descriptions}\label{ncsa-l1-service-descriptions}
+\subsection{Service Descriptions}\label{prompt-ncsa-service-descriptions}
 
 Detailed concepts of operations for each service can be found in
 \textit{Concept of Operations for the LSST Production Services} \citedsp{LDM-230}.
@@ -539,7 +544,7 @@ Telescope Spectrograph.
 \subsubsection{Alert Distribution}\label{alert-distribution}
 
 This service obtains alerts generated by the Alert Production science payload and distributes them to community alert brokers.
-A full Alert stream is also fed to the Alert Filtering component (also known as the "mini-broker"); that component allows individual LSST data rights holders to execute limited filters against the stream, producing filtered feeds that are then distributed to the individuals.
+A full Alert stream is also fed to a filtering component (also known as the "mini-broker"); that component allows individual LSST data rights holders to execute limited filters against the stream, producing filtered feeds that are then distributed to the individuals.
 
 \subsubsection{Prompt Quality Control}\label{prompt-quality-control}
 
@@ -553,7 +558,7 @@ Alarms stemming from threshold crossings are delivered to Observatory
 operators and to LSST Data Facility Production Scientists for
 verification, analysis, and resolution.
 
-\subsection{Interfaces}\label{ncsa-l1-interfaces}
+\subsection{Interfaces}\label{prompt-ncsa-interfaces}
 
 Prompt Processing to Alert Distribution: these
 interface through a reliable transport system.
@@ -571,14 +576,14 @@ effectively be an infinite time window.
 Science Payloads to Data Backbone: payloads use the Data Butler as a
 client to access files and catalog databases within the Data Backbone.
 
-\section{NCSA General Production Enclave}\label{ncsa-general-production-enclave}
+\section{Offline Production Enclave}\label{offline-production-enclave}
 
 This enclave is responsible for all longer-period data processing
 operations, including the largest and most complex payloads supported by
 the DMS: the annual Data Release Production (DRP) and periodic
 Calibration Products Productions (CPPs). Note that CPPs will execute
 even while the annual DRP is executing.
- The Data Release Quality Control Service monitors the science data
+ The Offline Quality Control Service monitors the science data
 products, notifying operators if any anomalies are found.
 
 The services in this enclave need to run efficiently and reliably over
@@ -610,7 +615,7 @@ These include:
 
 The service is able to handle massively distributed computing, executing jobs when their inputs become available and tracking their status and outputs.
 It ensures that the data needed for a job is accessible to it and that outputs (including log files, if any) are preserved.
-It can allocate work across multiple computing environments, in particular between NCSA and the Satellite Computing Facility at CC-IN2P3, which will have capacity for half of the DRP processing.
+It can allocate work across multiple enclaves, in particular between NCSA and the Satellite Facility at CC-IN2P3, which will have capacity for half of the DRP processing.
 
 Offline processing ensures that Prompt data products are generated within the nominal 24 hours.
 It includes catch-up of missed nightly processing as well as daytime processing such as the Moving Object Processing System.
@@ -655,9 +660,9 @@ configurations of the payload, to monitor and analyze results, and, when
 absolutely necessary, to make ``hot fixes'' during execution that
 maintain adequate consistency of the resulting data products.
 
-\subsubsection{Data Release Quality Control}\label{data-release-quality-control}
+\subsubsection{Offline Quality Control}\label{offline-quality-control}
 
-This collects information on Data Release science payload execution,
+This collects information on Calibration, Template Generation, and Data Release science payload execution,
 post-processes the science data products from the Data Backbone to
 generate additional measurements, and monitors the measurement values
 against defined thresholds, providing an automated quality control
@@ -675,7 +680,7 @@ the Data Butler. Similarly, the staging system will ingest output images
 and catalogs into the Data Backbone.
 
 Batch Production to Satellite Facility: the Data Backbone will transfer raw data, including images, metadata, and the Transformed EFD, to the Satellite Facility.
-Intermediate data products will be transferred back via the Data Backbone for further computations in the NCSA General Production Enclave.
+Intermediate data products will be transferred back via the Data Backbone for further computations in the Offline Production Enclave.
 
 \section{Data Access Centers}\label{data-access-centers}
 
@@ -738,7 +743,7 @@ All usage of any LSST Science Platform instance requires authentication
 to ensure availability only to LSST data rights holders or LSST
 operations staff.
 
-\subsubsection{Bulk Data Distribution}\label{bulk-data-distribution}
+\subsubsection{Bulk Distribution}\label{bulk-distribution}
 
 This service is used to transmit Prompt and Data Release data products to partners such as LSST Education and Public Outreach, the UK LSST project, and the Dark Energy Science Collaboration.
 It extracts data products from the Data Backbone and transmits them over high bandwidth connections to designated, pre-subscribed partners.
@@ -746,61 +751,15 @@ It extracts data products from the Data Backbone and transmits them over high ba
 
 \subsection{Interfaces}\label{dac-interfaces}
 
-Bulk Data Distribution and LSST Science Platform to Data Backbone: Both
+Bulk Distribution and LSST Science Platform to Data Backbone: Both
 DAC-resident services retrieve their data, including raw images, nightly and
 annual image and catalog data products, metadata, and provenance, from the Data
 Backbone.  The LSP Portal Aspect uses the LSP Web APIs to retrieve data.  The
 LSP JupyterLab Aspect can use the LSP Web APIs and also can use the Data Butler
 client library to access the Data Backbone.
 
-Bulk Data Distribution to partners: The exact delivery mechanism for
+Bulk Distribution to partners: The exact delivery mechanism for
 large-scale data distribution is TBD.
-
-
-\section{NCSA Development and Integration Enclave}\label{ncsa-development-integration-enclave}
-
-This enclave encompasses environments for analysts, developers, and
-integration and test. Its users are the Observatory staff as they
-analyze raw data and processed data products to characterize them,
-develop new algorithms and systems, and test new versions of components
-and services before deployment.
-
-Integration environments in this enclave represent various deployment environments, deployment services, test datasets, test execution services, metric measurement and tracking services.
-This environment includes the ``Level 1'' Test Stand, which includes a DM instance of the Camera DAQ used in an integration environment simulating the Base Center.
-It also includes the Prototype Data Access Center (PDAC), which is an integration environment simulating a Data Access Center.
-
-\subsection{Service Descriptions}\label{ncsa-dev-int-service-descriptions}
-
-\subsubsection{LSST Science Platform Science Validation
-instance}\label{lsst-science-platform-science-validation-instance}
-
-This instance of the LSST Science Platform is customized to allow access
-to unreleased and intermediate data products from the Alert, Calibration
-Products, and Data Release Productions. It is optimized for usage by
-scientists within the LSST Operations team, although selected external
-scientists can be granted access to assist with Science Validation. Part
-of the optimization is to size and configure the three Aspects of the
-LSP appropriately; in particular, more JupyterLab usage and less portal
-usage is expected.
-
-\subsubsection{Developer Services}\label{developer-services}
-
-These services include a software version control service, a build, unit test, and continuous integration service, a documentation publication service, developer communications services, an issue/ticket tracking service, etc., necessary to support science and system developers as they create and debug new versions of the Data Management System.
-
-\subsection{Interfaces}\label{ncsa-development-integration-interfaces}
-
-LSP Science Validation instance and Developer Services to Data Backbone:
-All services in this enclave interface with the Data Backbone.  The LSP
-Science Validation instance is used to inspect, analyze, and validate the data
-products of the Data Release Production prior to their release and so has
-access to those products in the Data Backbone; since it may be used to annotate
-the data products, it can also write to the Data Backbone.  The Developer
-Services may use raw data, intermediate data products, and final
-data products to do development, perform tests, and debug problems.
-
-Developer Services do not have direct interfaces with the rest of the
-operational system; they communicate via the distributed source version control
-system, the package management system, and the configuration system.
 
 
 \section{Commissioning Cluster}\label{commissioning-cluster}
@@ -831,28 +790,16 @@ Platform.
 Commissioning Cluster to EFD: The Commissioning Cluster has direct read-only
 client access to the Base replica of the EFD (before transformation).
 
-
-\section{Infrastructure Services}\label{infrastructure-services}
-
-The information technology and communications infrastructure is composed of services and systems that form the computing environments on top of which the services in the enclaves described above are deployed and operate.
-
-\subsection{Service Descriptions}\label{infrastructure-service-descriptions}
+\section{Backbone Services}\label{backbone-services}
 
 Detailed concepts of operations for each service can be found in \textit{Concept of Operations for the LSST Production Services} \citedsp{LDM-230}.
-The detailed design of the infrastructure is in \textit{LSST Data Facility Logical Information Technology and Communications Design} \citedsp{LDM-129} and \textit{Network Design} \citedsp{LSE-78}.
 
-\subsubsection{Data Backbone}\label{data-backbone}
+\subsection{Service Descriptions}\label{backbone-service-descriptions}
 
-The Data Backbone is a key component that provides for data storage,
-transport, and replication, allowing data products to move between
-computational environments. This service provides policy-based
-replication of files (in the Science Image Archive as well as other raw and intermediate files) and databases (in
-the Science Catalog Archive as well as other miscellaneous databases) across multiple physical locations,
-including the Base, Commissioning Cluster, NCSA, and DACs. It manages
-caches of files at each endpoint as well as persistence to long-term
-archival storage (e.g. tape). It provides a registration mechanism for
-new datasets and database entries and a retrieval mechanism compatible
-with the Data Butler.
+The Data Backbone is a key component that provides for data storage, transport, and replication, allowing data products to move between computational environments.
+This service provides policy-based replication of files (including images and flat files to be loaded into databases as well as other raw and intermediate files) and databases (including metadata about files as well as other miscellaneous databases but not including the large Data Release catalogs) across multiple physical locations, including the Base, Commissioning Cluster, NCSA, and DACs.
+It manages caches of files at each endpoint as well as persistence to long-term archival storage (e.g. tape).
+It provides a registration mechanism for new datasets and database entries and a retrieval mechanism compatible with the Data Butler.
 
 The relationships between the Data Backbone components are illustrated
 in Figure~\ref{fig:dbb}.
@@ -864,84 +811,25 @@ in Figure~\ref{fig:dbb}.
 \label{fig:dbb}
 \end{figure}
 
-\subsubsection{Managed Database}\label{managed-database}
+\subsubsection{DBB Ingest/Metadata Management}\label{dbb-ingest-metadata}
 
-This service provides general-purpose relational database management that supports other services.
-It includes metadata and provenance, but it does not include the large catalog science data products that are generated as files and loaded into the Qserv parallel distributed database.
-For efficiency of resource usage and management, most databases are consolidated into a single RDBMS instance.
+...
 
-\subsubsection{Batch Processing}\label{batch-processing}
+\subsubsection{DBB Lifetime Management}\label{dbb-lifetime-metadata}
 
-This service provides execution of batch jobs with a variety of priorities from a variety of users in a variety of environments (e.g. OS and software configurations) on the underlying provisioned compute resources.
-It will use containerization to handle heterogeneity of environments.
-HTCondor is the baseline technology choice for this service.
+...
 
-Some compute resources are reserved for particular uses, but others can
-be flexibly provisioned, up to a certain maximum quota, if needed to
-deal with surges in processing.
+\subsubsection{DBB Transport/Replication/Backup}\label{dbb-transport-repl}
 
-The priority order for processing is:
-\begin{itemize}
-\item
-  Prompt processing
-\item
-  Offline processing for Prompt data products
-\item
-  OCS-controlled batch processing
-\item
-  LSP Commissioning Cluster processing
-\item
-  LSP Science Validation processing
-\item
-  LSP Data Access Center processing
-\item
-  Template and Calibration Products Production
-\item
-  Special Programs Production
-\item
-  Data Release Production
-\end{itemize}
+...
 
-\subsubsection{Containerized Application Management}\label{containerized-application-management}
+\subsubsection{DBB Storage}\label{dbb-storage}
 
-This service provides compute, local-to-node storage, and local-to-LAN storage resources for deploying containerized service-oriented systems, especially the Science Platforms but also including parts of the Quality Control systems and Developer Services.
-It allows allocation of compute and storage resources as well as reproducible, controlled deployment of services onto those resources.
-Kubernetes is the baseline technology choice for this service.
+...
 
-\subsubsection{IT Security}\label{it-security}
+\subsection{Interfaces}\label{backbone-interfaces}
 
-This service provides security, including monitoring, vulnerability management, incident detection and response, access controls, intrusion detection, and configuration management.
-Information security is provided in accordance with the \textit{LSST Master Infromation Security Policy} \citedsp{LPM-121}.
-
-\subsubsection{Identity Management}\label{identity-management}
-
-This service provides authentication and authorization for all users of
-any DMS component, especially the LSST Science Platform instances.
-
-\subsubsection{ITC Provisioning and Management}\label{itc-provisioning-management}
-
-This service provides for acquisition, change and configuration management, and provisioning of information technology components, whether purchased ``bare metal'', provided by the NCSA Commons, or provided by agreements with outside providers.
-
-This service includes deployment of non-containerized services.
-For example, many of the services at the Base Facility are not highly dynamic or flexible, as they primarily provide interfacing to the OCS and Camera Data System.
-The baseline provisioning mechanism for them is vSphere; they will be deployed using Puppet.
-
-\subsubsection{Service Management/Monitoring}\label{service-management-monitoring}
-
-These services provide management and monitoring at the service level for each computing environment.
-They include standard IT processes such as service design, service transition (including change, release, and configuration management), and service delivery (including incident and request response plus problem management).
-
-Service monitoring reports in dashboard and document form on the health and status of all services.
-
-\subsection{Interfaces}\label{infrastructure-interfaces}
-
-The infrastructure services generally interact with all other deployed
-services.
-
-Identity management instances are present in the Base Center and at NCSA.
-(Another replica will be maintained at the Summit.)  These are used to support
-authentication and authorization for the other physically co-located environments:
-the Commissioning Cluster and the two Data Access Centers.
+The Data Backbone services interact with most other deployed services.
 
 
 \section{Software Components}\label{software-components}
@@ -1095,6 +983,143 @@ optimally run the particular task (i.e., which level of intra-node
 parallelization is be desired).
 
 It also includes a configuration API and a logging API.
+
+
+\section{Infrastructure Services}\label{infrastructure-services}
+
+The information technology and communications infrastructure is composed of services and systems that form the computing environments on top of which the services in the enclaves described above are deployed and operate.
+
+\subsection{Service Descriptions}\label{infrastructure-service-descriptions}
+
+Detailed concepts of operations for each service can be found in \textit{Concept of Operations for the LSST Production Services} \citedsp{LDM-230}.
+The detailed design of the infrastructure is in \textit{LSST Data Facility Logical Information Technology and Communications Design} \citedsp{LDM-129} and \textit{Network Design} \citedsp{LSE-78}.
+
+\subsubsection{Managed Database}\label{managed-database}
+
+This service provides general-purpose relational database management that supports other services.
+It includes metadata and provenance, but it does not include the large catalog science data products that are generated as files and loaded into the Qserv parallel distributed database.
+For efficiency of resource usage and management, most databases are consolidated into a single RDBMS instance.
+
+\subsubsection{Batch Processing}\label{batch-processing}
+
+This service provides execution of batch jobs with a variety of priorities from a variety of users in a variety of environments (e.g. OS and software configurations) on the underlying provisioned compute resources.
+It will use containerization to handle heterogeneity of environments.
+HTCondor is the baseline technology choice for this service.
+
+Some compute resources are reserved for particular uses, but others can
+be flexibly provisioned, up to a certain maximum quota, if needed to
+deal with surges in processing.
+
+The priority order for processing is:
+\begin{itemize}
+\item
+  Prompt processing
+\item
+  Offline processing for Prompt data products
+\item
+  OCS-controlled batch processing
+\item
+  LSP Commissioning Cluster processing
+\item
+  LSP Science Validation processing
+\item
+  LSP Data Access Center processing
+\item
+  Template and Calibration Products Production
+\item
+  Special Programs Production
+\item
+  Data Release Production
+\end{itemize}
+
+\subsubsection{Containerized Application Management}\label{containerized-application-management}
+
+This service provides compute, local-to-node storage, and local-to-LAN storage resources for deploying containerized service-oriented systems, especially the Science Platforms but also including parts of the Quality Control systems and Developer Services.
+It allows allocation of compute and storage resources as well as reproducible, controlled deployment of services onto those resources.
+Kubernetes is the baseline technology choice for this service.
+
+\subsubsection{IT Security}\label{it-security}
+
+This service provides security, including monitoring, vulnerability management, incident detection and response, access controls, intrusion detection, and configuration management.
+Information security is provided in accordance with the \textit{LSST Master Infromation Security Policy} \citedsp{LPM-121}.
+
+\subsubsection{Identity Management}\label{identity-management}
+
+This service provides authentication and authorization for all users of
+any DMS component, especially the LSST Science Platform instances.
+
+\subsubsection{ITC Provisioning and Management}\label{itc-provisioning-management}
+
+This service provides for acquisition, change and configuration management, and provisioning of information technology components, whether purchased ``bare metal'', provided by the NCSA Commons, or provided by agreements with outside providers.
+
+This service includes deployment of non-containerized services.
+For example, many of the services at the Base Facility are not highly dynamic or flexible, as they primarily provide interfacing to the OCS and Camera Data System.
+The baseline provisioning mechanism for them is vSphere; they will be deployed using Puppet.
+
+\subsubsection{Service Management/Monitoring}\label{service-management-monitoring}
+
+These services provide management and monitoring at the service level for each computing environment.
+They include standard IT processes such as service design, service transition (including change, release, and configuration management), and service delivery (including incident and request response plus problem management).
+
+Service monitoring reports in dashboard and document form on the health and status of all services.
+
+\subsection{Interfaces}\label{infrastructure-interfaces}
+
+The infrastructure services generally interact with all other deployed
+services.
+
+Identity management instances are present in the Base Center and at NCSA.
+(Another replica will be maintained at the Summit.)  These are used to support
+authentication and authorization for the other physically co-located environments:
+the Commissioning Cluster and the two Data Access Centers.
+
+
+\section{NCSA Development and Integration Enclave}\label{ncsa-development-integration-enclave}
+
+This enclave encompasses environments for analysts, developers, and
+integration and test. Its users are the Observatory staff as they
+analyze raw data and processed data products to characterize them,
+develop new algorithms and systems, and test new versions of components
+and services before deployment.
+
+Integration environments in this enclave represent various deployment environments, deployment services, test datasets, test execution services, metric measurement and tracking services.
+This environment includes the ``Level 1'' Test Stand, which includes a DM instance of the Camera DAQ used in an integration environment simulating the Base Center.
+It also includes the Prototype Data Access Center (PDAC), which is an integration environment simulating a Data Access Center.
+
+\subsection{Service Descriptions}\label{ncsa-dev-int-service-descriptions}
+
+\subsubsection{LSST Science Platform Science Validation
+instance}\label{lsst-science-platform-science-validation-instance}
+
+This instance of the LSST Science Platform is customized to allow access
+to unreleased and intermediate data products from the Alert, Calibration
+Products, and Data Release Productions. It is optimized for usage by
+scientists within the LSST Operations team, although selected external
+scientists can be granted access to assist with Science Validation. Part
+of the optimization is to size and configure the three Aspects of the
+LSP appropriately; in particular, more JupyterLab usage and less portal
+usage is expected.
+
+\subsubsection{Developer Services}\label{developer-services}
+
+These services include a software version control service, a build, unit test, and continuous integration service, a documentation publication service, developer communications services, an issue/ticket tracking service, etc., necessary to support science and system developers as they create and debug new versions of the Data Management System.
+
+\subsection{Interfaces}\label{ncsa-development-integration-interfaces}
+
+LSP Science Validation instance and Developer Services to Data Backbone:
+All services in this enclave interface with the Data Backbone.  The LSP
+Science Validation instance is used to inspect, analyze, and validate the data
+products of the Data Release Production prior to their release and so has
+access to those products in the Data Backbone; since it may be used to annotate
+the data products, it can also write to the Data Backbone.  The Developer
+Services may use raw data, intermediate data products, and final
+data products to do development, perform tests, and debug problems.
+
+Developer Services do not have direct interfaces with the rest of the
+operational system; they communicate via the distributed source version control
+system, the package management system, and the configuration system.
+
+
 
 \input{standards}
 \input{trace}
