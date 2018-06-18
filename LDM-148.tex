@@ -409,7 +409,8 @@ timings, from the OCS publish/subscribe middleware and/or from the EFD.
 It formats these into a metadata package that is recorded in the EFD Large File Annex.
 The Archiver and Catch-Up Archiver instances retrieve this metadata package and attach it to the captured image pixels.
 
-The image pixels and metadata are then passed to the Observatory Operations Data Service (OODS), which serves as a buffer from which observing-critical data can be retrieved as well as a staging area for ingestion into the permanent archive in the Data Backbone.
+The image pixels and metadata are passed to the Observatory Operations Data Service (OODS), which serves as a buffer from which observing-critical data can be retrieved.
+They are also passed to a staging area for ingestion into the permanent archive in the Data Backbone.
 The catch-up versions archive into the OODS and Data Backbone any raw
 images and metadata that were missed by the primary archiving services
 due to network or other outage, retrieving them from the flash storage
@@ -440,9 +441,10 @@ telescope spectrograph.
 
 \subsubsection{Observatory Operations Data}\label{obs-ops-data}
 
-This service provides low-latency access to images and metadata for use by Observatory systems and the Commissioning Cluster LSP instance.
-It maintains a higher level of service availability than the Data Backbone and so provides a staging area for to-be-archived data prior to ingestion into the Data Backbone.
-After images and metadata are ingested, they remain available through the OODS for a policy-configured amount of time.
+This service provides low-latency access to images, other files, and metadata for use by Observatory systems and the Commissioning Cluster LSP instance.
+It maintains a higher level of service availability than the Data Backbone.
+After images, files, and metadata are ingested, they remain available through the OODS for a policy-configured amount of time.
+Files stored in the OODS include raw images from the Camera as well as master calibration images from the Calibration Products Production payloads, intended for use by the Active Optics and Guider components of the Telescope and Site subsystem.
 
 \subsubsection{OCS Driven Batch}\label{ocs-driven-batch}
 
@@ -472,11 +474,13 @@ library provided by the OCS subsystem.
 Archiver and Catch-Up Archiver to Observatory Operations Data Service:
 image files with associated metadata are written to OODS storage.
 
-Observatory Operations Data Service to Data Backbone: files are copied to
+Archiver and Catch-Up Archiver to Data Backbone: files are copied to
 Data Backbone storage via a file transfer mechanism, and their
 information and metadata are registered with Data Backbone management
 dataabases. The Data Butler is not used for this low-level,
 non-science-payload interface.
+
+Observatory Operations Data Service to Data Backbone: files are copied from the Data Backbone to the OODS after completion and validation of calibration production results.
 
 Observatory Operations Data Service to Commissioning Cluster LSP and other users: the OODS provides a mountable POSIX filesystem interface.
 A web interface (e.g. WebDAV) may also be provided, but this will be as simple as possible to enable maintaining a very high level of service availability and reliability.
