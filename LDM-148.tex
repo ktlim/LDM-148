@@ -796,7 +796,7 @@ Detailed concepts of operations for each service can be found in \textit{Concept
 
 \subsection{Service Descriptions}\label{backbone-service-descriptions}
 
-The Data Backbone is a key component that provides for data storage, transport, and replication, allowing data products to move between computational environments.
+The Data Backbone (DBB) is a key component that provides for data storage, transport, and replication, allowing data products to move between enclaves.
 This service provides policy-based replication of files (including images and flat files to be loaded into databases as well as other raw and intermediate files) and databases (including metadata about files as well as other miscellaneous databases but not including the large Data Release catalogs) across multiple physical locations, including the Base, Commissioning Cluster, NCSA, and DACs.
 It manages caches of files at each endpoint as well as persistence to long-term archival storage (e.g. tape).
 It provides a registration mechanism for new datasets and database entries and a retrieval mechanism compatible with the Data Butler.
@@ -813,19 +813,28 @@ in Figure~\ref{fig:dbb}.
 
 \subsubsection{DBB Ingest/Metadata Management}\label{dbb-ingest-metadata}
 
-...
+This service within the Data Backbone is responsible for maintaining and providing access to the metadata describing the location, characteristics, and provenance of the data products it manages.
+Part of this service involves creating the appropriate metadata during ingest when data from external sources is incorporated into the DBB.
+The Batch Production services will generally create the necessary DBB metadata as part of their operation, so only a minimal ingest process is needed for internally-generated data products.
+Metadata is kept in a database that is a superset of the registry required by the Data Butler, allowing the Butler to directly access data within the DBB.
 
 \subsubsection{DBB Lifetime Management}\label{dbb-lifetime-metadata}
 
-...
+This service is responsible for managing the lifetimes of data products within the DBB based on a set of policies.
+Products may move from high-speed storage to near-line or offline storage or may be deleted completely.
+Some products are kept permanently.
+Some are kept for defined time periods as specified in requirements.
+Intermediates may be kept until all downstream products have been generated.
 
 \subsubsection{DBB Transport/Replication/Backup}\label{dbb-transport-repl}
 
-...
+This service is responsible for moving data products from one Facility to another and to backup and disaster recovery storage.
+It handles recovery if a data product is found to be missing or corrupt.
 
 \subsubsection{DBB Storage}\label{dbb-storage}
 
-...
+This service is responsible for storage of data products in the DBB.
+The storage service provides an interface usable by the Data Butler as a datastore.
 
 \subsection{Interfaces}\label{backbone-interfaces}
 
