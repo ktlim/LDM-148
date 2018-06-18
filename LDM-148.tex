@@ -151,7 +151,7 @@ LSST data products.
 
 Underlying all of the above is a Data Backbone that provides storage, tracking,
 and replication for all LSST data products.  The Data Backbone links all of the
-computational environments and the Data Access Centers, acting as the spine that
+enclaves including the Data Access Centers, acting as the spine that
 supports them all.
 
 \input{sizing}
@@ -169,7 +169,7 @@ integration environments for testing purposes.
 
 The DMS services can be considered to consist of four tiers of software
 components. The top tier is the LSST Science Platform, which is deployed
-in the DACs and other computational environments to provide a user
+in the DACs and other enclaves to provide a user
 interface and analysis environment for science users and LSST staff. The
 detailed design of this tier is given in \textit{LSST Science Platform} \citedsp{LDM-542}. The next
 tier is composed of science ``applications'' software that generates
