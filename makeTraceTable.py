@@ -66,19 +66,13 @@ Traceability}\label{component-to-requirement-traceability}
 Note that only ``leaf'' components are traced to requirements.
 
 \setitemize{noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt}
-\tablefirsthead{\hline \multicolumn{1}{c}{\textbf{Component}} &
-                       \multicolumn{1}{c}{\textbf{Requirements}} \\ \hline}
-\tablehead{\hline \multicolumn{1}{c}{\textbf{Component}} &
-                       \multicolumn{1}{c}{\textbf{Requirements}} \\ \hline}
 \footnotesize
-\begin{xtabular}{lp{0.7\textwidth}}
 """)
 
 for component in components:
     if len(component_reqs[component]) == 0:
         continue
-    print(component + " &\n" + r"\begin{itemize}" + \
+    print(component + r" \begin{itemize}" + \
+            "\n\\item " + \
             "\n\\item ".join(component_reqs[component]) + \
-            "\n" + r"\end{itemize} \\ \hline")
-
-print(r"\end{xtabular}")
+            "\n" + r"\end{itemize}")
