@@ -14,8 +14,9 @@ with open(sys.argv[1], "r") as f:
     for c in header:
         # Separate component from package
         component = c.split(" [")[0]
-        # Protect ampersand from LaTeX and make readable
+        # Protect ampersand and underscore from LaTeX and make readable
         component = re.sub(r'\&', 'and', component)
+        component = re.sub(r'_', '\\_', component)
         # Remove leading digits used for sort ordering
         component = re.sub(r'^\d+\s+', '', component)
         components.append(component)
