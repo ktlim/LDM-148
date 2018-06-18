@@ -53,7 +53,7 @@ Traceability}\label{requirement-to-component-traceability}
             if row[i]:
                 clist.append(components[i])
                 component_reqs[components[i]].append(req)
-        print("{} & {}".format(req, ", ".join(clist)))
+        print("{} & {} \\\\ \\hline".format(req, ", ".join(clist)))
 
 
 print(r"""
