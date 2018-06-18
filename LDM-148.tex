@@ -206,6 +206,9 @@ Additionally, a separate Development and Integration Enclave at NCSA hosts many 
 These enclaves are distinguished by having different users, operations timescales, interfaces, and often components.
 
 DMS services are assigned to each of these enclaves.  Some enclave hardware may be dedicated; the remainder is allocated from Master Provisioning hardware pools at each Facility.
+Each service is generally implemented by a corresponding software product.
+In some cases, such as for the Archiving and Telemetry Gateway, multiple services are supported by a single software product.
+In other cases, such as for the Image Ingest and EFD Transformation portions of the Archiving service, multiple software products support a single overall service.
 
 The service instances that make up the DMS include (with the
 enclave they are in noted):
@@ -254,7 +257,7 @@ visualized in Figure~\ref{fig:deployment}.
 \label{fig:deployment}
 \end{figure}
 
-Other services necessary to build, test, and operate the DMS include:
+Other services necessary to build, test, and operate the DMS but that are not directly responsible for generating data products include:
 \begin{itemize}
 \item
   LSST Science Platform Science Validation instance (Development and Integration)
@@ -287,13 +290,14 @@ The common infrastructure services are illustrated in Figure~\ref{fig:commonserv
 
 The science application software for the Alert Production, daytime
 processing, Data Release Production, and calibration processing is built
-out of a set of frameworks that accept plugins. In turn, those
+out of a set of libraries and frameworks that accept plugins. In turn, those
 frameworks build on middleware that provides portability and
 scalability.  The relationships between the packages implementing
 these frameworks and plugins and the underlying middleware packages
 are shown in Figure~\ref{fig:scipi}.
 
-Key applications software components include:
+The Science Pipelines Software product category contains the production pipelines that generate data products.
+Those rely on the Science Pipelines Libraries supporting software product, which includes these key components:
 \begin{itemize}
 \item
   Low-level astronomical software primitives and data structures
@@ -318,7 +322,7 @@ Key applications software components include:
 \label{fig:scipi}
 \end{figure}
 
-Key middleware components include:
+The middleware layer includes certain supporting software products and the Batch Production software products:
 \begin{itemize}
 \item
   Data access client (Data Butler) (\texttt{daf\_persistence})
@@ -336,6 +340,10 @@ Infrastructure components include:
 \item
   Other databases (typically relational)
 \item
+  Common off-the-shelf software and other third-party products
+\item
+  Low-level software such as operating systems
+\item
   Filesystems
 \item
   Authentication and authorization (identity management)
@@ -343,6 +351,8 @@ Infrastructure components include:
   Provisioning and resource management
 \item
   Monitoring
+\item
+  Hardware (compute, storage, and network) configurations
 \end{itemize}
 
 The relationships between the middleware and infrastructure components
@@ -354,6 +364,7 @@ are illustrated in Figure~\ref{fig:mwandinfra}.
 \caption{Data Management Middleware and Infrastructure}
 \label{fig:mwandinfra}
 \end{figure}
+
 
 \section{Prompt Base Enclave}\label{prompt-base-enclave}
 
@@ -609,13 +620,14 @@ These include:
 	\item Offline processing for Prompt data products
 	\item Calibration Products Production
 	\item Template Production
-	\item Special Programs Production
+	\item Special Programs Productions
 	\item Data Release Production
 \end{itemize}
 
 The service is able to handle massively distributed computing, executing jobs when their inputs become available and tracking their status and outputs.
 It ensures that the data needed for a job is accessible to it and that outputs (including log files, if any) are preserved.
 It can allocate work across multiple enclaves, in particular between NCSA and the Satellite Facility at CC-IN2P3, which will have capacity for half of the DRP processing.
+It utilizes the Campaign Management and Workload/Workflow software products to accomplish these goals.
 
 Offline processing ensures that Prompt data products are generated within the nominal 24 hours.
 It includes catch-up of missed nightly processing as well as daytime processing such as the Moving Object Processing System.
@@ -637,7 +649,7 @@ information during execution.
 
 Template Production campaigns, typically run annually, generate the static sky templates used by Alert Production, based on raw science images from the Data Backbone.
 
-Special Programs Production campaigns perform custom analyses on raw science images taken for these programs.
+Special Programs Productions campaigns perform custom analyses on raw science images taken for these programs.
 The cadence for these campaigns may vary based on the particular Special Program.
 
 Data Release Production campaigns execute the DRP science payload annually to generate all
@@ -900,8 +912,8 @@ information from the Transformed EFD to generate a subset of Master
 Calibration Images and Calibration Database entries in the Data
 Backbone.
 
-\subsubsection{Special Programs Production
-Payload}\label{special-programs-production-payload}
+\subsubsection{Special Programs Productions
+Payload}\label{special-programs-productions-payload}
 
 Executes at program-defined intervals.
 Uses raw science images to generate special programs science data products, placing them in the Data Backbone.
@@ -930,9 +942,9 @@ first running a ``mini-DRP'' over a small portion of the sky, followed
 by the full DRP over the entire sky. Produces science data products in
 the Data Backbone.
 
-\subsection{SUIT}\label{suit}
+\subsection{Firefly and SUIT}\label{suit}
 
-The Science User Interface and Tools provide visualization, plotting,
+The Science User Interface and Tools, primarily composed of the Firefly product, provide visualization, plotting,
 catalog rendering, browsing, and searching elements that can be
 assembled into predetermined ``portals'' but can also be used flexibly
 within dynamic ``notebook'' environments.
@@ -993,6 +1005,15 @@ parallelization is be desired).
 
 It also includes a configuration API and a logging API.
 
+\subsubsection{ADQL Translator}\label{adql-translator}
+
+The ADQL Translator serves to connect the catalog query portion of the LSST Science Platform Web APIs aspect with underlying databases, including both the Parallel Distributed Database (Qserv) and conventional relational databases.
+
+\subsubsection{Image Server}\label{image-server}
+
+The Image Server connects the image query portion of the LSST Science Platform Web APIs aspect with underlying image data products in the Data Backbone.
+It also serves to regenerate "virtual" data products that have been removed for space reasons.
+
 
 \section{Infrastructure Services}\label{infrastructure-services}
 
@@ -1036,7 +1057,7 @@ The priority order for processing is:
 \item
   Template and Calibration Products Production
 \item
-  Special Programs Production
+  Special Programs Productions
 \item
   Data Release Production
 \end{itemize}
