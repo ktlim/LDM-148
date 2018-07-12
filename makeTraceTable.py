@@ -23,7 +23,6 @@ with open(sys.argv[1], "r") as f:
         component_reqs[component] = []
     n = len(components)
 
-
     print(r"""
 \newpage
 \section{Appendix: Traceability}\label{appendix-traceability}
@@ -72,7 +71,7 @@ Note that only ``leaf'' components are traced to requirements.
 for component in components:
     if len(component_reqs[component]) == 0:
         continue
-    print(component + r" \begin{itemize}" + \
-            "\n\\item " + \
-            "\n\\item ".join(component_reqs[component]) + \
-            "\n" + r"\end{itemize}")
+    print(component + r" \begin{itemize}" +
+          "\n\\item " +
+          "\n\\item ".join(component_reqs[component]) +
+          "\n" + r"\end{itemize}")
