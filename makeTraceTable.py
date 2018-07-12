@@ -32,11 +32,11 @@ with open(sys.argv[1], "r") as f:
 Traceability}\label{requirement-to-component-traceability}
 
 \footnotesize
-\tablefirsthead{\hline \multicolumn{1}{c}{\textbf{Requirement}} &
-                       \multicolumn{1}{c}{\textbf{Components}} \\ \hline}
-\tablehead{\hline \multicolumn{1}{c}{\textbf{Requirement}} &
-                       \multicolumn{1}{c}{\textbf{Components}} \\ \hline}
-\begin{xtabular}{p{0.4\textwidth}p{0.55\textwidth}}
+\begin{longtable}{p{0.4\textwidth}p{0.55\textwidth}}
+\hline
+\multicolumn{1}{c}{\textbf{Requirement}} &
+\multicolumn{1}{c}{\textbf{Components}} \\ \hline
+\endhead
 """)
 
     # Each succeeding line corresponds to a requirement
@@ -57,7 +57,7 @@ Traceability}\label{requirement-to-component-traceability}
 
 
 print(r"""
-\end{xtabular}
+\end{longtable}
 \normalsize
 
 \subsection{Component to Requirement
