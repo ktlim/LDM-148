@@ -23,7 +23,6 @@ with open(sys.argv[1], "r") as f:
         component_reqs[component] = []
     n = len(components)
 
-
     print(r"""
 \newpage
 \section{Appendix: Traceability}\label{appendix-traceability}
@@ -32,11 +31,11 @@ with open(sys.argv[1], "r") as f:
 Traceability}\label{requirement-to-component-traceability}
 
 \footnotesize
-\tablefirsthead{\hline \multicolumn{1}{c}{\textbf{Requirement}} &
-                       \multicolumn{1}{c}{\textbf{Components}} \\ \hline}
-\tablehead{\hline \multicolumn{1}{c}{\textbf{Requirement}} &
-                       \multicolumn{1}{c}{\textbf{Components}} \\ \hline}
-\begin{xtabular}{p{0.4\textwidth}p{0.55\textwidth}}
+\begin{longtable}{p{0.4\textwidth}p{0.55\textwidth}}
+\hline
+\multicolumn{1}{c}{\textbf{Requirement}} &
+\multicolumn{1}{c}{\textbf{Components}} \\ \hline
+\endhead
 """)
 
     # Each succeeding line corresponds to a requirement
@@ -57,7 +56,7 @@ Traceability}\label{requirement-to-component-traceability}
 
 
 print(r"""
-\end{xtabular}
+\end{longtable}
 \normalsize
 
 \subsection{Component to Requirement
@@ -72,7 +71,7 @@ Note that only ``leaf'' components are traced to requirements.
 for component in components:
     if len(component_reqs[component]) == 0:
         continue
-    print(component + r" \begin{itemize}" + \
-            "\n\\item " + \
-            "\n\\item ".join(component_reqs[component]) + \
-            "\n" + r"\end{itemize}")
+    print(component + r" \begin{itemize}" +
+          "\n\\item " +
+          "\n\\item ".join(component_reqs[component]) +
+          "\n" + r"\end{itemize}")

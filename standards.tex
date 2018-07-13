@@ -5,15 +5,6 @@ all component designs within the LSST DM System.  Coding standards and the like
 that are not pertinent to design may be found in the LSST DM Developer Guide
 (\citep{DevGuide}).
 
-\subsection{Python Version}
-
-All LSST DM code will run under Python 3 by 2018-01-31.  Package authors may
-choose to have their code backward-compatible with Python 2.7, but this is only
-required for Science Pipelines code that is a dependency of \texttt{lsst\_apps}, and then only until external dependencies become Python 3-only.
-
-Python 2.7 will be deprecated by the time LSST begins operations, and many
-external dependencies are in the process of moving to being Python 3-only.
-
 \subsection{HTTPS Protocol}
 
 In the absence of a specific technical justification and acceptance by the LSST

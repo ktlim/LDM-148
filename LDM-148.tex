@@ -1,5 +1,4 @@
 \documentclass[DM,toc,lsstdraft]{lsstdoc}
-\usepackage{xtab}
 \usepackage{enumitem}
 
 \title{Data Management System Design}
@@ -12,6 +11,7 @@
   J.~Kantor,
   W.~O'Mullane,
   D.~Petravick,
+  G.~Comoretto,
   and
   the DM Leadership Team}
 \setDocCurator{Kian-Tat Lim}
@@ -32,7 +32,8 @@
   \addtohist{2}{2011-08-09}{Copied from MREFC Proposal into LDM-148 handle, reformatted}{Robert McKercher}
   \addtohist{3}{2011-08-15}{Updated for Preliminary Design Review}{Tim Axelrod, K-T Lim, Mike Freemon, Jeffrey Kantor}
   \addtohist{4}{2013-10-09}{Updated for Final Design Review}{Mario Juric, K-T Lim, Jeffrey Kantor}
-  \addtohist{5.0}{2017-07-04}{Rewritten for Construction and Operations. Approved in \href{https://jira.lsstcorp.org/browse/RFC-358}{RFC-358}.}{K-T Lim}
+  \addtohist{5.0}{2017-07-04}{Rewritten for Construction and Operations. Approved in \jira{RFC-358}.}{K-T Lim}
+  \addtohist{6.0}{2018-07-12}{Add Observatory Operations Data and Planned Observation Publishing Services; synchronize terminology with new product tree, LDM-129, and LDM-230. Approved in \jira{RFC-456}.}{K-T~Lim}
 }
 
 \begin{document}
@@ -150,8 +151,8 @@ ensuring that the LSP is responsive and allows for exploration of the vast
 LSST data products.
 
 Underlying all of the above is a Data Backbone that provides storage, tracking,
-and replication for all LSST data products.  The Data Backbone links all of the
-enclaves including the Data Access Centers, acting as the spine that
+and replication for all LSST data products.  The Data Backbone links the
+computing environments including the Data Access Centers, acting as the spine that
 supports them all.
 
 \input{sizing}
@@ -169,9 +170,9 @@ integration environments for testing purposes.
 
 The DMS services can be considered to consist of four tiers of software
 components. The top tier is the LSST Science Platform, which is deployed
-in the DACs and other enclaves to provide a user
+to provide a user
 interface and analysis environment for science users and LSST staff. The
-detailed design of this tier is given in \textit{LSST Science Platform} \citedsp{LDM-542}. The next
+detailed design of this tier is given in \textit{Science Platform Design} \citedsp{LDM-542}. The next
 tier is composed of science ``applications'' software that generates
 data products. This software is used to build ``payloads'', sequences of
 pipelines, that perform particular data analysis and product generation
@@ -186,7 +187,7 @@ components in this tier is given in \textit{Data Management Middleware Design} \
 The bottom tier is ``infrastructure'': hardware, networking,
 and low-level software and services that provide a computing
 environment. The detailed design of components in this tier is given in
-\textit{LSST Data Facility Logical Information Technology and Communications Design} \citedsp{LDM-129} and \textit{Network Design} \citedsp{LSE-78}.
+\textit{LSST Data Facility Logical Information Technology and Communications Design} \citedsp{LDM-129} and \textit{LSST Observatory Network Design} \citedsp{LSE-78}.
 
 The DMS computing environments reside in four main physical locations:
 the Summit Site including the main Observatory and Auxiliary Telescope
@@ -196,6 +197,7 @@ at the National Center for Supercomputing Applications (NCSA) in Urbana,
 Illinois, USA; and the Satellite Facility at CC-IN2P3 in Lyon,
 France. These are linked by high-speed networks to allow rapid data
 movement.
+These computing environments are separated into enclaves by their requirements for availability, access, and change management.
 
 The Base Facility includes four enclaves: the Base portion of the Prompt Enclave directly supporting Observatory operations, the Commissioning Cluster, an Archive Enclave holding data products, and the Chilean Data Access Center.
 
@@ -314,6 +316,7 @@ Those rely on the Science Pipelines Libraries supporting software product, which
 \item
   Camera-specific customizations (\texttt{obs\_*})
 \end{itemize}
+Documentation for the Science Pipelines is available at \href{https://pipelines.lsst.io/}{pipelines.lsst.io}.
 
 \begin{figure}
 \centering
@@ -330,7 +333,7 @@ The middleware layer includes certain supporting software products and the Batch
   Parallel distributed database (\texttt{qserv})
 \item
   Task framework (\texttt{pex\_*}, \texttt{log}, \texttt{pipe\_base},
-  \texttt{ctrl\_pool})
+		\texttt{pipe\_supertask}, \texttt{ctrl\_pool})
 \item
   Campaign management and workflow for production control (\texttt{ctrl\_*})
 \end{itemize}
@@ -433,8 +436,7 @@ It publishes these as an unauthenticated, globally-accessible web service compri
 This component is composed of two instances that capture
 crosstalk-corrected images from the LSSTCam and ComCam Camera Data
 Systems along with selected metadata from the OCS and/or EFD and
-transfer them to the Prompt Processing service in the NCSA Level
-1 Domain.
+transfer them to the Prompt Processing service in the Prompt NCSA Enclave.
 
 There is no Prompt Processing Ingest instance for the auxiliary
 telescope spectrograph.
@@ -477,7 +479,7 @@ image files with associated metadata are written to OODS storage.
 Archiver and Catch-Up Archiver to Data Backbone: files are copied to
 Data Backbone storage via a file transfer mechanism, and their
 information and metadata are registered with Data Backbone management
-dataabases. The Data Butler is not used for this low-level,
+databases. The Data Butler is not used for this low-level,
 non-science-payload interface.
 
 Observatory Operations Data Service to Data Backbone: files are copied from the Data Backbone to the OODS after completion and validation of calibration production results.
