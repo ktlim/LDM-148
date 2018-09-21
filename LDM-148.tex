@@ -390,6 +390,10 @@ human-in-the-loop design. Instead, they are designed to execute
 autonomously, often under the control of the OCS, with human oversight,
 monitoring, and control only at the highest level.
 
+Historical designs for the equivalent of this enclave envisioned an overarching DM Control System (DMCS) that would be the sole externally-visible service controlling all others.
+The current design exposes each service as a separate entity with potentially different service levels.
+A DMCS component still exists, but it is an implementation feature of the services' design rather than an architectural component.
+
 \subsection{Service Descriptions}\label{base-service-descriptions}
 
 Detailed concepts of operations for each service can be found in
