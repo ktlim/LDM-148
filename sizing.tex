@@ -89,6 +89,7 @@ to LSST scale.  These requirements are illustrated in Figure
 \ref{fig:near-real-time-flows} for per-visit transfers.  Peak bandwidths assume
 a 3 second budget for Summit to Base image transfer and a 5 second budget for
 international image transfer.
+The peak alert bandwidth assumes 40K alerts delivered in 15 seconds.
 
 The Summit to Base and Base to NCSA network links have been significantly
 over-engineered for four main reasons: first, because the incremental costs of
@@ -101,6 +102,11 @@ Archivers that interface with or depend on the networks.  A high-speed Base to
 NCSA link also enables Data Releases to be transferred south to the Chilean DAC
 over the network rather than through physical media, as originally planned,
 decoupling science from maintenance and upgrade activities to a greater extent.
+
+The external bandwidth from NCSA to the community alert brokers is baselined at 10 Gbit/sec.
+Given an estimate of the peak alert bandwidth of up to 1.8 Gbit/sec (\citeds{LDM-151}), at least 5 community brokers can be supported with this allocation.
+Additional external outbound bandwidth is needed for NCSA to deliver results to science users from the US Data Access Center and to deliver bulk downloads to partners; this has been estimated as 52 Gbit/sec in \citeds{LDM-141}.
+
 
 \begin{figure}
 \centering
