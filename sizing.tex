@@ -87,9 +87,9 @@ Communications requirements were developed and modeled for the data transfers
 and user query/response load, extrapolated from existing surveys and adjusted
 to LSST scale.  These requirements are illustrated in Figure
 \ref{fig:near-real-time-flows} for per-visit transfers.  Peak bandwidths assume
-a 3 second budget for Summit to Base image transfer and a 5 second budget for
+a 3~second budget for Summit to Base image transfer and a 5~second budget for
 international image transfer.
-The peak alert bandwidth assumes 40K alerts delivered in 15 seconds.
+The peak alert bandwidth assumes 40K~alerts delivered in 15~seconds.
 
 The Summit to Base and Base to NCSA network links have been significantly
 over-engineered for four main reasons: first, because the incremental costs of
@@ -103,9 +103,9 @@ NCSA link also enables Data Releases to be transferred south to the Chilean DAC
 over the network rather than through physical media, as originally planned,
 decoupling science from maintenance and upgrade activities to a greater extent.
 
-The external bandwidth from NCSA to the community alert brokers is baselined at 10 Gbit/sec.
-Given an estimate of the peak alert bandwidth of up to 1.8 Gbit/sec (\citeds{LDM-151}), at least 5 community brokers can be supported with this allocation.
-Additional external outbound bandwidth is needed for NCSA to deliver results to science users from the US Data Access Center and to deliver bulk downloads to partners; this has been estimated as 52 Gbit/sec in \citeds{LDM-141}.
+The external bandwidth from NCSA to the community alert brokers is baselined at 10~Gbit/sec.
+Given an estimate of the peak alert bandwidth of up to 1.8~Gbit/sec \citedsp{LDM-151}, at least 5 community brokers can be supported with this allocation.
+Additional external outbound bandwidth is needed for NCSA to deliver results to science users from the US Data Access Center and to deliver bulk downloads to partners; this has been estimated as 52~Gbit/sec in \citeds{LDM-141}.
 
 
 \begin{figure}
@@ -115,7 +115,7 @@ Additional external outbound bandwidth is needed for NCSA to deliver results to 
 \label{fig:near-real-time-flows}
 \end{figure}
 
-In all of the above, industry-provided technology trends (\citeds{LDM-143})
+In all of the above, industry-provided technology trends \citedsp{LDM-143}
 were used to extrapolate to the LSST construction and operations phases in
 which the technology will be acquired, configured, deployed, operated, and
 maintained. A just-in-time acquisition strategy is employed to leverage
