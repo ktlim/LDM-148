@@ -208,6 +208,10 @@ The NCSA Facility also includes four enclaves: the NCSA portion of the Prompt En
 Additionally, a separate Development and Integration Enclave at NCSA hosts many of the services and tools necessary to build and test the DMS.
 
 These enclaves are distinguished by having different users, operations timescales, interfaces, and often components.
+The service levels required of each enclave have relatively loose requirements set by the LSST System Requirements \citedsp{LSE-29} and the Observatory System Specification \citedsp{LSE-30}, which are then flowed down to the Data Management System Requirements \citedsp{LSE-61}.
+Some enclaves have goals for availability, processing latency, or other parameters that may be significantly more strict, however.
+The trade-offs between cost and availability and between availability and latency need to be evaluated carefully to ensure that the optimum balance is being struck.
+Requirement DMS-REQ-0161 already specifies that reliability (i.e. correctness and consistency of service) should be prioritized over availability to end users, given equal cost.
 
 DMS services are assigned to each of these enclaves.  Some enclave hardware may be dedicated; the remainder is allocated from Master Provisioning hardware pools at each Facility.
 Each service is generally implemented by a corresponding software product.
@@ -396,6 +400,27 @@ Historical designs for the equivalent of this enclave envisioned an overarching 
 The current design exposes each service as a separate entity with potentially different service levels.
 A DMCS component still exists, but it is an implementation feature of the services' design rather than an architectural component.
 
+The overall service level for this enclave should be high, with the goal being to have the enclave functional whenever the Observatory is taking data.
+
+Of the services within the enclave, the Header Generator component of the Archiving service is critical to observing and should have a target uptime equal to the Engineering and Facility Database.
+
+The Archiving, Observatory Operations Data, OCS Driven Batch, Prompt Processing Ingest, and Telemetry Gateway services are important for maintaining high-quality observing; lack of these services constitutes a degraded mode of operation without useful feedback loops.
+The stability of the telescope systems is expected to require Archiving, Observatory Operations Data and OCS Driven Batch to be down for no more than 24 hours at a time.
+(This might require reconfiguring OCS Driven Batch to execute on the Commissioning Cluster rather than in the Offline Production enclave.)
+Similarly, DMS-REQ-0008 requires that the pipelines fed by Prompt Processing Ingest and producing output via the Telemetry Gateway be down for no more than 24 hours at a time.
+These services must be available for at least 24 continuous hours out of any 48 hour period, in order to maintain optimal Observatory scientific performance.
+There are exceptions for observatory scheduled maintenance, although it should be noted that part of the restoration of observing after the annual maintenance period requires that DM services be available, so only part of that maintenance period can be used for DM service maintenance.
+Also note that operations plans call for a scheduled DM maintenance period each morning; this does not count as downtime.
+
+The overall Archiving service can prevent further observing if the capacity of the buffer in the Camera Data System (DAQ) at the Summit is exceeded, so it must be up sufficiently, particularly after a Summit-to-Base network outage, to drain that buffer.
+
+All of these services need to function sufficiently to meet requirement DMS-REQ-0318, which says that DM as a whole must not prevent observing for more than 1 day total per year.
+As a result, the above limits on downtime can be exceeded, but only as long as total observing outages do not exceed 1 day when integrated over a year.
+
+The Planned Observation Publication service provides information for external clients.
+Because it publishes advance predictions that are not guaranteed, it is acceptable for this service to be down during observing for an amount of time less than the prediction window.
+Having this service down does not prevent further observing.
+
 \subsection{Service Descriptions}\label{base-service-descriptions}
 
 Detailed concepts of operations for each service can be found in
@@ -538,6 +563,10 @@ found.
 Like the services in the Base Center, these services need to run
 rapidly and reliably and so are designed to execute autonomously.
 
+The services in this enclave are important parts of the observing feedback system and the prompt DM pipelines and accordingly should have a target of being up whenever the Observatory is taking data.
+They should be down for no more than 24 hours at a time (DMS-REQ-0008), although additional downtime adding up to no more than 1 day per year (DMS-REQ-0318) can be tolerated.
+Latency for services in this enclave must be low in order to meet the 60 second alert delivery requirement.
+
 \subsection{Service Descriptions}\label{prompt-ncsa-service-descriptions}
 
 Detailed concepts of operations for each service can be found in
@@ -559,7 +588,7 @@ two consecutive exposures are grouped and processed as a single visit.
 Definitions of exposure groupings to be processed as visits in deep
 drilling and other modes are TBD. The service is required to deliver
 Alerts within 60 seconds of the final camera readout of a standard
-science visit with 98\% reliability.
+science visit with 98\% availability.
 
 There is no Prompt Processing service instance for the Auxiliary
 Telescope Spectrograph.
@@ -620,6 +649,12 @@ manual intervention if absolutely necessary.
 This enclave does not have direct users (besides the operators of its
 services); the services within it obtain inputs from the Data Backbone
 and place their outputs into the Data Backbone.
+
+Requirement DMS-REQ-0008 places a limit of 24 hours on each unscheduled outage of this enclave.
+Otherwise, downtime is limited by the need to generate timely calibration products and annual Data Release data products.
+This is expected to allow no more than 1 week of integrated scheduled or unscheduled downtime (e.g. half of the enclave down for two weeks) per year for this enclave.
+Because the total capacity of this enclave is needed in order to provide the throughput necessary to complete the productions in the allotted time, any outage that decreases capacity is relevant, even if it occurs as part of a rolling maintenance in which services remain running.
+There are no particular latency requirements for services in this enclave, other than what is necessary in order to meet the periodic Calibration Products and annual Data Release cycles.
 
 \subsection{Service Descriptions}\label{ncsa-gen-prod-service-descriptions}
 
@@ -724,6 +759,9 @@ are likely to occur at a different cadence from the other enclaves as a
 result. The LSP must operate reliably enough that scientific work is not
 impeded.
 
+OSS-REQ-0180 states that data products should be available from the DACs 98\% of the time, including scheduled and unscheduled downtime, and that a single outage can last at most 3 working days.
+The Bulk Distribution service is expected to be used heavily around the time of a Data Release (possibly both before and after); it should have minimal downtime during those periods but can have lower availability otherwise.
+
 \subsection{Service Descriptions}\label{dac-service-descriptions}
 
 \subsubsection{LSST Science Platform DAC
@@ -788,6 +826,14 @@ large-scale data distribution is TBD.
 
 \section{Commissioning Cluster}\label{commissioning-cluster}
 
+The Commissioning Cluster enclave provides important services to the Observatory for rapid-turnaround human-driven ad hoc analysis of data during the Commissioning period and any re-commissioning of the system (e.g. after extended maintenance).
+These analyses will be used for debugging the Observatory system; inability to perform such analyses can delay verification and validation in Commissioning.
+In addition, this enclave supports human-driven quality control at the Base.
+As a result, the goal should be to have this cluster functioning whenever the Observatory is taking data as well as during the day, except for scheduled daytime outages coordinated with Commissioning activities.
+While it is operating, the latency of data delivery to the enclave by the OODS needs to be as low as feasible to support tight feedback loops during Commissioning.
+It is desirable but not required to have low Data Backbone latency for delivery of pipeline outputs.
+This enclave is separate as its human-centered services are distinct from the automated ones in the Prompt Base enclave.
+
 \subsection{Service Description}\label{commcluster-service}
 
 \subsubsection{LSST Science Platform Commissioning
@@ -808,8 +854,10 @@ OCS's Base replica of the EFD (before transformation).
 \subsection{Interfaces}\label{commcluster-interfaces}
 
 Commissioning Cluster to Data Backbone: The Commissioning Cluster relies on the
-Data Backbone for its data, like the other instances of the LSST Science
+Data Backbone for its historical data, like the other instances of the LSST Science
 Platform.
+
+Commissioning Cluster to OODS: The Commissioning Cluster obtains its freshest, most recent data from the OODS.
 
 Commissioning Cluster to EFD: The Commissioning Cluster has direct read-only
 client access to the Base replica of the EFD (before transformation).
@@ -817,6 +865,12 @@ client access to the Base replica of the EFD (before transformation).
 \section{Backbone Services}\label{backbone-services}
 
 Detailed concepts of operations for each service can be found in \textit{Concept of Operations for the LSST Production Services} \citedsp{LDM-230}.
+
+The Backbone enclaves supply data to other services.
+As a result, the availability and latency requirements of the enclaves are constrained by those of the services it feeds.
+In general, the system has been designed so that the Data Backbone is not essential for normal Observatory data-taking.
+Latency requirements are thus loose, with permissible worst-case delivery times of up to 24 hours, although shorter normal-case latencies on the order of seconds are desirable for staff and science users alike.
+Availability is primarily set by the need to support the Data Access Centers' 98\% availability and maximum three-working-day downtime.
 
 \subsection{Service Descriptions}\label{backbone-service-descriptions}
 
