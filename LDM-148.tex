@@ -36,6 +36,7 @@
   \addtohist{6.0}{2018-07-12}{Add Observatory Operations Data and Planned Observation Publishing Services; synchronize terminology with new product tree, LDM-129, and LDM-230. Approved in \jira{RFC-456}.}{K-T~Lim}
   \addtohist{6.1}{2019-01-23}{Add historical note on DMCS.  Approved in \jira{RFC-530}.}{K-T~Lim}
   \addtohist{6.2}{2019-01-30}{Add text about outbound bandwidths and modify near-realtime dataflow figure.  Approved in \jira{RFC-538}.}{K-T~Lim}
+  \addtohist{6.3}{2019-05-29}{Add service levels for enclaves.  Approved in \jira{RFC-581}.}{K-T~Lim}
 }
 
 \begin{document}
@@ -405,12 +406,12 @@ The overall service level for this enclave should be high, with the goal being t
 Of the services within the enclave, the Header Generator component of the Archiving service is critical to observing and should have a target uptime equal to the Engineering and Facility Database.
 
 The Archiving, Observatory Operations Data, OCS Driven Batch, Prompt Processing Ingest, and Telemetry Gateway services are important for maintaining high-quality observing; lack of these services constitutes a degraded mode of operation without useful feedback loops.
-The stability of the telescope systems is expected to require Archiving, Observatory Operations Data and OCS Driven Batch to be down for no more than 24 hours at a time.
+Downtime, defined as when observing is occurring but one or more of these services is unavailable, must be limited in both length and frequency.
+There are daily and annual observatory scheduled maintenance periods during which no observing occurs; accordingly, these services do not need to remain available during these periods.
+During normal observing, the stability of the telescope systems is expected to allow at most 24 consecutive hours of downtime during any single incident for the Archiving, Observatory Operations Data and OCS Driven Batch services.
 (This might require reconfiguring OCS Driven Batch to execute on the Commissioning Cluster rather than in the Offline Production enclave.)
 Similarly, DMS-REQ-0008 requires that the pipelines fed by Prompt Processing Ingest and producing output via the Telemetry Gateway be down for no more than 24 hours at a time.
-These services must be available for at least 24 continuous hours out of any 48 hour period, in order to maintain optimal Observatory scientific performance.
-There are exceptions for observatory scheduled maintenance, although it should be noted that part of the restoration of observing after the annual maintenance period requires that DM services be available, so only part of that maintenance period can be used for DM service maintenance.
-Also note that operations plans call for a scheduled DM maintenance period each morning; this does not count as downtime.
+These services must be available for at least 24 continuous hours out of any 48 hour period in order to maintain optimal Observatory scientific performance.
 
 The overall Archiving service can prevent further observing if the capacity of the buffer in the Camera Data System (DAQ) at the Summit is exceeded, so it must be up sufficiently, particularly after a Summit-to-Base network outage, to drain that buffer.
 
@@ -564,7 +565,7 @@ Like the services in the Base Center, these services need to run
 rapidly and reliably and so are designed to execute autonomously.
 
 The services in this enclave are important parts of the observing feedback system and the prompt DM pipelines and accordingly should have a target of being up whenever the Observatory is taking data.
-They should be down for no more than 24 hours at a time (DMS-REQ-0008), although additional downtime adding up to no more than 1 day per year (DMS-REQ-0318) can be tolerated.
+They should be down (while observing is taking place) for no more than 24 hours at a time (DMS-REQ-0008), although additional downtime adding up to no more than 1 day per year (DMS-REQ-0318) can be tolerated.
 Latency for services in this enclave must be low in order to meet the 60 second alert delivery requirement.
 
 \subsection{Service Descriptions}\label{prompt-ncsa-service-descriptions}
