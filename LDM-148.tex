@@ -243,16 +243,17 @@ enclave they are in noted):
 \item
   Batch Production (Offline Production, Satellite Facility)
 \item
-  Data Release QC (Offline Production)
+  Offline QC (Offline Production)
 \item
-  LSST Science Platform Commissioning Cluster instance (Commissioning
-  Cluster)
-\item
-  LSST Science Platform Data Access Center instances (DACs)
-\item
-  Bulk Distribution (DAC)
+  Bulk Distribution (Offline Production)
 \item
   Data Backbone (Archive Base and NCSA)
+\item
+  LSST Science Platform Portal (Commissioning Cluster and DACs)
+\item
+  LSST Science Platform JupyterLab (Commissioning Cluster and DACs)
+\item
+  LSST Science Platform Web API (Commissioning Cluster and DACs)
 \end{itemize}
 
 The relationships between these services, their deployment enclaves
@@ -332,21 +333,26 @@ Documentation for the Science Pipelines is available at \href{https://pipelines.
 \label{fig:scipi}
 \end{figure}
 
-The middleware layer includes certain supporting software products and the Batch Production software products:
+The middleware layer includes software products that allow the building of algorithmic pipelines and abstract their data access.
 \begin{itemize}
 \item
   Data access client (Data Butler) (\texttt{daf\_persistence})
 \item
-  Parallel distributed database (\texttt{qserv})
+  Task framework (\texttt{pex\_*}, \texttt{log}, \texttt{pipe\_base}, \texttt{ctrl\_pool})
+\end{itemize}
+
+These pipelines are in turn executed and controlled by Batch Production software products:
+\begin{itemize}
 \item
-  Task framework (\texttt{pex\_*}, \texttt{log}, \texttt{pipe\_base},
-		\texttt{pipe\_supertask}, \texttt{ctrl\_pool})
+  Campaign management (\texttt{ctrl\_bps})
 \item
-  Campaign management and workflow for production control (\texttt{ctrl\_*})
+  Workload/workflow
 \end{itemize}
 
 Infrastructure components include:
 \begin{itemize}
+\item
+  Parallel distributed database (\texttt{qserv})
 \item
   Other databases (typically relational)
 \item
@@ -402,6 +408,7 @@ The current design exposes each service as a separate entity with potentially di
 A DMCS component still exists, but it is an implementation feature of the services' design rather than an architectural component.
 
 The overall service level for this enclave should be high, with the goal being to have the enclave functional whenever the Observatory is taking data.
+Since these services are part of the normal functioning of the Observatory, they are also referred to as Observatory Operations Services.
 
 Of the services within the enclave, the Header Generator component of the Archiving service is critical to observing and should have a target uptime equal to the Engineering and Facility Database.
 
@@ -636,8 +643,10 @@ operations, including the largest and most complex payloads supported by
 the DMS: the annual Data Release Production (DRP) and periodic
 Calibration Products Productions (CPPs). Note that CPPs will execute
 even while the annual DRP is executing.
- The Offline Quality Control Service monitors the science data
+The Offline Quality Control Service monitors the science data
 products, notifying operators if any anomalies are found.
+The enclave also includes a service for distributing bulk data on daily and annual (Data Release) timescales to partner institutions, collaborations, and LSST Education and Public Outreach (EPO).
+This bulk data transfer may occur in large batches (e.g. once per day or when a Data Release is about to occur) or in narrower streams (e.g. as candidate data products become available from the Data Release Production).
 
 The services in this enclave need to run efficiently and reliably over
 long periods of time, spanning weeks or months. They need to execute
@@ -649,7 +658,7 @@ manual intervention if absolutely necessary.
 
 This enclave does not have direct users (besides the operators of its
 services); the services within it obtain inputs from the Data Backbone
-and place their outputs into the Data Backbone.
+and place their outputs (if any) into the Data Backbone.
 
 Requirement DMS-REQ-0008 places a limit of 24 hours on each unscheduled outage of this enclave.
 Otherwise, downtime is limited by the need to generate timely calibration products and annual Data Release data products.
@@ -731,6 +740,12 @@ also the environment, telescope, camera, or data acquisition. Alarms
 stemming from threshold crossings are delivered to LSST Data Facility
 Production Scientists for verification, analysis, and resolution.
 
+\subsubsection{Bulk Distribution}\label{bulk-distribution}
+
+This service is used to transmit Prompt and Data Release data products to partners such as LSST Education and Public Outreach, the UK LSST project, and the Dark Energy Science Collaboration.
+It extracts data products from the Data Backbone and transmits them over high bandwidth connections to designated, pre-subscribed partners.
+
+
 \subsection{Interfaces}\label{ncsa-general-production-interfaces}
 
 Batch Production to Data Backbone: for large-scale productions, a workflow
@@ -742,6 +757,12 @@ and catalogs into the Data Backbone.
 Batch Production to Satellite Facility: the Data Backbone will transfer raw data, including images, metadata, and the Transformed EFD, to the Satellite Facility.
 Intermediate data products will be transferred back via the Data Backbone for further computations in the Offline Production Enclave.
 
+Bulk Distribution to Data Backbone: all data products sent via Bulk Distribution are retrieved from the Data Backbone.
+
+Bulk Distribution to partners: the exact delivery mechanism for
+large-scale data distribution is TBD.
+
+
 \section{Data Access Centers}\label{data-access-centers}
 
 There are two Data Access Centers, one in the US at NCSA and one in
@@ -749,10 +770,7 @@ Chile at the Base. These DACs are responsible for all
 science-user-facing services, primarily instances of the LSST Science
 Platform (LSP). The LSP is the preferred analytic interface to LSST data
 products in the DAC. It provides computation and data access on both
-interactive and asynchronous timescales. The US DAC also includes a
-service for distributing bulk data on daily and annual (Data Release)
-timescales to partner institutions, collaborations, and LSST Education
-and Public Outreach (EPO).
+interactive and asynchronous timescales.
 
 The services in each enclave must support multiple users simultaneously
 and securely. The LSP must be responsive to science user needs; updates
@@ -806,23 +824,13 @@ All usage of any LSST Science Platform instance requires authentication
 to ensure availability only to LSST data rights holders or LSST
 operations staff.
 
-\subsubsection{Bulk Distribution}\label{bulk-distribution}
-
-This service is used to transmit Prompt and Data Release data products to partners such as LSST Education and Public Outreach, the UK LSST project, and the Dark Energy Science Collaboration.
-It extracts data products from the Data Backbone and transmits them over high bandwidth connections to designated, pre-subscribed partners.
-
-
 \subsection{Interfaces}\label{dac-interfaces}
 
-Bulk Distribution and LSST Science Platform to Data Backbone: Both
-DAC-resident services retrieve their data, including raw images, nightly and
+LSST Science Platform to Data Backbone: the LSP services retrieve their data, including raw images, nightly and
 annual image and catalog data products, metadata, and provenance, from the Data
 Backbone.  The LSP Portal Aspect uses the LSP Web APIs to retrieve data.  The
 LSP JupyterLab Aspect can use the LSP Web APIs and also can use the Data Butler
 client library to access the Data Backbone.
-
-Bulk Distribution to partners: The exact delivery mechanism for
-large-scale data distribution is TBD.
 
 
 \section{Commissioning Cluster}\label{commissioning-cluster}
@@ -922,12 +930,17 @@ The Data Backbone services interact with most other deployed services.
 
 \section{Software Components}\label{software-components}
 
+DM is responsible for delivering a set of operational services, as described above, and most of those are implemented by custom or customized software components.
+The implementing software products are distinct from the service products as they do not include configurations needed for deploying the service in different environments.
+This section describes some of the software products that are not directly tied to corresponding services.
+
 \subsection{Science Payloads}\label{science-payloads}
 
 These payloads are described in more detail in the DM Applications Design Document \citedsp{LDM-151}.
-Payloads are built from application software components.
+Payloads are built from application software components from the Science Pipelines Libraries or third-party products.
+They specify inputs, outputs, and configurations as well as the order of execution of science algorithms from those libraries.
 Most payloads execute under control of the Batch Production service.
-Exceptions include the Alert Production Payload, the Raw Calibration Validation Payload, and the Daily Calibration Products Update Payload.
+Exceptions include the Alert Production Payload and some of the Calibration Software.
 
 \subsubsection{Alert Production Payload}\label{alert-production-payload}
 
@@ -941,42 +954,30 @@ associated metadata delivered by the Prompt Processing service; uses
 Master Calibration Images, Template Images, Prompt Products Database, and
 Calibration Database information from the Data Backbone.
 
-\subsubsection{MOPS Payload}\label{mops-payload}
+\subsubsection{Calibration Software}\label{calibration-software-payload}
+
+Executes under control of the Prompt Processing service, OCS-controlled batch processing, and offline batch production at intervals ranging from per-exposure to daily to annual, depending on the stability of Observatory systems and their calibrations.
+Generates all calibration products.
+Provides raw calibration image quality feedback to the OCS and observers via the
+Telemetry Gateway. Uses crosstalk-corrected science images and
+associated metadata delivered by the Prompt Processing service in addition to raw calibration images, Auxiliary Telescope images, and Master
+Calibration Images from the Data Backbone and EFD information from EFD Transformation and the Data Backbone.
+
+\subsubsection{Data Release Production
+Payload}\label{data-release-production-payload}
+
+Executes at annual intervals,
+first running a ``mini-DRP'' over a small portion of the sky, followed
+by the full DRP over the entire sky. Produces science data products in
+the Data Backbone.
+
+\subsubsection{MOPS and Forced Photometry Payload}\label{mops-payload}
 
 Executes after a night's
 observations are complete. Generates entries in the MOPS Database and
 the Prompt Products Database, including Solar System Object records,
 measurements, and orbits. Performs precovery forced photometry of
 transients. Uses Prompt Products Database entries and images from the Data
-Backbone.
-
-\subsubsection{Raw Calibration Validation
-Payload}\label{raw-calibration-validation-payload}
-
-Executes under control of the Prompt Processing service. Generates raw
-calibration image quality feedback to the OCS and observers via the
-Telemetry Gateway. Uses crosstalk-corrected science images and
-associated metadata delivered by the Prompt Processing service, Master
-Calibration Images, and Calibration Database information from the Data
-Backbone.
-
-\subsubsection{Daily Calibration Products Update
-Payload}\label{daily-calibration-products-update-payload}
-
-Executes under control of the OCS-controlled batch processing service so
-that its execution can be synchronized with the observing schedule. Uses
-raw calibration images and information from the Transformed EFD to
-generate a subset of Master Calibration Images and Calibration Database
-entries in the Data Backbone.
-
-\subsubsection{Periodic Calibration Products Production
-Payload}\label{periodic-calibration-products-production-payload}
-
-Executes at nominally monthly intervals but perhaps as frequently as weekly or as
-infrequently as quarterly, depending on the stability of Observatory
-systems and their calibrations. Uses raw calibration images and
-information from the Transformed EFD to generate a subset of Master
-Calibration Images and Calibration Database entries in the Data
 Backbone.
 
 \subsubsection{Special Programs Productions
@@ -992,29 +993,37 @@ Executes if necessary to generate templates for Alert Production in between annu
 Data Release Productions. Uses raw science images to generate the
 templates, placing them in the Data Backbone.
 
-\subsubsection{Annual Calibration Products Production
-Payload}\label{annual-calibration-products-production-payload}
-
-Executes at annual intervals prior to the start of the Data Release Production. Uses
-raw calibration images, information from the Transformed EFD,
-information from the Auxiliary Telescope Spectrograph, and external
-catalogs to generate Master Calibration Images and Calibration Database
-entries in the Data Backbone.
-
-\subsubsection{Data Release Production
-Payload}\label{data-release-production-payload}
-
-Executes at annual intervals,
-first running a ``mini-DRP'' over a small portion of the sky, followed
-by the full DRP over the entire sky. Produces science data products in
-the Data Backbone.
-
-\subsection{Firefly and SUIT}\label{suit}
+\subsection{SUIT}\label{suit}
 
 The Science User Interface and Tools, primarily composed of the Firefly product, provide visualization, plotting,
 catalog rendering, browsing, and searching elements that can be
 assembled into predetermined ``portals'' but can also be used flexibly
 within dynamic ``notebook'' environments.
+
+\subsection{Supporting Software}\label{supporting-software}
+
+These software products, plus the middleware in the nextt subsection, are key underlying components to services and other software products.
+
+\subsubsection{Science Pipelines Libraries}\label{science-pipelines-libraries}
+
+Provide objects, data structures, algorithms, and frameworks for writing Science Payloads.
+These libraries contain the key scientific analysis routines used to perform processing and measurement to generate the LSST data products.
+
+\subsubsection{Distributed Database
+(Qserv)}\label{distributed-database-qserv}
+
+Underlying the catalog data access web service is a parallel distributed
+database required to handle the petabyte-scale,
+tens-of-trillions-of-rows catalogs produced by LSST.
+
+\subsubsection{ADQL Translator}\label{adql-translator}
+
+The ADQL Translator serves to connect the catalog query portion of the LSST Science Platform Web APIs aspect, including its VO-standard TAP interface, with underlying databases, including both the Parallel Distributed Database (Qserv) and conventional relational databases.
+
+\subsubsection{Image/Cutout Server}\label{image-server}
+
+The Image Server connects the image query portion of the LSST Science Platform Web APIs aspect with underlying image data products in the Data Backbone.
+It also serves to regenerate "virtual" data products that have been removed for space reasons.
 
 \subsection{Middleware}\label{middleware}
 
@@ -1030,13 +1039,6 @@ disk to network locations and a variety of serializations ranging from
 YAML and FITS files (extensible to HDF5 or ASDF) to database tables. The
 Butler client is also available within the LSST Science Platform
 JupyterLab environment.
-
-\subsubsection{Parallel Distributed Database
-(Qserv)}\label{parallel-distributed-database-qserv}
-
-Underlying the catalog data access web service is a parallel distributed
-database required to handle the petabyte-scale,
-tens-of-trillions-of-rows catalogs produced by LSST.
 
 \subsubsection{Task Framework}\label{task-framework}
 
@@ -1071,15 +1073,6 @@ optimally run the particular task (i.e., which level of intra-node
 parallelization is be desired).
 
 It also includes a configuration API and a logging API.
-
-\subsubsection{ADQL Translator}\label{adql-translator}
-
-The ADQL Translator serves to connect the catalog query portion of the LSST Science Platform Web APIs aspect with underlying databases, including both the Parallel Distributed Database (Qserv) and conventional relational databases.
-
-\subsubsection{Image Server}\label{image-server}
-
-The Image Server connects the image query portion of the LSST Science Platform Web APIs aspect with underlying image data products in the Data Backbone.
-It also serves to regenerate "virtual" data products that have been removed for space reasons.
 
 
 \section{Infrastructure Services}\label{infrastructure-services}
