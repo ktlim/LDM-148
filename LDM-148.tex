@@ -336,7 +336,7 @@ Documentation for the Science Pipelines is available at \href{https://pipelines.
 The middleware layer includes software products that allow the building of algorithmic pipelines and abstract their data access.
 \begin{itemize}
 \item
-  Data access client (Data Butler) (\texttt{daf\_persistence})
+  Data access client (Data Butler) (\texttt{daf\_butler}, \texttt{daf\_persistence})
 \item
   Task framework (\texttt{pex\_*}, \texttt{log}, \texttt{pipe\_base}, \texttt{ctrl\_pool})
 \end{itemize}
@@ -346,7 +346,7 @@ These pipelines are in turn executed and controlled by Batch Production software
 \item
   Campaign management (\texttt{ctrl\_bps})
 \item
-  Workload/workflow
+  Workload/workflow management
 \end{itemize}
 
 Infrastructure components include:
@@ -684,7 +684,7 @@ These include:
 The service is able to handle massively distributed computing, executing jobs when their inputs become available and tracking their status and outputs.
 It ensures that the data needed for a job is accessible to it and that outputs (including log files, if any) are preserved.
 It can allocate work across multiple enclaves, in particular between NCSA and the Satellite Facility at CC-IN2P3, which will have capacity for half of the DRP processing.
-It utilizes the Campaign Management and Workload/Workflow software products to accomplish these goals.
+It utilizes the Campaign Management and Workload/Workflow Management software products to accomplish these goals.
 
 Offline processing ensures that Prompt data products are generated within the nominal 24 hours.
 It includes catch-up of missed nightly processing as well as daytime processing such as the Moving Object Processing System.
@@ -938,7 +938,7 @@ This section describes some of the software products that are not directly tied 
 
 These payloads are described in more detail in the DM Applications Design Document \citedsp{LDM-151}.
 Payloads are built from application software components from the Science Pipelines Libraries or third-party products.
-They specify inputs, outputs, and configurations as well as the order of execution of science algorithms from those libraries.
+They specify inputs, outputs, and algorithmic configurations as well as the order of execution of science algorithms from those libraries.
 Most payloads execute under control of the Batch Production service.
 Exceptions include the Alert Production Payload and some of the Calibration Software.
 
@@ -1002,23 +1002,22 @@ within dynamic ``notebook'' environments.
 
 \subsection{Supporting Software}\label{supporting-software}
 
-These software products, plus the middleware in the nextt subsection, are key underlying components to services and other software products.
+These software products, plus the middleware in the next subsection, are key underlying components to services and other software products.
 
 \subsubsection{Science Pipelines Libraries}\label{science-pipelines-libraries}
 
-Provide objects, data structures, algorithms, and frameworks for writing Science Payloads.
+These libraries provide objects, data structures, algorithms, and frameworks for writing Science Payloads.
 These libraries contain the key scientific analysis routines used to perform processing and measurement to generate the LSST data products.
 
 \subsubsection{Distributed Database
 (Qserv)}\label{distributed-database-qserv}
 
-Underlying the catalog data access web service is a parallel distributed
-database required to handle the petabyte-scale,
-tens-of-trillions-of-rows catalogs produced by LSST.
+The petabyte-scale, tens-of-trillions-of-rows catalogs produced by LSST are served to users by the catalog query portion of the LSST Science Platform Web APIs aspect in the Data Access Centers.
+A custom parallel distributed database provides the required performance for these large and heavily-used catalogs that are resident in the DACs.
 
 \subsubsection{ADQL Translator}\label{adql-translator}
 
-The ADQL Translator serves to connect the catalog query portion of the LSST Science Platform Web APIs aspect, including its VO-standard TAP interface, with underlying databases, including both the Parallel Distributed Database (Qserv) and conventional relational databases.
+The ADQL (Astronomical Data Query Language) Translator serves to connect the catalog query portion of the LSST Science Platform Web APIs aspect, including its VO-standard TAP interface, with underlying databases, including both the Parallel Distributed Database (Qserv) and conventional relational databases.
 
 \subsubsection{Image/Cutout Server}\label{image-server}
 
