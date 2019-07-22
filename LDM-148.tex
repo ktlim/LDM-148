@@ -1,4 +1,4 @@
-\documentclass[DM,toc]{lsstdoc}
+\documentclass[DM,toc,lsstdraft]{lsstdoc}
 \usepackage{enumitem}
 
 \title{Data Management System Design}
@@ -17,7 +17,7 @@
 \setDocCurator{Kian-Tat Lim}
 \setDocUpstreamLocation{\url{https://github.com/lsst/LDM-148}}
 
-\date{2019-07-18}
+\date{\today}
 \setDocAbstract{%
   The LSST Data Management System (DMS) is a set of services
   employing a variety of software components running on
@@ -38,6 +38,7 @@
   \addtohist{6.2}{2019-01-30}{Add text about outbound bandwidths and modify near-realtime dataflow figure.  Approved in \jira{RFC-538}.}{K-T~Lim}
   \addtohist{6.3}{2019-05-29}{Add service levels for enclaves.  Approved in \jira{RFC-581}.}{K-T~Lim}
   \addtohist{7.0}{2019-07-17}{Synchronize with product tree and add LSE-400.  Approved in \jira{RFC-614}.}{K-T~Lim}
+  \addtohist{7.1}{2019-07-22}{Make a change.}{K-T~Lim}
 }
 
 \begin{document}
@@ -65,6 +66,8 @@ data products can be considered ``online'', as they are driven primarily
 by the observing cadence of the observatory. This category of Prompt data products has
 historically been referred to as ``Level 1''.  These products are intended to
 enable detection and follow-up of time-sensitive time-domain events.
+
+Make some change.
 
 A second category of data products is generated on an annual cadence and
 represents a complete reprocessing of the set of images taken to date to
